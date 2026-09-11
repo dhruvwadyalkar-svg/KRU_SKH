@@ -21,6 +21,7 @@ import {
   ShieldCheck,
   Settings,
   Sparkles,
+  BrainCircuit,
   LucideIcon
 } from 'lucide-react'
 
@@ -37,6 +38,7 @@ const COMPANY_NAV: { group: string; items: CompanyNavItem[] }[] = [
     items: [
       { href: '/company/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
       { href: '/company/candidates', icon: Sparkles, label: 'Candidate Intelligence', badge: 'SMART' },
+      { href: '/company/talent-intelligence', icon: BrainCircuit, label: 'Talent Intelligence', badge: 'AI' },
       { href: '/company/internships', icon: BriefcaseBusiness, label: 'Internships', badge: 'NEW' },
       { href: '/company/profile', icon: Building2, label: 'Company Profile' },
       { href: '/company/coding-judge', icon: Code2, label: 'Coding Judge' },

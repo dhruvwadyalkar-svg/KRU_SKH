@@ -32,7 +32,8 @@ import {
   Printer,
   ChevronRight,
   Database,
-  HelpCircle
+  HelpCircle,
+  Zap
 } from 'lucide-react'
 
 import { dispatchPortalNotification } from '@/components/NotificationBell'
