@@ -423,11 +423,13 @@ export async function evaluateCandidatesForRequirement(
     // Infer branch from degree or profile
     let studentBranch = 'Computer Engineering'
     const degLower = (studentDegree || '').toLowerCase()
-    if (degLower.includes('it') || degLower.includes('information')) {
+    if (degLower.includes('aiml') || degLower.includes('ai & ds') || degLower.includes('data science') || degLower.includes('ai &')) {
+      studentBranch = 'AI & Data Science'
+    } else if (degLower.includes('it') || degLower.includes('information')) {
       studentBranch = 'Information Technology'
     } else if (degLower.includes('mech')) {
       studentBranch = 'Mechanical Engineering'
-    } else if (degLower.includes('electr') || degLower.includes('ece') || degLower.includes('entc')) {
+    } else if (degLower.includes('electr') || degLower.includes('ece') || degLower.includes('entc') || degLower.includes('electrical')) {
       studentBranch = 'Electronics & Telecommunication'
     } else if (degLower.includes('civil')) {
       studentBranch = 'Civil Engineering'

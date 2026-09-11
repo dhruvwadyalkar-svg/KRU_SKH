@@ -6,7 +6,8 @@ export interface TalentKPIs {
   nearMatchesCount: number
   highPotentialCount: number
   averageMatchScore: number
-  topTalentCollege: string
+  topTalentCollege?: string
+  topDepartment?: string
 }
 
 export interface SkillRadarItem {
@@ -18,14 +19,17 @@ export interface SkillRadarItem {
   category: 'Core' | 'Cloud/DevOps' | 'Database' | 'Architecture' | 'Languages' | 'Other'
 }
 
-export interface CollegeTalentComparison {
-  collegeId: string | number
-  collegeName: string
+export interface DepartmentTalentComparison {
+  departmentId: string | number
+  departmentName: string
   studentCount: number
   skillsStrength: Record<string, number> // skillName -> percentage 0-100
   overallStrength: number                 // 0-100%
   topSkill: string
 }
+
+// Backward-compatible alias
+export type CollegeTalentComparison = DepartmentTalentComparison
 
 export interface OverlookedCandidate {
   candidate: CandidateCardData
@@ -59,7 +63,8 @@ export interface AITalentInsight {
   keySurpluses: string[]
   keyShortages: string[]
   nearMatchOpportunity: string
-  topCollegeInsight: string
+  topDepartmentInsight: string
+  topCollegeInsight?: string
   strategicRecommendations: string[]
 }
 
@@ -76,6 +81,7 @@ export interface CandidateComparisonMetric {
   candidateId: number
   candidateName: string
   college: string
+  branch?: string
   cgpa: number
   jobMatchScore: number
   potentialScore: number
@@ -124,7 +130,8 @@ export interface TalentIntelligenceDashboardData {
   skills: string[]
   kpis: TalentKPIs
   radarMetrics: SkillRadarItem[]
-  collegeComparisons: CollegeTalentComparison[]
+  departmentComparisons: DepartmentTalentComparison[]
+  collegeComparisons: DepartmentTalentComparison[] // Alias for backward compatibility
   tiers: CandidateTierClassification
   overlookedCandidates: OverlookedCandidate[]
   hiringOpportunities: HiringOpportunity[]

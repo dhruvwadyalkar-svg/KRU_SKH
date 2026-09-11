@@ -81,12 +81,12 @@ export default function TalentIntelligencePage() {
   // Candidate Tier Tab & Filter States
   const [activeTab, setActiveTab] = useState<'exact' | 'near' | 'potential' | 'all'>('exact')
   const [candidateSearch, setCandidateSearch] = useState('')
-  const [selectedCollegeFilter, setSelectedCollegeFilter] = useState('all')
+  const [selectedDepartmentFilter, setSelectedDepartmentFilter] = useState('all')
   const [minCgpaFilter, setMinCgpaFilter] = useState<number>(0)
   const [verifiedOnly, setVerifiedOnly] = useState(false)
 
-  // College Matrix Search
-  const [collegeSearch, setCollegeSearch] = useState('')
+  // Department Matrix Search
+  const [departmentSearch, setDepartmentSearch] = useState('')
 
   // Candidate Comparison State
   const [selectedCandidateIds, setSelectedCandidateIds] = useState<number[]>([])
@@ -283,8 +283,8 @@ export default function TalentIntelligencePage() {
         if (!matches) return false
       }
 
-      // College
-      if (selectedCollegeFilter !== 'all' && c.institutionName !== selectedCollegeFilter) {
+      // Department
+      if (selectedDepartmentFilter !== 'all' && c.branch !== selectedDepartmentFilter) {
         return false
       }
 
@@ -300,23 +300,25 @@ export default function TalentIntelligencePage() {
 
       return true
     })
-  }, [data, activeTab, candidateSearch, selectedCollegeFilter, minCgpaFilter, verifiedOnly])
+  }, [data, activeTab, candidateSearch, selectedDepartmentFilter, minCgpaFilter, verifiedOnly])
 
-  // Filtered Colleges in Comparison Table
-  const displayedColleges = useMemo(() => {
+  // Filtered Departments in Comparison Table
+  const displayedDepartments = useMemo(() => {
     if (!data) return []
-    if (!collegeSearch.trim()) return data.collegeComparisons
-    const q = collegeSearch.toLowerCase()
-    return data.collegeComparisons.filter(col =>
-      col.collegeName.toLowerCase().includes(q) ||
-      col.topSkill.toLowerCase().includes(q)
+    const list = data.departmentComparisons || data.collegeComparisons || []
+    if (!departmentSearch.trim()) return list
+    const q = departmentSearch.toLowerCase()
+    return list.filter(dept =>
+      dept.departmentName.toLowerCase().includes(q) ||
+      dept.topSkill.toLowerCase().includes(q)
     )
-  }, [data, collegeSearch])
+  }, [data, departmentSearch])
 
-  // Unique College List for dropdown
-  const uniqueColleges = useMemo(() => {
+  // Unique Department List for dropdown
+  const uniqueDepartments = useMemo(() => {
     if (!data) return []
-    return Array.from(new Set(data.collegeComparisons.map(c => c.collegeName)))
+    const list = data.departmentComparisons || data.collegeComparisons || []
+    return Array.from(new Set(list.map(c => c.departmentName)))
   }, [data])
 
   return (
@@ -494,8 +496,8 @@ export default function TalentIntelligencePage() {
                   </div>
 
                   <div className={styles.insightPointCard}>
-                    <span className={styles.insightPointLabel}>🏛️ Top Talent Hub</span>
-                    <span className={styles.insightPointText}>{data.aiInsight.topCollegeInsight}</span>
+                    <span className={styles.insightPointLabel}>🏛️ Top Department Hub</span>
+                    <span className={styles.insightPointText}>{data.aiInsight.topDepartmentInsight || data.aiInsight.topCollegeInsight}</span>
                   </div>
 
                   <div className={styles.insightPointCard}>
@@ -665,7 +667,7 @@ export default function TalentIntelligencePage() {
                         <div className={styles.overlookCardTop}>
                           <div className={styles.candidateMeta}>
                             <span className={styles.candidateName}>{item.candidate.name}</span>
-                            <span className={styles.candidateCollege}>{item.candidate.institutionName}</span>
+                            <span className={styles.candidateCollege}>{item.candidate.branch || 'Computer Engineering'} • {item.candidate.degree || 'B.Tech'}</span>
                           </div>
                           <div className={styles.potentialScoreBadge} title="Calculated Potential Score">
                             {item.potentialScore}/100 Potential
@@ -730,25 +732,25 @@ export default function TalentIntelligencePage() {
                 )}
               </div>
 
-              {/* ── COLLEGE TALENT COMPARISON ── */}
+              {/* ── DEPARTMENT / BRANCH TALENT COMPARISON ── */}
               <div className={styles.panel}>
                 <div className={styles.panelHeader}>
                   <div>
                     <h3 className={styles.panelTitle}>
                       <GraduationCap size={19} color="#8b5cf6" />
-                      College Talent Comparison
+                      Department & Branch Talent Comparison
                     </h3>
                     <p className={styles.panelSubtitle}>
-                      Compare skill penetration and candidate concentration across partner institutions
+                      Compare skill penetration and candidate concentration across academic branches
                     </p>
                   </div>
 
                   <div className={styles.collegeControls}>
                     <input
                       type="text"
-                      placeholder="Search college or top skill..."
-                      value={collegeSearch}
-                      onChange={(e) => setCollegeSearch(e.target.value)}
+                      placeholder="Search department or top skill..."
+                      value={departmentSearch}
+                      onChange={(e) => setDepartmentSearch(e.target.value)}
                       className={styles.searchInput}
                     />
                   </div>
@@ -758,7 +760,7 @@ export default function TalentIntelligencePage() {
                   <table className={styles.collegeTable}>
                     <thead>
                       <tr>
-                        <th>College / Institution</th>
+                        <th>Academic Department / Branch</th>
                         <th>Candidates</th>
                         {activeSkills.slice(0, 5).map(skill => (
                           <th key={skill} style={{ textAlign: 'center' }}>{skill}</th>
@@ -768,33 +770,33 @@ export default function TalentIntelligencePage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayedColleges.length === 0 ? (
+                      {displayedDepartments.length === 0 ? (
                         <tr>
                           <td colSpan={7} style={{ textAlign: 'center', padding: '30px', color: 'var(--text-muted)' }}>
-                            No colleges match your filter.
+                            No departments match your filter.
                           </td>
                         </tr>
                       ) : (
-                        displayedColleges.map(col => {
+                        displayedDepartments.map(dept => {
                           const pillClass =
-                            col.overallStrength >= 70
+                            dept.overallStrength >= 70
                               ? styles.strengthPillHigh
-                              : col.overallStrength >= 45
+                              : dept.overallStrength >= 45
                                 ? styles.strengthPillMedium
                                 : styles.strengthPillLow
 
                           return (
-                            <tr key={col.collegeId}>
+                            <tr key={dept.departmentId}>
                               <td>
                                 <div className={styles.collegeNameGroup}>
-                                  <span className={styles.collegeName}>{col.collegeName}</span>
+                                  <span className={styles.collegeName}>{dept.departmentName}</span>
                                 </div>
                               </td>
                               <td>
-                                <span style={{ fontWeight: 600 }}>{col.studentCount}</span> students
+                                <span style={{ fontWeight: 600 }}>{dept.studentCount}</span> students
                               </td>
                               {activeSkills.slice(0, 5).map(skill => {
-                                const pct = col.skillsStrength[skill] || 0
+                                const pct = dept.skillsStrength[skill] || 0
                                 return (
                                   <td key={skill} style={{ textAlign: 'center' }}>
                                     <span style={{ fontWeight: 600, color: pct >= 60 ? '#34d399' : pct >= 30 ? '#cbd5e1' : '#94a3b8' }}>
@@ -805,12 +807,12 @@ export default function TalentIntelligencePage() {
                               })}
                               <td>
                                 <span className={`${styles.strengthPill} ${pillClass}`}>
-                                  {col.overallStrength}%
+                                  {dept.overallStrength}%
                                 </span>
                               </td>
                               <td>
                                 <span style={{ fontSize: '12px', color: '#c4b5fd', fontWeight: 500 }}>
-                                  {col.topSkill}
+                                  {dept.topSkill}
                                 </span>
                               </td>
                             </tr>
@@ -907,12 +909,12 @@ export default function TalentIntelligencePage() {
 
                     <select
                       className={styles.selectRole}
-                      value={selectedCollegeFilter}
-                      onChange={(e) => setSelectedCollegeFilter(e.target.value)}
+                      value={selectedDepartmentFilter}
+                      onChange={(e) => setSelectedDepartmentFilter(e.target.value)}
                     >
-                      <option value="all">All Partner Colleges</option>
-                      {uniqueColleges.map(c => (
-                        <option key={c} value={c}>{c}</option>
+                      <option value="all">All Departments / Branches</option>
+                      {uniqueDepartments.map(d => (
+                        <option key={d} value={d}>{d}</option>
                       ))}
                     </select>
 
@@ -995,7 +997,7 @@ export default function TalentIntelligencePage() {
                               )}
                             </div>
                             <span className={styles.candSubDetails}>
-                              {cand.institutionName} • {cand.degree || 'B.Tech'} ({cand.branch || 'CSE'})
+                              {cand.branch || 'Computer Engineering'} • {cand.degree || 'B.Tech'}
                             </span>
                           </div>
 

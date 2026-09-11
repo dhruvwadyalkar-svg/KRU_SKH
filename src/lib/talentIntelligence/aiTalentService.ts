@@ -127,7 +127,8 @@ export async function generateCandidateComparisonAI(
     return {
       candidateId: cand.id,
       candidateName: cand.name,
-      college: cand.institutionName || 'Campus Partner',
+      college: cand.branch || 'Computer Engineering',
+      branch: cand.branch || 'Computer Engineering',
       cgpa: cand.cgpa,
       jobMatchScore: cand.jobMatchScore,
       potentialScore: potential,

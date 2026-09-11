@@ -140,18 +140,18 @@ export async function computeTalentIntelligenceDashboard(
     }
   })
 
-  // 3. Compute College Talent Comparison Matrix
-  const collegeGroups = new Map<string, CandidateCardData[]>()
+  // 3. Compute Department / Branch Talent Comparison Matrix
+  const departmentGroups = new Map<string, CandidateCardData[]>()
   for (const cand of allCandidates) {
-    const col = cand.institutionName || 'Unknown College'
-    if (!collegeGroups.has(col)) {
-      collegeGroups.set(col, [])
+    const dept = cand.branch || 'Computer Engineering'
+    if (!departmentGroups.has(dept)) {
+      departmentGroups.set(dept, [])
     }
-    collegeGroups.get(col)!.push(cand)
+    departmentGroups.get(dept)!.push(cand)
   }
 
-  const collegeComparisons: CollegeTalentComparison[] = []
-  for (const [collegeName, cands] of Array.from(collegeGroups.entries())) {
+  const departmentComparisons: DepartmentTalentComparison[] = []
+  for (const [departmentName, cands] of Array.from(departmentGroups.entries())) {
     const studentCount = cands.length
     const skillsStrength: Record<string, number> = {}
     let totalPct = 0
@@ -165,7 +165,7 @@ export async function computeTalentIntelligenceDashboard(
 
     const overallStrength = requiredSkills.length > 0 ? Math.round(totalPct / requiredSkills.length) : 0
 
-    // Find top skill for college
+    // Find top skill for department
     let topSkill = requiredSkills[0] || 'General Tech'
     let highestPct = -1
     for (const [sk, pct] of Object.entries(skillsStrength)) {
@@ -175,9 +175,9 @@ export async function computeTalentIntelligenceDashboard(
       }
     }
 
-    collegeComparisons.push({
-      collegeId: collegeName.replace(/\s+/g, '-').toLowerCase(),
-      collegeName,
+    departmentComparisons.push({
+      departmentId: departmentName.replace(/\s+/g, '-').toLowerCase(),
+      departmentName,
       studentCount,
       skillsStrength,
       overallStrength,
@@ -185,8 +185,8 @@ export async function computeTalentIntelligenceDashboard(
     })
   }
 
-  // Sort colleges by overall talent strength
-  collegeComparisons.sort((a, b) => b.overallStrength - a.overallStrength)
+  // Sort departments by overall talent strength
+  departmentComparisons.sort((a, b) => b.overallStrength - a.overallStrength)
 
   // 4. Candidate Classification into 4 Tiers
   const exactMatches: CandidateCardData[] = []
@@ -316,7 +316,7 @@ export async function computeTalentIntelligenceDashboard(
   })
 
   // 7. Top KPIs
-  const topCollege = collegeComparisons.length > 0 ? collegeComparisons[0].collegeName : 'Campus Network'
+  const topDept = departmentComparisons.length > 0 ? departmentComparisons[0].departmentName : 'Computer Engineering'
   const avgMatch = evalResult.candidates.length > 0
     ? Math.round(evalResult.candidates.reduce((acc, c) => acc + c.jobMatchScore, 0) / evalResult.candidates.length)
     : 0
@@ -327,7 +327,8 @@ export async function computeTalentIntelligenceDashboard(
     nearMatchesCount: nearMatches.length,
     highPotentialCount: overlookedCandidates.filter(o => o.potentialScore >= 80).length,
     averageMatchScore: avgMatch,
-    topTalentCollege: topCollege
+    topTalentCollege: topDept,
+    topDepartment: topDept
   }
 
   // 8. AI Talent Insight synthesis
@@ -339,10 +340,11 @@ export async function computeTalentIntelligenceDashboard(
     keySurpluses: surpluses.length > 0 ? surpluses : ['Core Programming', 'Web Basics'],
     keyShortages: shortages.length > 0 ? shortages : ['Distributed Systems', 'Cloud DevOps'],
     nearMatchOpportunity: `${nearMatches.length} candidates are within 1–2 skills of satisfying your ${role} requirements.`,
-    topCollegeInsight: `${topCollege} currently leads with the highest concentration of ${requiredSkills.slice(0, 2).join(' + ')} talent (${collegeComparisons[0]?.overallStrength || 75}% average density).`,
+    topDepartmentInsight: `${topDept} leads with the highest concentration of ${requiredSkills.slice(0, 2).join(' + ')} talent (${departmentComparisons[0]?.overallStrength || 75}% average density).`,
+    topCollegeInsight: `${topDept} leads with highest concentration (${departmentComparisons[0]?.overallStrength || 75}%).`,
     strategicRecommendations: [
-      `Prioritize campus drives at ${topCollege} for immediate skill alignment.`,
-      `Leverage the "Don't Overlook" list to interview candidates with high potential scores (${kpis.highPotentialCount} candidates detected).`,
+      `Prioritize technical recruitment within the ${topDept} cohort for immediate skill alignment.`,
+      `Leverage the "Don't Overlook" list to interview candidates with high potential scores across branches (${kpis.highPotentialCount} candidates detected).`,
       `Offer a 2-week bridge module for missing skills like ${shortages[0] || 'Docker'} to unlock ${nearMatches.length} near-match candidates.`
     ]
   }
@@ -352,7 +354,8 @@ export async function computeTalentIntelligenceDashboard(
     skills: requiredSkills,
     kpis,
     radarMetrics,
-    collegeComparisons,
+    departmentComparisons,
+    collegeComparisons: departmentComparisons, // Backward-compatible alias
     tiers: {
       exactMatches,
       nearMatches,
