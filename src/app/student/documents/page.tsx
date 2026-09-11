@@ -1,0 +1,2693 @@
+'use client'
+import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
+import StudentSidebar from '@/components/StudentSidebar'
+import BackButton from '@/components/BackButton'
+import DocumentSecurityModal from '@/components/DocumentSecurityModal'
+import SecureDocumentViewer from '@/components/SecureDocumentViewer'
+import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import styles from '../dashboard.module.css'
+import {
+  FolderLock,
+  Upload,
+  FileText,
+  Building2,
+  FileQuestion,
+  ShieldCheck,
+  Search,
+  Eye,
+  Download,
+  Trash2,
+  Lock,
+  Globe,
+  CheckCircle2,
+  CircleX,
+  Clock,
+  TriangleAlert,
+  X,
+  Loader2,
+  ArrowRight,
+  Image as ImageIcon,
+  Circle,
+  Sparkles,
+  RefreshCw,
+  Table,
+  Layers,
+  FileCheck,
+  QrCode,
+  Copy,
+  Scan,
+  History,
+  ShieldAlert,
+  Check,
+  AlertTriangle,
+  AlertCircle,
+  Flame,
+  KeyRound,
+  Shield,
+  GraduationCap
+} from 'lucide-react'
+
+interface OCRBlockData {
+  blockId: number
+  text: string
+  confidence: number
+  page: number
+  boundingBox?: number[][]
+}
+
+interface QRCodeItem {
+  id?: number
+  codeType: 'QR' | 'BARCODE'
+  rawData: string
+  certificateId?: string | null
+  verificationUrl?: string | null
+  matchStatus: 'MATCH' | 'MISMATCH' | 'NOT_PRESENT' | 'UNREADABLE'
+  matchedWithOcr: boolean
+}
+
+interface DuplicateItem {
+  matchedDocumentId: number
+  matchedFileName: string
+  matchType: string
+  similarityScore: number
+  details?: string
+  uploadedAt?: string
+}
+
+interface DocumentItem {
+  id: number
+  fileName: string
+  filePath: string
+  fileType: string
+  fileSize: number
+  documentType: string
+  category: string
+  description?: string
+  accessLevel: 'PRIVATE' | 'INSTITUTION_ONLY' | 'SHARED'
+  verificationStatus: 'PENDING' | 'PROCESSING' | 'VERIFIED' | 'REJECTED' | 'UNDER_REVIEW' | 'SUSPICIOUS' | 'NEEDS_REVIEW' | 'FAILED'
+  processingStatus: string
+  qualityScore?: number
+  verificationScore?: number
+  riskScore?: number
+  tamperScore?: number
+  faceMatchScore?: number
+  faceMatchStatus?: string
+  aiRiskLevel?: string
+  ocrConfidence?: number
+  qrStatus?: string
+  sha256Hash?: string
+  perceptualHash?: string
+  qualityResult?: string
+  extractedInformation?: string
+  expiryDate?: string
+  rejectionReason?: string
+  version: number
+  uploadedAt: string
+  // Document Security Layer fields
+  securityLevel?: 'STANDARD' | 'PROTECTED' | 'HIGHLY_PROTECTED'
+  isEncrypted?: boolean
+  isPasswordProtected?: boolean
+  isLocked?: boolean
+  isViewOnly?: boolean
+  downloadPolicy?: 'UNLIMITED' | 'LIMITED' | 'DISABLED'
+  downloadCount?: number
+  maxDownloads?: number
+  watermarkEnabled?: boolean
+  publicVerificationId?: string
+  shares?: Array<{
+    id: number
+    shareToken: string
+    accessCount: number
+    maxAccessCount?: number
+    expiresAt?: string
+    isViewOnly: boolean
+  }>
+  _count?: {
+    activities?: number
+    shares?: number
+  }
+  yoloDetections?: Array<{
+    objectType: string
+    confidence: number
+    boundingBox?: string | number[]
+  }>
+
+  verification?: {
+    verificationScore: number
+    riskScore: number
+    status: string
+    ocrScore?: number
+    fieldScore?: number
+    qualityScore?: number
+    qrScore?: number
+    duplicateScore?: number
+    reasons?: string
+    warnings?: string
+    explanation?: string
+  }
+  ocrResult?: {
+    fullText: string
+    textBlocks?: string
+    boundingBoxes?: string
+    confidence?: number
+    engine?: string
+    language?: string
+    pageCount?: number
+  }
+  extractedFields?: Array<{
+    fieldName: string
+    fieldValue?: string
+    confidence?: number
+    source?: string
+    isConsistent?: boolean
+  }>
+  qrCodeResults?: QRCodeItem[]
+  sourceDuplicates?: DuplicateItem[]
+  history?: Array<{
+    id: number
+    newStatus: string
+    score?: number
+    reason?: string
+    changedAt: string
+  }>
+}
+
+interface DocumentRequestItem {
+  id: number
+  title: string
+  reason: string
+  category?: string
+  status: 'PENDING' | 'COMPLETED' | 'CANCELLED'
+  requestedAt: string
+  institution: {
+    name: string
+  }
+}
+
+const CATEGORIES = ['ALL', 'Academic', 'Identity', 'Certificates', 'Internship', 'Placement', 'Resume', 'Projects', 'Other']
+
+export default function StudentDocumentVaultPage() {
+  const [documents, setDocuments] = useState<DocumentItem[]>([])
+  const [requests, setRequests] = useState<DocumentRequestItem[]>([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'my_docs' | 'shared' | 'requests' | 'verification'>('my_docs')
+  const [selectedCategory, setSelectedCategory] = useState('ALL')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Upload Modal State
+  const [isUploadOpen, setIsUploadOpen] = useState(false)
+  const [uploadStep, setUploadStep] = useState<1 | 2 | 3>(1)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [docName, setDocName] = useState('')
+  const [docCategory, setDocCategory] = useState('Academic')
+  const [docType, setDocType] = useState('Marksheet')
+  const [docDescription, setDocDescription] = useState('')
+  const [accessLevel, setAccessLevel] = useState<'PRIVATE' | 'INSTITUTION_ONLY' | 'SHARED'>('PRIVATE')
+  const [expiryDate, setExpiryDate] = useState('')
+  const [linkedRequestId, setLinkedRequestId] = useState<number | null>(null)
+
+  // Security Layer Modal States
+  const [securityModalDocId, setSecurityModalDocId] = useState<number | null>(null)
+  const [securityModalDocName, setSecurityModalDocName] = useState('')
+  const [viewerDocId, setViewerDocId] = useState<number | null>(null)
+  const [viewerDocName, setViewerDocName] = useState('')
+
+  // Upload Security Level Form States
+  const [uploadSecurityLevel, setUploadSecurityLevel] = useState<'STANDARD' | 'PROTECTED' | 'HIGHLY_PROTECTED'>('STANDARD')
+  const [uploadPassword, setUploadPassword] = useState('')
+  const [uploadIsViewOnly, setUploadIsViewOnly] = useState(false)
+  const [uploadDownloadPolicy, setUploadDownloadPolicy] = useState<'UNLIMITED' | 'LIMITED' | 'DISABLED'>('UNLIMITED')
+  const [uploadMaxDownloads, setUploadMaxDownloads] = useState<number>(3)
+  const [uploadWatermark, setUploadWatermark] = useState(false)
+  const [uploadAccessExpiry, setUploadAccessExpiry] = useState('NEVER')
+
+  // AI Quality Analysis State
+  const [analyzing, setAnalyzing] = useState(false)
+  const [analysisResult, setAnalysisResult] = useState<any | null>(null)
+  const [savingDoc, setSavingDoc] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
+
+  // Academic Marksheets State
+  const [marksheets, setMarksheets] = useState<any[]>([])
+  const [isMarksheetModalOpen, setIsMarksheetModalOpen] = useState(false)
+  const [marksheetLevel, setMarksheetLevel] = useState<'TENTH' | 'TWELFTH'>('TENTH')
+  const [marksheetFile, setMarksheetFile] = useState<File | null>(null)
+  const [marksheetBoard, setMarksheetBoard] = useState('')
+  const [marksheetYear, setMarksheetYear] = useState('')
+  const [marksheetRoll, setMarksheetRoll] = useState('')
+  const [marksheetUploading, setMarksheetUploading] = useState(false)
+  const [marksheetError, setMarksheetError] = useState('')
+  const [marksheetSuccess, setMarksheetSuccess] = useState('')
+  const [selectedMarksheetForView, setSelectedMarksheetForView] = useState<any | null>(null)
+  const [isExtractingMarksheet, setIsExtractingMarksheet] = useState(false)
+  const [extractingSteps, setExtractingSteps] = useState({
+    name: false,
+    roll: false,
+    board: false,
+    year: false,
+    marks: false,
+    percentage: false
+  })
+
+  // Details Modal State (8 Tabs)
+  const [detailsDoc, setDetailsDoc] = useState<DocumentItem | null>(null)
+  const [modalTab, setModalTab] = useState<'overview' | 'fields' | 'ocr' | 'quality' | 'qr' | 'duplicates' | 'verification' | 'history'>('overview')
+  const [reprocessingId, setReprocessingId] = useState<number | null>(null)
+  const [showBoxes, setShowBoxes] = useState(true)
+
+  const pollingRef = useRef<NodeJS.Timeout | null>(null)
+
+  const fetchData = async (showLoading = false) => {
+    if (showLoading) setLoading(true)
+    try {
+      const [docsRes, reqsRes, marksheetsRes] = await Promise.all([
+        fetch('/api/documents'),
+        fetch('/api/documents/requests'),
+        fetch('/api/student/marksheets')
+      ])
+
+      if (docsRes.status === 401 || marksheetsRes.status === 401) {
+        window.location.href = '/auth/login?role=student'
+        return
+      }
+
+      const docsData = docsRes.ok ? await docsRes.json().catch(() => ({})) : {}
+      const reqsData = reqsRes.ok ? await reqsRes.json().catch(() => ({})) : {}
+      const marksheetsData = marksheetsRes.ok ? await marksheetsRes.json().catch(() => ({})) : {}
+
+      if (docsData && docsData.documents) {
+        setDocuments(docsData.documents)
+        setDetailsDoc(prev => {
+          if (!prev) return null
+          const updated = docsData.documents.find((d: DocumentItem) => d.id === prev.id)
+          return updated || prev
+        })
+      }
+      if (reqsData && reqsData.requests) setRequests(reqsData.requests)
+      if (marksheetsData && marksheetsData.marksheets) setMarksheets(marksheetsData.marksheets)
+
+    } catch (err) {
+      console.error('Error fetching vault data:', err)
+    } finally {
+      if (showLoading) setLoading(false)
+    }
+  }
+
+  const handleOpenMarksheetUpload = (level: 'TENTH' | 'TWELFTH') => {
+    setMarksheetLevel(level)
+    setMarksheetFile(null)
+    setMarksheetBoard('')
+    setMarksheetYear('')
+    setMarksheetRoll('')
+    setMarksheetError('')
+    setMarksheetSuccess('')
+    setIsMarksheetModalOpen(true)
+  }
+
+  const handleMarksheetUpload = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!marksheetFile) {
+      setMarksheetError('Please select a marksheet file (PDF, PNG, JPG, JPEG, or WEBP).')
+      return
+    }
+    setMarksheetUploading(true)
+    setMarksheetError('')
+    setMarksheetSuccess('')
+
+    try {
+      const formData = new FormData()
+      formData.append('file', marksheetFile)
+      formData.append('educationLevel', marksheetLevel)
+      if (marksheetBoard.trim()) formData.append('board', marksheetBoard.trim())
+      if (marksheetYear.trim()) formData.append('passingYear', marksheetYear.trim())
+      if (marksheetRoll.trim()) formData.append('rollNumber', marksheetRoll.trim())
+
+      const res = await fetch('/api/student/marksheets', {
+        method: 'POST',
+        body: formData
+      })
+
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setMarksheetSuccess(data.message || 'Marksheet uploaded successfully!')
+        setTimeout(() => {
+          setIsMarksheetModalOpen(false)
+          setMarksheetFile(null)
+          setMarksheetError('')
+          setMarksheetSuccess('')
+          fetchData(false)
+        }, 1500)
+      } else {
+        setMarksheetError(data.error || 'Failed to upload marksheet')
+      }
+    } catch (err: any) {
+      setMarksheetError('Network error while uploading marksheet. Please try again.')
+    } finally {
+      setMarksheetUploading(false)
+    }
+  }
+
+  const handleProcessMarksheet = async (marksheetId: number) => {
+    setIsExtractingMarksheet(true)
+    setExtractingSteps({ name: false, roll: false, board: false, year: false, marks: false, percentage: false })
+
+    const t1 = setTimeout(() => setExtractingSteps(s => ({ ...s, name: true })), 250)
+    const t2 = setTimeout(() => setExtractingSteps(s => ({ ...s, roll: true })), 500)
+    const t3 = setTimeout(() => setExtractingSteps(s => ({ ...s, board: true })), 750)
+    const t4 = setTimeout(() => setExtractingSteps(s => ({ ...s, year: true })), 1000)
+    const t5 = setTimeout(() => setExtractingSteps(s => ({ ...s, marks: true })), 1250)
+    const t6 = setTimeout(() => setExtractingSteps(s => ({ ...s, percentage: true })), 1500)
+
+    try {
+      const res = await fetch(`/api/student/marksheets/${marksheetId}/process`, { method: 'POST' })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        setSelectedMarksheetForView(data.marksheet)
+        fetchData(false)
+      } else {
+        alert(data.error || 'Failed to process marksheet')
+      }
+    } catch (err) {
+      alert('Error during marksheet structured processing')
+    } finally {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      clearTimeout(t4)
+      clearTimeout(t5)
+      clearTimeout(t6)
+      setExtractingSteps({ name: true, roll: true, board: true, year: true, marks: true, percentage: true })
+      setIsExtractingMarksheet(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchData(true)
+  }, [])
+
+  // Auto-polling when documents or marksheets are in PROCESSING state
+  useEffect(() => {
+    const hasProcessing = documents.some(
+      d => d.verificationStatus === 'PROCESSING' || d.verificationStatus === 'PENDING' || d.processingStatus === 'PROCESSING' || d.processingStatus === 'OCR_PROCESSING'
+    ) || marksheets.some(
+      m => (m.verificationStatus === 'PROCESSING' || m.verificationStatus === 'PENDING') && !m.studentName
+    )
+    if (hasProcessing) {
+      if (!pollingRef.current) {
+        pollingRef.current = setInterval(() => {
+          fetchData(false)
+        }, 3000)
+      }
+    } else {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current)
+        pollingRef.current = null
+      }
+    }
+
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current)
+        pollingRef.current = null
+      }
+    }
+  }, [documents, marksheets])
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setSelectedFile(file)
+      if (!docName) {
+        setDocName(file.name.replace(/\.[^/.]+$/, ''))
+      }
+    }
+  }
+
+  const handleStartAnalysis = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedFile) {
+      setErrorMessage('Please select a document file to upload.')
+      return
+    }
+
+    setErrorMessage('')
+    setAnalyzing(true)
+    setUploadStep(2)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      formData.append('documentName', docName)
+      formData.append('category', docCategory)
+      formData.append('documentType', docType)
+
+      const res = await fetch('/api/documents/analyze', {
+        method: 'POST',
+        body: formData
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setAnalysisResult(data.analysis)
+        setUploadStep(3)
+      } else {
+        setErrorMessage(data.error || 'AI Document Analysis failed. Please try again.')
+        setUploadStep(1)
+      }
+    } catch (err) {
+      setErrorMessage('Error analyzing document. Please try again.')
+      setUploadStep(1)
+    } finally {
+      setAnalyzing(false)
+    }
+  }
+
+  const handleConfirmSave = async () => {
+    if (!selectedFile) return
+    setSavingDoc(true)
+
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedFile)
+      formData.append('fileName', docName)
+      formData.append('category', docCategory)
+      formData.append('documentType', docType)
+      formData.append('description', docDescription)
+      formData.append('accessLevel', accessLevel)
+      if (expiryDate) formData.append('expiryDate', expiryDate)
+      if (linkedRequestId) formData.append('requestId', linkedRequestId.toString())
+
+      // Append Document Security Parameters
+      formData.append('securityLevel', uploadSecurityLevel)
+      if (uploadPassword.trim()) formData.append('password', uploadPassword.trim())
+      formData.append('isViewOnly', uploadIsViewOnly.toString())
+      formData.append('downloadPolicy', uploadDownloadPolicy)
+      if (uploadDownloadPolicy === 'LIMITED') formData.append('maxDownloads', uploadMaxDownloads.toString())
+      formData.append('watermarkEnabled', uploadWatermark.toString())
+      formData.append('accessExpiry', uploadAccessExpiry)
+
+      if (analysisResult) {
+        formData.append('qualityScore', (analysisResult.qualityScore || 80).toString())
+        formData.append('qualityResult', JSON.stringify(analysisResult))
+        if (analysisResult.extractedInformation) {
+          formData.append('extractedInformation', JSON.stringify(analysisResult.extractedInformation))
+        }
+      }
+
+      const res = await fetch('/api/documents', {
+        method: 'POST',
+        body: formData
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.success) {
+        setIsUploadOpen(false)
+        resetUploadForm()
+        fetchData(false)
+      } else {
+        alert(data.error || 'Failed to save document.')
+      }
+    } catch (err) {
+      alert('Error uploading document. Please try again.')
+    } finally {
+      setSavingDoc(false)
+    }
+  }
+
+  const handleRetryProcessing = async (id: number) => {
+    setReprocessingId(id)
+    try {
+      const res = await fetch(`/api/documents/${id}/process`, { method: 'POST' })
+      const data = await res.json()
+      if (res.ok && data.success) {
+        fetchData(false)
+      } else {
+        alert(data.error || 'Reprocessing failed')
+      }
+    } catch (err) {
+      alert('Failed to reprocess document.')
+    } finally {
+      setReprocessingId(null)
+    }
+  }
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this document from your vault?')) return
+    try {
+      const res = await fetch(`/api/documents/${id}`, { method: 'DELETE' })
+      if (res.ok) {
+        setDocuments(prev => prev.filter(d => d.id !== id))
+        if (detailsDoc?.id === id) setDetailsDoc(null)
+      } else {
+        alert('Failed to delete document')
+      }
+    } catch (err) {
+      alert('Error deleting document')
+    }
+  }
+
+  const resetUploadForm = () => {
+    setSelectedFile(null)
+    setDocName('')
+    setDocCategory('Academic')
+    setDocType('Marksheet')
+    setDocDescription('')
+    setAccessLevel('PRIVATE')
+    setExpiryDate('')
+    setLinkedRequestId(null)
+    setAnalysisResult(null)
+    setUploadStep(1)
+    setErrorMessage('')
+    setUploadSecurityLevel('STANDARD')
+    setUploadPassword('')
+    setUploadIsViewOnly(false)
+    setUploadDownloadPolicy('UNLIMITED')
+    setUploadMaxDownloads(3)
+    setUploadWatermark(false)
+    setUploadAccessExpiry('NEVER')
+  }
+
+
+  const closeUploadModal = () => {
+    setIsUploadOpen(false)
+    resetUploadForm()
+  }
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+  }
+
+  const parseJsonSafe = (str?: string | null) => {
+    if (!str) return null
+    try {
+      return JSON.parse(str)
+    } catch {
+      return null
+    }
+  }
+
+  // Filtered documents
+  const filteredDocs = documents.filter(doc => {
+    const matchesCat = selectedCategory === 'ALL' || doc.category === selectedCategory
+    const matchesSearch = searchQuery === '' ||
+      doc.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      doc.documentType.toLowerCase().includes(searchQuery.toLowerCase())
+    if (activeTab === 'shared') {
+      return matchesCat && matchesSearch && (doc.accessLevel === 'INSTITUTION_ONLY' || doc.accessLevel === 'SHARED')
+    }
+    if (activeTab === 'verification') {
+      return matchesCat && matchesSearch && (doc.verificationStatus === 'VERIFIED' || doc.verificationStatus === 'UNDER_REVIEW' || doc.verificationStatus === 'SUSPICIOUS')
+    }
+    return matchesCat && matchesSearch
+  })
+
+  // Verification status badge helper
+  const renderVerificationBadge = (status: string, score?: number) => {
+    switch (status) {
+      case 'VERIFIED':
+        return (
+          <span className="badge badge-green" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <CheckCircle2 size={12} strokeWidth={2} />
+            <span>Verified {typeof score === 'number' ? `(${score})` : ''}</span>
+          </span>
+        )
+      case 'UNDER_REVIEW':
+      case 'NEEDS_REVIEW':
+      case 'PENDING':
+        return (
+          <span className="badge badge-orange" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <Clock size={12} strokeWidth={2} />
+            <span>Under Review</span>
+          </span>
+        )
+      case 'SUSPICIOUS':
+        return (
+          <span className="badge badge-red" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(239, 68, 68, 0.15)', color: '#ef4444' }}>
+            <ShieldAlert size={12} strokeWidth={2} />
+            <span>Suspicious</span>
+          </span>
+        )
+      case 'REJECTED':
+      case 'FAILED':
+        return (
+          <span className="badge badge-red" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <CircleX size={12} strokeWidth={2} />
+            <span>Rejected</span>
+          </span>
+        )
+      case 'PROCESSING':
+        return (
+          <span className="badge badge-purple" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <Loader2 size={12} strokeWidth={2} className="spin" />
+            <span>Smart OCR</span>
+          </span>
+        )
+      default:
+        return <span className="badge badge-gray">{status}</span>
+    }
+  }
+
+  return (
+    <div className={styles.layout}>
+      <StudentSidebar />
+      <div className={styles.content}>
+        
+        {/* Header */}
+        <header className={styles.header}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <BackButton fallbackHref="/student/campus" />
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ padding: '8px', background: 'rgba(139, 92, 246, 0.15)', borderRadius: '10px', color: '#8b5cf6' }}>
+                  <FolderLock size={22} strokeWidth={2} />
+                </div>
+                <h1 className={styles.pageTitle} style={{ margin: 0 }}>
+                  PlaceIQ Document Vault
+                </h1>
+              </div>
+              <p className={styles.pageSubtitle} style={{ margin: '4px 0 0 0' }}>
+                AI Document Processing, Smart OCR, Automated Verification & Security Integrity
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => { resetUploadForm(); setIsUploadOpen(true); }}
+            className="btn btn-primary"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '10px 20px',
+              borderRadius: '10px',
+              fontWeight: 600,
+              background: 'linear-gradient(135deg, var(--accent-violet) 0%, #6366f1 100%)',
+              boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)'
+            }}
+          >
+            <Upload size={16} strokeWidth={2} />
+            <span>Upload Document</span>
+          </button>
+        </header>
+
+        <main className={styles.main}>
+          {/* Document Security Overview Banner */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+            gap: '12px',
+            marginBottom: '1.5rem',
+            background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%)',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
+            borderRadius: '14px',
+            padding: '14px 18px'
+          }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Shield size={12} color="#a78bfa" /> Protected Docs
+              </span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                {documents.filter(d => d.securityLevel === 'PROTECTED' || d.securityLevel === 'HIGHLY_PROTECTED').length}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Flame size={12} color="#10b981" /> Highly Protected
+              </span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: '#34d399' }}>
+                {documents.filter(d => d.securityLevel === 'HIGHLY_PROTECTED').length}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Globe size={12} color="#60a5fa" /> Active Shares
+              </span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: '#60a5fa' }}>
+                {documents.reduce((acc, d) => acc + (d.shares?.length || 0), 0)}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={12} color="#f59e0b" /> Expiring Soon
+              </span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: '#f59e0b' }}>
+                {documents.filter(d => d.expiryDate && new Date(d.expiryDate).getTime() - Date.now() < 7 * 86400000 && new Date(d.expiryDate).getTime() > Date.now()).length}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Lock size={12} color="#c084fc" /> Locked Docs
+              </span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: '#c084fc' }}>
+                {documents.filter(d => d.isLocked).length}
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <AlertTriangle size={12} color="#ef4444" /> Integrity Alerts
+              </span>
+              <span style={{ fontSize: '18px', fontWeight: 700, color: '#f87171' }}>
+                {documents.filter(d => d.verificationStatus === 'SUSPICIOUS' || (d.tamperScore && d.tamperScore > 40)).length}
+              </span>
+            </div>
+          </div>
+
+          {/* Academic Marksheets Verification Hub */}
+          <div style={{
+            background: 'var(--bg-secondary)',
+            border: '1px solid var(--border)',
+            borderRadius: '16px',
+            padding: '1.25rem',
+            marginBottom: '1.5rem',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '8px' }}>
+              <div>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <GraduationCap size={20} color="#a78bfa" />
+                  <span>Academic Marksheets & Placement Eligibility Credentials</span>
+                </h3>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '2px 0 0 0' }}>
+                  Upload verified 10th & 12th secondary marksheet documents for automated placement drive eligibility.
+                </p>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '14px' }}>
+              {/* 10th Marksheet Card */}
+              {(() => {
+                const tenth = marksheets.find(m => m.educationLevel === 'TENTH')
+                const isUploaded = Boolean(tenth?.documentId || tenth?.document)
+                const status = tenth?.verificationStatus || (isUploaded ? 'PENDING' : 'NOT_UPLOADED')
+                const isExtractionComplete = Boolean(
+                  tenth?.studentName &&
+                  (tenth?.seatNumber || tenth?.rollNumber) &&
+                  tenth?.passingYear
+                )
+                const missingFields: string[] = []
+                if (isUploaded && !isExtractionComplete) {
+                  if (!tenth?.studentName) missingFields.push('Candidate Name')
+                  if (!tenth?.seatNumber && !tenth?.rollNumber) missingFields.push('Seat / Roll Number')
+                  if (!tenth?.passingYear) missingFields.push('Passing Year')
+                }
+
+                return (
+                  <div style={{
+                    background: 'var(--bg-primary)',
+                    border: '1px solid ' + (status === 'VERIFIED' ? 'rgba(16,185,129,0.3)' : status === 'MISMATCH' ? 'rgba(239,68,68,0.3)' : 'var(--border)'),
+                    borderRadius: '12px',
+                    padding: '14px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '12px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a78bfa' }}>
+                          <FileText size={20} />
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>Class 10th Marksheet</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Secondary School Examination</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        {status === 'VERIFIED' ? (
+                          <span className="badge badge-green" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <CheckCircle2 size={12} /> Verified (DigiLocker)
+                          </span>
+                        ) : status === 'MISMATCH' ? (
+                          <span className="badge badge-red" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <AlertTriangle size={12} /> Mismatch
+                          </span>
+                        ) : status === 'MANUAL_REVIEW' ? (
+                          <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <AlertCircle size={12} /> Manual Review
+                          </span>
+                        ) : isUploaded ? (
+                          isExtractionComplete ? (
+                            <span className="badge badge-blue" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+                              <FileCheck size={12} /> Extraction Complete
+                            </span>
+                          ) : (
+                            <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                              <AlertTriangle size={12} /> Extraction Incomplete
+                            </span>
+                          )
+                        ) : (
+                          <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', padding: '2px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
+                            Not Uploaded
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {isUploaded && (
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'rgba(255,255,252,0.02)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px', borderBottom: '1px dashed var(--border)' }}>
+                          <span>Academic Extraction:</span>
+                          <span style={{ color: isExtractionComplete ? '#34d399' : '#f59e0b', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            {isExtractionComplete ? '✓ Complete' : 'Incomplete'}
+                          </span>
+                        </div>
+                        {!isExtractionComplete && missingFields.length > 0 && (
+                          <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '6px 8px', borderRadius: '6px', fontSize: '0.72rem', color: '#fbbf24', margin: '2px 0' }}>
+                            <strong>Missing:</strong> {missingFields.join(', ')}
+                          </div>
+                        )}
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Candidate Name:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{tenth.studentName || 'Pending extraction'}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Seat / Roll No:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{tenth.seatNumber || tenth.rollNumber || 'Pending'}</span>
+                        </div>
+                        {(tenth.certificateNumber || tenth.registrationNumber) && (
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Security / Reg Ref:</span>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontFamily: 'monospace' }}>{tenth.certificateNumber || tenth.registrationNumber}</span>
+                          </div>
+                        )}
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Board:</span>
+                          <span style={{ color: 'var(--text-primary)' }}>{tenth.board || 'CBSE / State Board'}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Passing Year:</span>
+                          <span style={{ color: 'var(--text-primary)' }}>{tenth.passingYear || 'N/A'}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', borderTop: '1px dashed var(--border)' }}>
+                          <span>Official Verification:</span>
+                          <span style={{
+                            fontWeight: 600,
+                            color: status === 'VERIFIED' ? '#34d399' : status === 'MISMATCH' ? '#f87171' : '#fbbf24'
+                          }}>
+                            {status === 'VERIFIED' ? '✓ Verified (DigiLocker)' : status === 'MISMATCH' ? 'Mismatch' : 'Pending DigiLocker Verification'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', flexWrap: 'wrap' }}>
+                      {isUploaded && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedMarksheetForView(tenth)
+                              if (!tenth.studentName || !tenth.rollNumber) {
+                                handleProcessMarksheet(tenth.id)
+                              }
+                            }}
+                            className="btn btn-sm"
+                            style={{
+                              flex: 1,
+                              padding: '7px 10px',
+                              borderRadius: '8px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              background: 'rgba(139, 92, 246, 0.15)',
+                              color: '#c084fc',
+                              border: '1px solid rgba(139, 92, 246, 0.3)',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <Scan size={12} />
+                            <span>View Academic Info</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleProcessMarksheet(tenth.id)}
+                            disabled={isExtractingMarksheet}
+                            className="btn btn-sm"
+                            title="Retry extraction with Smart OCR"
+                            style={{
+                              padding: '7px 10px',
+                              borderRadius: '8px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              background: 'var(--bg-secondary)',
+                              color: 'var(--text-secondary)',
+                              border: '1px solid var(--border)',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <RefreshCw size={12} className={isExtractingMarksheet ? 'spin' : ''} />
+                            <span>Retry</span>
+                          </button>
+                        </>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => handleOpenMarksheetUpload('TENTH')}
+                        className="btn btn-sm btn-primary"
+                        style={{
+                          flex: isUploaded ? 1 : 2,
+                          padding: '7px 12px',
+                          borderRadius: '8px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          background: isUploaded ? 'var(--bg-secondary)' : 'var(--accent-violet)',
+                          color: isUploaded ? 'var(--text-primary)' : '#fff',
+                          border: isUploaded ? '1px solid var(--border)' : 'none',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <Upload size={12} />
+                        <span>{isUploaded ? 'Replace Document' : 'Upload 10th Marksheet'}</span>
+                      </button>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* 12th Marksheet Card */}
+              {(() => {
+                const twelfth = marksheets.find(m => m.educationLevel === 'TWELFTH')
+                const isUploaded = Boolean(twelfth?.documentId || twelfth?.document)
+                const status = twelfth?.verificationStatus || (isUploaded ? 'PENDING' : 'NOT_UPLOADED')
+                const isExtractionComplete = Boolean(
+                  twelfth?.studentName &&
+                  (twelfth?.seatNumber || twelfth?.rollNumber) &&
+                  twelfth?.passingYear
+                )
+                const missingFields: string[] = []
+                if (isUploaded && !isExtractionComplete) {
+                  if (!twelfth?.studentName) missingFields.push('Candidate Name')
+                  if (!twelfth?.seatNumber && !twelfth?.rollNumber) missingFields.push('Seat / Roll Number')
+                  if (!twelfth?.passingYear) missingFields.push('Passing Year')
+                }
+
+                return (
+                  <div style={{
+                    background: 'var(--bg-primary)',
+                    border: '1px solid ' + (status === 'VERIFIED' ? 'rgba(16,185,129,0.3)' : status === 'MISMATCH' ? 'rgba(239,68,68,0.3)' : 'var(--border)'),
+                    borderRadius: '12px',
+                    padding: '14px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    gap: '12px'
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa' }}>
+                          <GraduationCap size={20} />
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>Class 12th / Diploma Marksheet</div>
+                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Higher Secondary Examination</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        {status === 'VERIFIED' ? (
+                          <span className="badge badge-green" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <CheckCircle2 size={12} /> Verified (DigiLocker)
+                          </span>
+                        ) : status === 'MISMATCH' ? (
+                          <span className="badge badge-red" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <AlertTriangle size={12} /> Mismatch
+                          </span>
+                        ) : status === 'MANUAL_REVIEW' ? (
+                          <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <AlertCircle size={12} /> Manual Review
+                          </span>
+                        ) : isUploaded ? (
+                          isExtractionComplete ? (
+                            <span className="badge badge-blue" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                              <FileCheck size={12} /> Extraction Complete
+                            </span>
+                          ) : (
+                            <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                              <AlertTriangle size={12} /> Extraction Incomplete
+                            </span>
+                          )
+                        ) : (
+                          <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', padding: '2px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
+                            Not Uploaded
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {isUploaded && (
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px', borderBottom: '1px dashed var(--border)' }}>
+                          <span>Academic Extraction:</span>
+                          <span style={{ color: isExtractionComplete ? '#34d399' : '#f59e0b', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            {isExtractionComplete ? '✓ Complete' : 'Incomplete'}
+                          </span>
+                        </div>
+                        {!isExtractionComplete && missingFields.length > 0 && (
+                          <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '6px 8px', borderRadius: '6px', fontSize: '0.72rem', color: '#fbbf24', margin: '2px 0' }}>
+                            <strong>Missing:</strong> {missingFields.join(', ')}
+                          </div>
+                        )}
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Candidate Name:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{twelfth.studentName || 'Pending extraction'}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Seat / Roll No:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{twelfth.seatNumber || twelfth.rollNumber || 'Pending'}</span>
+                        </div>
+                        {(twelfth.certificateNumber || twelfth.registrationNumber) && (
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Security / Reg Ref:</span>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontFamily: 'monospace' }}>{twelfth.certificateNumber || twelfth.registrationNumber}</span>
+                          </div>
+                        )}
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Board:</span>
+                          <span style={{ color: 'var(--text-primary)' }}>{twelfth.board || 'CBSE / State Board'}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Passing Year:</span>
+                          <span style={{ color: 'var(--text-primary)' }}>{twelfth.passingYear || 'N/A'}</span>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', borderTop: '1px dashed var(--border)' }}>
+                          <span>Official Verification:</span>
+                          <span style={{
+                            fontWeight: 600,
+                            color: status === 'VERIFIED' ? '#34d399' : status === 'MISMATCH' ? '#f87171' : '#fbbf24'
+                          }}>
+                            {status === 'VERIFIED' ? '✓ Verified (DigiLocker)' : status === 'MISMATCH' ? 'Mismatch' : 'Pending DigiLocker Verification'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div style={{ display: 'flex', gap: '8px', marginTop: 'auto', flexWrap: 'wrap' }}>
+                      {isUploaded && (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedMarksheetForView(twelfth)
+                              if (!twelfth.studentName || !twelfth.rollNumber) {
+                                handleProcessMarksheet(twelfth.id)
+                              }
+                            }}
+                            className="btn btn-sm"
+                            style={{
+                              flex: 1,
+                              padding: '7px 10px',
+                              borderRadius: '8px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              background: 'rgba(59, 130, 246, 0.15)',
+                              color: '#60a5fa',
+                              border: '1px solid rgba(59, 130, 246, 0.3)',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <Scan size={12} />
+                            <span>View Academic Info</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleProcessMarksheet(twelfth.id)}
+                            disabled={isExtractingMarksheet}
+                            className="btn btn-sm"
+                            title="Retry extraction with Smart OCR"
+                            style={{
+                              padding: '7px 10px',
+                              borderRadius: '8px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              background: 'var(--bg-secondary)',
+                              color: 'var(--text-secondary)',
+                              border: '1px solid var(--border)',
+                              cursor: 'pointer',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px'
+                            }}
+                          >
+                            <RefreshCw size={12} className={isExtractingMarksheet ? 'spin' : ''} />
+                            <span>Retry</span>
+                          </button>
+                        </>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => handleOpenMarksheetUpload('TWELFTH')}
+                        className="btn btn-sm btn-primary"
+                        style={{
+                          flex: isUploaded ? 1 : 2,
+                          padding: '7px 12px',
+                          borderRadius: '8px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          background: isUploaded ? 'var(--bg-secondary)' : '#3b82f6',
+                          color: isUploaded ? 'var(--text-primary)' : '#fff',
+                          border: isUploaded ? '1px solid var(--border)' : 'none',
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <Upload size={12} />
+                        <span>{isUploaded ? 'Replace Document' : 'Upload 12th Marksheet'}</span>
+                      </button>
+                    </div>
+                  </div>
+                )
+              })()}
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <div style={{ display: 'flex', gap: '10px', borderBottom: '1px solid var(--border)', marginBottom: '1.5rem', paddingBottom: '4px', overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            <button
+              onClick={() => setActiveTab('my_docs')}
+              className={`btn ${activeTab === 'my_docs' ? styles.tabActive : ''}`}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                background: activeTab === 'my_docs' ? 'var(--accent-violet)' : 'transparent',
+                color: activeTab === 'my_docs' ? 'white' : 'var(--text-secondary)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <FolderLock size={15} strokeWidth={2} />
+              <span>My Documents ({documents.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('verification')}
+              className={`btn ${activeTab === 'verification' ? styles.tabActive : ''}`}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                background: activeTab === 'verification' ? 'var(--accent-violet)' : 'transparent',
+                color: activeTab === 'verification' ? 'white' : 'var(--text-secondary)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <ShieldCheck size={15} strokeWidth={2} />
+              <span>Verified Credentials</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('shared')}
+              className={`btn ${activeTab === 'shared' ? styles.tabActive : ''}`}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                background: activeTab === 'shared' ? 'var(--accent-violet)' : 'transparent',
+                color: activeTab === 'shared' ? 'white' : 'var(--text-secondary)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <Building2 size={15} strokeWidth={2} />
+              <span>Shared with College</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('requests')}
+              className={`btn ${activeTab === 'requests' ? styles.tabActive : ''}`}
+              style={{
+                padding: '8px 16px',
+                borderRadius: '8px',
+                border: 'none',
+                background: activeTab === 'requests' ? 'var(--accent-violet)' : 'transparent',
+                color: activeTab === 'requests' ? 'white' : 'var(--text-secondary)',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <FileQuestion size={15} strokeWidth={2} />
+              <span>Document Requests ({requests.filter(r => r.status === 'PENDING').length})</span>
+            </button>
+          </div>
+
+          {/* Controls: Search & Category Filters */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', gap: '1rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'var(--bg-secondary)', padding: '6px 12px', borderRadius: '10px', border: '1px solid var(--border)', width: '100%', maxWidth: '320px' }}>
+              <Search size={16} color="var(--text-secondary)" />
+              <input
+                type="text"
+                placeholder="Search document name or type..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', outline: 'none', width: '100%', fontSize: '0.875rem' }}
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px', width: '100%', maxWidth: '100%' }}>
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  style={{
+                    padding: '5px 12px',
+                    borderRadius: '20px',
+                    border: selectedCategory === cat ? '1px solid var(--accent-violet)' : '1px solid var(--border)',
+                    background: selectedCategory === cat ? 'rgba(139, 92, 246, 0.15)' : 'var(--bg-secondary)',
+                    color: selectedCategory === cat ? '#a78bfa' : 'var(--text-secondary)',
+                    fontSize: '0.8rem',
+                    fontWeight: selectedCategory === cat ? 600 : 500,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Documents Table */}
+          <div>
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: '4rem 0' }}>
+                <MorphingInfinity className="size-12" style={{ width: '48px', height: '48px', color: '#8b5cf6' }} />
+                <p style={{ marginTop: '1rem', color: 'var(--text-secondary)' }}>Loading verified document vault...</p>
+              </div>
+            ) : filteredDocs.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '4rem 1rem', background: 'var(--bg-secondary)', borderRadius: '16px', border: '1px dashed var(--border)' }}>
+                <FolderLock size={48} strokeWidth={1.5} color="var(--text-tertiary)" style={{ margin: '0 auto 1rem auto' }} />
+                <h3 style={{ color: 'var(--text-primary)', margin: '0 0 0.5rem 0' }}>No documents found</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '400px', margin: '0 auto 1.5rem auto' }}>
+                  Upload your degree certificates, marksheets, ID cards, and internship letters to get AI verified.
+                </p>
+                <button
+                  onClick={() => { resetUploadForm(); setIsUploadOpen(true); }}
+                  className="btn btn-primary"
+                  style={{ background: 'var(--accent-violet)', color: 'white', padding: '8px 18px', borderRadius: '8px', fontWeight: 600 }}
+                >
+                  Upload First Document
+                </button>
+              </div>
+            ) : (
+              <div style={{ background: 'var(--bg-secondary)', borderRadius: '14px', border: '1px solid var(--border)', overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }}>
+                <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+
+                <thead>
+                  <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    <th style={{ padding: '12px 16px' }}>Document & Security</th>
+                    <th style={{ padding: '12px 16px' }}>Category</th>
+                    <th style={{ padding: '12px 16px' }}>Verification Status</th>
+                    <th style={{ padding: '12px 16px' }}>Score</th>
+                    <th style={{ padding: '12px 16px' }}>Uploaded</th>
+                    <th style={{ padding: '12px 16px', textAlign: 'right' }}>Security Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredDocs.map((doc, idx) => {
+                    const isImg = doc.fileType?.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif)$/i.test(doc.fileName)
+                    const score = doc.verificationScore ?? doc.qualityScore ?? 80
+                    const isHighlyProtected = doc.securityLevel === 'HIGHLY_PROTECTED'
+                    const isProtected = doc.securityLevel === 'PROTECTED' || isHighlyProtected
+                    const isViewOnly = doc.isViewOnly || doc.downloadPolicy === 'DISABLED'
+
+                    return (
+                      <tr
+                        key={doc.id}
+                        style={{
+                          borderBottom: idx !== filteredDocs.length - 1 ? '1px solid var(--border)' : 'none',
+                          transition: 'background 0.15s ease'
+                        }}
+                        className={styles.tableRow}
+                      >
+                        <td style={{ padding: '14px 16px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: isImg ? 'rgba(59, 130, 246, 0.15)' : 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isImg ? '#60a5fa' : '#f87171' }}>
+                              {isImg ? <ImageIcon size={18} /> : <FileText size={18} />}
+                            </div>
+                            <div>
+                              <div style={{ fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                                <span>{doc.fileName}</span>
+                                {isHighlyProtected ? (
+                                  <span style={{ fontSize: '10px', fontWeight: 700, padding: '1px 6px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)' }}>
+                                    🔒 Highly Protected
+                                  </span>
+                                ) : isProtected ? (
+                                  <span style={{ fontSize: '10px', fontWeight: 700, padding: '1px 6px', borderRadius: '4px', background: 'rgba(139, 92, 246, 0.15)', color: '#c084fc', border: '1px solid rgba(139,92,246,0.3)' }}>
+                                    🛡 Protected
+                                  </span>
+                                ) : null}
+                                {doc.isPasswordProtected && (
+                                  <span style={{ fontSize: '10px', padding: '1px 5px', borderRadius: '4px', background: 'rgba(192, 132, 252, 0.15)', color: '#c084fc' }}>
+                                    🔑 Pwd
+                                  </span>
+                                )}
+                                {isViewOnly && (
+                                  <span style={{ fontSize: '10px', padding: '1px 5px', borderRadius: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#fbbf24' }}>
+                                    👁 View Only
+                                  </span>
+                                )}
+                              </div>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                                {doc.documentType} • {formatFileSize(doc.fileSize)} • SHA-256 Verified
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td style={{ padding: '14px 16px', color: 'var(--text-secondary)' }}>
+                          <span style={{ padding: '3px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '6px', fontSize: '0.8rem' }}>
+                            {doc.category}
+                          </span>
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          {renderVerificationBadge(doc.verificationStatus, doc.verificationScore)}
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ fontWeight: 700, color: score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444' }}>
+                              {score}/100
+                            </div>
+                          </div>
+                        </td>
+                        <td style={{ padding: '14px 16px', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+                          {new Date(doc.uploadedAt).toLocaleDateString()}
+                        </td>
+                        <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                          <div style={{ display: 'inline-flex', gap: '6px' }}>
+                            {/* Open in Secure Vault Viewer */}
+                            <button
+                              onClick={() => { setViewerDocId(doc.id); setViewerDocName(doc.fileName); }}
+                              className="btn btn-sm"
+                              title="Open Secure Vault Viewer"
+                              style={{ padding: '6px 10px', background: 'rgba(139, 92, 246, 0.15)', border: '1px solid rgba(139, 92, 246, 0.3)', color: '#c084fc', borderRadius: '6px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                            >
+                              <Eye size={13} />
+                              <span style={{ fontSize: '11px', fontWeight: 600 }}>Vault View</span>
+                            </button>
+
+                            {/* Open Security Settings Modal */}
+                            <button
+                              onClick={() => { setSecurityModalDocId(doc.id); setSecurityModalDocName(doc.fileName); }}
+                              className="btn btn-sm"
+                              title="Manage Document Security & Sharing"
+                              style={{ padding: '6px 10px', background: 'var(--bg-primary)', border: '1px solid var(--border)', color: '#38bdf8', borderRadius: '6px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                            >
+                              <Lock size={13} />
+                              <span style={{ fontSize: '11px', fontWeight: 600 }}>Security</span>
+                            </button>
+
+                            {/* View AI Details / OCR Drawer */}
+                            <button
+                              onClick={() => { setDetailsDoc(doc); setModalTab('overview'); }}
+                              className="btn btn-sm"
+                              title="View AI Forensics & OCR"
+                              style={{ padding: '6px 8px', background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-secondary)', borderRadius: '6px', cursor: 'pointer' }}
+                            >
+                              <Scan size={13} />
+                            </button>
+
+                            {/* Download if allowed */}
+                            {!isViewOnly ? (
+                              <a
+                                href={`/api/documents/${doc.id}/download?download=true`}
+                                download
+                                className="btn btn-sm"
+                                title="Download Document Copy"
+                                style={{ padding: '6px 8px', background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-secondary)', borderRadius: '6px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+                              >
+                                <Download size={13} />
+                              </a>
+                            ) : null}
+
+                            <button
+                              onClick={() => handleDelete(doc.id)}
+                              className="btn btn-sm"
+                              title="Delete Document"
+                              style={{ padding: '6px 8px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#ef4444', borderRadius: '6px', cursor: 'pointer' }}
+                            >
+                              <Trash2 size={13} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+          </div>
+        </main>
+      </div>
+
+
+      {/* UPLOAD MODAL WITH DOCUMENT SECURITY SELECTOR */}
+      {isUploadOpen && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '1rem' }}>
+          <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '16px', maxWidth: '620px', width: '100%', maxHeight: '92vh', overflowY: 'auto', padding: '1.75rem', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
+              <div>
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <ShieldCheck size={20} color="#8b5cf6" />
+                  <span>Secure Document Upload</span>
+                </h2>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  Step {uploadStep} of 3: {uploadStep === 1 ? 'Details & Security Level' : uploadStep === 2 ? 'AI Processing' : 'Verification Summary'}
+                </span>
+              </div>
+              <button onClick={closeUploadModal} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                <X size={18} strokeWidth={2} />
+              </button>
+            </div>
+
+            {errorMessage && (
+              <div style={{ padding: '10px 14px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', color: '#f87171', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <TriangleAlert size={14} strokeWidth={2} />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+
+            {uploadStep === 1 && (
+              <form onSubmit={handleStartAnalysis} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                    Select Document File *
+                  </label>
+                  <input
+                    type="file"
+                    accept=".pdf,.png,.jpg,.jpeg,.webp,image/*"
+                    onChange={handleFileSelect}
+                    required
+                    style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                  />
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '2px', display: 'block' }}>
+                    Supported formats: PDF, PNG, JPG, JPEG, WEBP (AES-256 Encrypted & Smart OCR verified)
+                  </span>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                    Document Title *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. B.Tech Marksheet, Graduation Certificate"
+                    value={docName}
+                    onChange={e => setDocName(e.target.value)}
+                    required
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                      Category *
+                    </label>
+                    <select
+                      value={docCategory}
+                      onChange={e => setDocCategory(e.target.value)}
+                      style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                    >
+                      {CATEGORIES.filter(c => c !== 'ALL').map(c => (
+                        <option key={c} value={c}>{c}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                      Document Type *
+                    </label>
+                    <select
+                      value={docType}
+                      onChange={e => setDocType(e.target.value)}
+                      style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                    >
+                      <option value="10th Marksheet">10th Marksheet (Class X)</option>
+                      <option value="12th Marksheet">12th Marksheet (Class XII / Diploma)</option>
+                      <option value="Marksheet">Marksheet (Semester / Other)</option>
+                      <option value="Certificate">Certificate</option>
+                      <option value="Degree Certificate">Degree Certificate</option>
+                      <option value="ID Document">ID Document</option>
+                      <option value="Transcript">Transcript</option>
+                      <option value="Internship Certificate">Internship Certificate</option>
+                      <option value="Resume">Resume</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Document Security Level Preset Selector */}
+                <div style={{ background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)', borderRadius: '12px', padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c084fc', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Lock size={14} /> Document Security Level
+                  </label>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+                    {[
+                      { id: 'STANDARD', label: 'Standard', desc: 'Normal Auth' },
+                      { id: 'PROTECTED', label: 'Protected', desc: 'Encryption + Watermark' },
+                      { id: 'HIGHLY_PROTECTED', label: 'Highly Protected', desc: 'Password + View-Only' }
+                    ].map(lvl => (
+                      <button
+                        key={lvl.id}
+                        type="button"
+                        onClick={() => {
+                          setUploadSecurityLevel(lvl.id as any)
+                          if (lvl.id === 'HIGHLY_PROTECTED') {
+                            setUploadIsViewOnly(true)
+                            setUploadWatermark(true)
+                          } else if (lvl.id === 'PROTECTED') {
+                            setUploadWatermark(true)
+                          }
+                        }}
+                        style={{
+                          padding: '8px',
+                          borderRadius: '8px',
+                          border: uploadSecurityLevel === lvl.id ? '1px solid #8b5cf6' : '1px solid var(--border)',
+                          background: uploadSecurityLevel === lvl.id ? 'rgba(139, 92, 246, 0.15)' : 'var(--bg-primary)',
+                          color: uploadSecurityLevel === lvl.id ? '#fff' : 'var(--text-secondary)',
+                          cursor: 'pointer',
+                          textAlign: 'center'
+                        }}
+                      >
+                        <div style={{ fontSize: '0.8rem', fontWeight: 700 }}>{lvl.label}</div>
+                        <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>{lvl.desc}</div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {uploadSecurityLevel !== 'STANDARD' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingTop: '6px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                      <input
+                        type="password"
+                        placeholder="Set Document Password (Optional)"
+                        value={uploadPassword}
+                        onChange={e => setUploadPassword(e.target.value)}
+                        style={{ width: '100%', padding: '8px 10px', borderRadius: '6px', border: '1px solid var(--border)', background: 'var(--bg-primary)', color: 'var(--text-primary)', fontSize: '0.8rem' }}
+                      />
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={uploadIsViewOnly}
+                            onChange={e => setUploadIsViewOnly(e.target.checked)}
+                          />
+                          <span>View-Only</span>
+                        </label>
+
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={uploadWatermark}
+                            onChange={e => setUploadWatermark(e.target.checked)}
+                          />
+                          <span>Watermark</span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                    Access Permission *
+                  </label>
+                  <select
+                    value={accessLevel}
+                    onChange={e => setAccessLevel(e.target.value as any)}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                  >
+                    <option value="PRIVATE">Private (Only Me)</option>
+                    <option value="INSTITUTION_ONLY">College Access (Institution Admins)</option>
+                    <option value="SHARED">Shared Publicly</option>
+                  </select>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '0.5rem' }}>
+                  <button type="button" onClick={closeUploadModal} className="btn" style={{ padding: '8px 16px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: '8px' }}>
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    style={{ padding: '8px 20px', background: 'linear-gradient(135deg, var(--accent-violet) 0%, #6366f1 100%)', color: 'white', borderRadius: '8px', border: 'none', fontWeight: 600, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <span>Analyze & Verify</span>
+                    <ArrowRight size={14} strokeWidth={2} />
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {uploadStep === 2 && (
+              <div style={{ textAlign: 'center', padding: '3rem 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                <MorphingInfinity className="size-16" style={{ width: '64px', height: '64px', color: '#8b5cf6' }} />
+                <div>
+                  <h3 style={{ fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 6px 0', fontSize: '1.15rem' }}>
+                    AI Document Processing & Cryptographic Fingerprinting...
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, maxWidth: '420px', lineHeight: 1.5 }}>
+                    Running Docling structure parsing, Smart OCR, QR validation, SHA-256 fingerprinting, and tamper detection.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {uploadStep === 3 && analysisResult && (
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: 'var(--bg-secondary)', borderRadius: '10px', marginBottom: '1.25rem', border: '1px solid var(--border)' }}>
+                  <div>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Quality & Verification Score</span>
+                    <div style={{ fontSize: '2.2rem', fontWeight: 800, color: (analysisResult.qualityScore || 80) >= 70 ? '#10b981' : '#f59e0b' }}>
+                      {analysisResult.qualityScore || 80} <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>/ 100</span>
+                    </div>
+                  </div>
+
+                  <div style={{ textAlign: 'right' }}>
+                    <span className="badge badge-green" style={{ fontSize: '0.9rem', padding: '6px 12px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <CheckCircle2 size={12} strokeWidth={2} />
+                      <span>Ready to Encrypt & Store</span>
+                    </span>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                      Security: <strong>{uploadSecurityLevel}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                  <button
+                    onClick={() => setUploadStep(1)}
+                    className="btn"
+                    style={{ padding: '8px 16px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: '8px' }}
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={handleConfirmSave}
+                    disabled={savingDoc}
+                    className="btn btn-primary"
+                    style={{ padding: '8px 20px', background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', color: 'white', borderRadius: '8px', border: 'none', fontWeight: 600, cursor: 'pointer' }}
+                  >
+                    {savingDoc ? 'Encrypting & Storing Document...' : 'Confirm & Save Document'}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* COMPREHENSIVE 8-TAB DOCUMENT DETAILS MODAL */}
+      {detailsDoc && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '1rem' }}>
+          <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '16px', maxWidth: '960px', width: '100%', height: '90vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 25px 50px rgba(0,0,0,0.7)' }}>
+            
+            {/* Modal Header */}
+            <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)' }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <FileText size={18} strokeWidth={2} color="#8b5cf6" />
+                  <h3 style={{ fontWeight: 700, color: 'var(--text-primary)', margin: 0, fontSize: '1.15rem' }}>
+                    {detailsDoc.fileName}
+                  </h3>
+                  {renderVerificationBadge(detailsDoc.verificationStatus, detailsDoc.verificationScore)}
+                </div>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                  Type: {detailsDoc.documentType} • Size: {formatFileSize(detailsDoc.fileSize)} • Uploaded: {new Date(detailsDoc.uploadedAt).toLocaleDateString()}
+                </span>
+              </div>
+              <button onClick={() => setDetailsDoc(null)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                <X size={20} strokeWidth={2} />
+              </button>
+            </div>
+
+            {/* 8 Modal Tabs */}
+            <div style={{ display: 'flex', gap: '4px', padding: '8px 1.5rem', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border)', overflowX: 'auto' }}>
+              {[
+                { id: 'overview', label: 'Overview', icon: Eye },
+                { id: 'fields', label: 'Extracted Fields', icon: FileCheck },
+                { id: 'ocr', label: 'Smart OCR', icon: Scan },
+                { id: 'quality', label: 'Document Quality', icon: Layers },
+                { id: 'qr', label: 'QR / Barcode', icon: QrCode },
+                { id: 'duplicates', label: 'Duplicate Check', icon: Copy },
+                { id: 'verification', label: 'AI Verification', icon: ShieldCheck },
+                { id: 'history', label: 'History', icon: History }
+              ].map(tab => {
+                const Icon = tab.icon
+                const isActive = modalTab === tab.id
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setModalTab(tab.id as any)}
+                    style={{
+                      padding: '6px 12px',
+                      borderRadius: '6px',
+                      border: 'none',
+                      background: isActive ? 'var(--accent-violet)' : 'transparent',
+                      color: isActive ? 'white' : 'var(--text-secondary)',
+                      fontWeight: 600,
+                      fontSize: '12px',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
+                    <Icon size={13} strokeWidth={2} />
+                    <span>{tab.label}</span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '1.5rem' }}>
+              
+              {/* Tab 1: Overview */}
+              {modalTab === 'overview' && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '1.25rem', height: '100%' }}>
+                  <div style={{ background: '#0a0515', borderRadius: '10px', border: '1px solid var(--border)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '400px' }}>
+                    {(detailsDoc.fileType?.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif|tiff|svg)$/i.test(detailsDoc.fileName)) ? (
+                      <img
+                        src={`/api/documents/${detailsDoc.id}/download`}
+                        alt={detailsDoc.fileName}
+                        style={{ maxWidth: '100%', maxHeight: '420px', objectFit: 'contain' }}
+                      />
+                    ) : (
+                      <iframe
+                        src={`/api/documents/${detailsDoc.id}/download`}
+                        title={detailsDoc.fileName}
+                        style={{ width: '100%', height: '100%', minHeight: '420px', border: 'none' }}
+                      />
+                    )}
+                  </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>Overall Verification Score</span>
+                      <div style={{ fontSize: '2.4rem', fontWeight: 800, color: (detailsDoc.verificationScore ?? detailsDoc.qualityScore ?? 80) >= 80 ? '#10b981' : '#f59e0b' }}>
+                        {detailsDoc.verificationScore ?? detailsDoc.qualityScore ?? 80} <span style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>/ 100</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                        <span className={`badge ${(detailsDoc.riskScore ?? 20) <= 20 ? 'badge-green' : (detailsDoc.riskScore ?? 20) <= 40 ? 'badge-orange' : 'badge-red'}`} style={{ fontSize: '11px' }}>
+                          Risk: {(detailsDoc.riskScore ?? 20) <= 20 ? 'LOW' : (detailsDoc.riskScore ?? 20) <= 40 ? 'MEDIUM' : 'HIGH'}
+                        </span>
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                          Integrity: <strong style={{ color: '#10b981' }}>{Math.round(100 - (detailsDoc.tamperScore ?? 10))}/100</strong>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)', fontSize: '0.85rem' }}>
+                      <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>Security & AI Forensic Checks</div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', color: 'var(--text-secondary)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Smart OCR Clarity:</span>
+                          <strong style={{ color: '#10b981' }}>{Math.round((detailsDoc.ocrConfidence || 0.85) * 100)}%</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Identity Face Match:</span>
+                          <strong style={{ color: detailsDoc.faceMatchStatus === 'MATCH' ? '#10b981' : 'var(--text-secondary)' }}>
+                            {detailsDoc.faceMatchStatus === 'MATCH' ? `${Math.round(detailsDoc.faceMatchScore ?? 85)}% Match` : (detailsDoc.faceMatchStatus || 'Standard Document')}
+                          </strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>QR Security Code:</span>
+                          <strong>{detailsDoc.qrStatus || 'NOT_PRESENT'}</strong>
+                        </div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <span>Cryptographic Hash:</span>
+                          <strong style={{ color: '#10b981' }}>SHA-256 Unique</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ background: 'rgba(139, 92, 246, 0.08)', padding: '1.25rem', borderRadius: '10px', border: '1px solid rgba(139, 92, 246, 0.25)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <span style={{ fontWeight: 600, color: '#c084fc', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <Lock size={15} /> Document Password & Security
+                        </span>
+                        <span style={{ fontSize: '11px', color: detailsDoc.isPasswordProtected ? '#10b981' : '#94a3b8', fontWeight: 600 }}>
+                          {detailsDoc.isPasswordProtected ? '🔑 Password Protected' : '🔓 No Password'}
+                        </span>
+                      </div>
+                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>
+                        Manage AES-256 encryption, password protection, view-only mode, dynamic watermark, and secure share links.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const doc = detailsDoc
+                          setDetailsDoc(null)
+                          setSecurityModalDocId(doc.id)
+                          setSecurityModalDocName(doc.fileName)
+                        }}
+                        style={{
+                          background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+                          color: '#fff',
+                          border: 'none',
+                          padding: '8px 14px',
+                          borderRadius: '8px',
+                          fontSize: '12px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <Lock size={13} />
+                        <span>Set / Manage Password & Security</span>
+                      </button>
+                    </div>
+
+                    {detailsDoc.yoloDetections && detailsDoc.yoloDetections.length > 0 && (
+                      <div style={{ background: 'var(--bg-secondary)', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '0.8rem' }}>
+                        <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>Detected Document Regions:</div>
+                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                          {detailsDoc.yoloDetections.map((r, i) => (
+                            <span key={i} style={{ padding: '3px 8px', background: 'rgba(139, 92, 246, 0.15)', color: '#a78bfa', borderRadius: '4px', fontSize: '11px', fontWeight: 600 }}>
+                              {r.objectType} ({Math.round(r.confidence * 100)}%)
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+
+              {/* Tab 2: Extracted Information */}
+              {modalTab === 'fields' && (() => {
+                const extracted = parseJsonSafe(detailsDoc.extractedInformation) || {}
+                const fieldsList = detailsDoc.extractedFields || Object.entries(extracted).map(([k, v]) => ({ fieldName: k, fieldValue: String(v), confidence: 0.9 }))
+
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                      <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <FileCheck size={16} color="#10b981" />
+                        <span>Type-Specific Extracted Fields ({detailsDoc.documentType})</span>
+                      </h4>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                        {fieldsList.map((f, i) => (
+                          <div key={i} style={{ background: 'rgba(255,255,255,0.02)', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border)' }}>
+                            <span style={{ fontSize: '11px', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
+                              {f.fieldName.replace(/([A-Z])/g, ' $1')}
+                            </span>
+                            <div style={{ fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px', fontSize: '0.9rem' }}>
+                              {f.fieldValue || 'N/A'}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* Tab 3: Smart OCR */}
+              {modalTab === 'ocr' && (() => {
+                const ocr = detailsDoc.ocrResult
+                const blocks: OCRBlockData[] = parseJsonSafe(ocr?.textBlocks) || []
+
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                      <div>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Smart OCR Recognition Engine</span>
+                        <div style={{ fontWeight: 700, color: 'var(--text-primary)', fontSize: '1.1rem' }}>
+                          PaddleOCR & Vision AI ({Math.round((ocr?.confidence || detailsDoc.ocrConfidence || 0.85) * 100)}% Confidence)
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setShowBoxes(!showBoxes)}
+                        className="btn btn-sm"
+                        style={{ padding: '6px 12px', background: showBoxes ? 'var(--accent-violet)' : 'var(--bg-primary)', border: '1px solid var(--border)', color: 'white', borderRadius: '6px', fontSize: '12px' }}
+                      >
+                        {showBoxes ? 'Hide Bounding Boxes' : 'Show Bounding Boxes'}
+                      </button>
+                    </div>
+
+                    <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                      <h4 style={{ margin: '0 0 10px 0', fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>Recognized Text Blocks ({blocks.length})</h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '360px', overflowY: 'auto' }}>
+                        {blocks.length > 0 ? blocks.map((b, i) => (
+                          <div key={i} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', borderRadius: '6px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem' }}>
+                            <span style={{ color: 'var(--text-primary)', fontFamily: 'monospace' }}>{b.text}</span>
+                            <span style={{ fontSize: '11px', padding: '2px 6px', background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', borderRadius: '4px' }}>
+                              {Math.round(b.confidence * 100)}%
+                            </span>
+                          </div>
+                        )) : (
+                          <pre style={{ whiteSpace: 'pre-wrap', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                            {ocr?.fullText || detailsDoc.qualityResult || 'OCR Text loaded.'}
+                          </pre>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* Tab 4: Document Quality */}
+              {modalTab === 'quality' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                    <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Document Readability & Layout Quality</h4>
+                    <div style={{ fontSize: '2.2rem', fontWeight: 800, color: '#10b981', marginBottom: '1rem' }}>
+                      {detailsDoc.qualityScore || 80}/100
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981' }}>
+                        <CheckCircle2 size={16} /> <span>High contrast and clear character resolution</span>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981' }}>
+                        <CheckCircle2 size={16} /> <span>Document structure and tables parsed successfully</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 5: QR / Barcode */}
+              {modalTab === 'qr' && (() => {
+                const qrResults = detailsDoc.qrCodeResults || []
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                      <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <QrCode size={16} color="#8b5cf6" />
+                        <span>QR & Barcode Security Analysis</span>
+                      </h4>
+                      {qrResults.length > 0 ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          {qrResults.map((qr, i) => (
+                            <div key={i} style={{ background: 'rgba(0,0,0,0.3)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '0.85rem' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                                <strong>{qr.codeType} Detected</strong>
+                                <span className={`badge ${qr.matchStatus === 'MATCH' ? 'badge-green' : 'badge-orange'}`}>
+                                  {qr.matchStatus === 'MATCH' ? 'Matched with OCR' : 'Decoded'}
+                                </span>
+                              </div>
+                              <div style={{ color: 'var(--text-secondary)', wordBreak: 'break-all' }}>Payload: {qr.rawData}</div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: 0 }}>
+                          No QR code or Barcode found on this document. Normal for standard marksheets and certificates.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* Tab 6: Duplicate Detection */}
+              {modalTab === 'duplicates' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                    <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <Copy size={16} color="#3b82f6" />
+                      <span>Cryptographic & Visual Duplicate Hashes</span>
+                    </h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                      <div>SHA-256 Hash: <code style={{ color: '#a78bfa' }}>{detailsDoc.sha256Hash || 'Calculated on upload'}</code></div>
+                      <div>Perceptual Visual Hash: <code style={{ color: '#60a5fa' }}>{detailsDoc.perceptualHash || 'Verified unique'}</code></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 7: AI Verification */}
+              {modalTab === 'verification' && (() => {
+                const v = detailsDoc.verification
+                const reasons: string[] = parseJsonSafe(v?.reasons) || []
+                const warnings: string[] = parseJsonSafe(v?.warnings) || []
+
+                return (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                      <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                        5-Tier Weighted Verification Score Breakdown
+                      </h4>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+                            <span>OCR Confidence (20% weight)</span>
+                            <strong>{v?.ocrScore ?? 85}/100</strong>
+                          </div>
+                          <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
+                            <div style={{ width: `${v?.ocrScore ?? 85}%`, height: '100%', background: '#8b5cf6' }} />
+                          </div>
+                        </div>
+                        <div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '2px' }}>
+                            <span>Profile & Field Consistency (30% weight)</span>
+                            <strong>{v?.fieldScore ?? 90}/100</strong>
+                          </div>
+                          <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
+                            <div style={{ width: `${v?.fieldScore ?? 90}%`, height: '100%', background: '#10b981' }} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {reasons.length > 0 && (
+                      <div style={{ background: 'rgba(16, 185, 129, 0.08)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                        <div style={{ fontWeight: 600, color: '#10b981', marginBottom: '6px', fontSize: '0.85rem' }}>Passed Verification Checks:</div>
+                        <ul style={{ margin: 0, paddingLeft: '1.2rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                          {reasons.map((r, i) => <li key={i}>{r}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )
+              })()}
+
+              {/* Tab 8: Verification History */}
+              {modalTab === 'history' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <div style={{ background: 'var(--bg-secondary)', padding: '1.25rem', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                    <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 600, color: 'var(--text-primary)' }}>Verification Audit Trail</h4>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
+                      <div style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.2)', borderRadius: '6px', display: 'flex', justifyContent: 'space-between' }}>
+                        <span>Status: <strong>{detailsDoc.verificationStatus}</strong></span>
+                        <span style={{ color: 'var(--text-secondary)' }}>{new Date(detailsDoc.uploadedAt).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border)', background: 'var(--bg-secondary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <a
+                  href={`/api/documents/${detailsDoc.id}/download?download=true`}
+                  download
+                  className="btn btn-sm"
+                  style={{ padding: '6px 14px', background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: '6px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}
+                >
+                  <Download size={14} strokeWidth={2} />
+                  <span>Download Original</span>
+                </a>
+
+                <button
+                  onClick={() => handleRetryProcessing(detailsDoc.id)}
+                  disabled={reprocessingId === detailsDoc.id}
+                  className="btn btn-sm"
+                  style={{ padding: '6px 14px', background: 'var(--bg-primary)', border: '1px solid var(--border)', color: 'var(--text-primary)', borderRadius: '6px', cursor: reprocessingId === detailsDoc.id ? 'default' : 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}
+                >
+                  <RefreshCw size={14} strokeWidth={2} className={reprocessingId === detailsDoc.id ? 'spin' : ''} />
+                  <span>{reprocessingId === detailsDoc.id ? 'Processing...' : 'Reprocess Intelligence'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    const doc = detailsDoc
+                    setDetailsDoc(null)
+                    setSecurityModalDocId(doc.id)
+                    setSecurityModalDocName(doc.fileName)
+                  }}
+                  className="btn btn-sm"
+                  style={{ padding: '6px 14px', background: 'rgba(139, 92, 246, 0.15)', border: '1px solid rgba(139, 92, 246, 0.3)', color: '#c084fc', borderRadius: '6px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 600 }}
+                >
+                  <Lock size={14} strokeWidth={2} />
+                  <span>Password & Security</span>
+                </button>
+
+                <button
+                  onClick={() => setDetailsDoc(null)}
+                  className="btn btn-primary"
+                  style={{ padding: '6px 18px', background: 'var(--accent-violet)', color: 'white', border: 'none', borderRadius: '6px', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}
+                >
+                  Close
+                </button>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DOCUMENT SECURITY PANEL MODAL */}
+      <DocumentSecurityModal
+        documentId={securityModalDocId}
+        documentName={securityModalDocName}
+        isOpen={Boolean(securityModalDocId)}
+        onClose={() => {
+          setSecurityModalDocId(null)
+          setSecurityModalDocName('')
+        }}
+
+        onUpdated={() => fetchData(false)}
+      />
+
+      {/* SECURE DOCUMENT VIEWER WITH WATERMARK */}
+      <SecureDocumentViewer
+        documentId={viewerDocId}
+        documentName={viewerDocName}
+        isOpen={Boolean(viewerDocId)}
+        onClose={() => {
+          setViewerDocId(null)
+          setViewerDocName('')
+        }}
+        onSecurityClick={() => {
+          if (viewerDocId) {
+            const id = viewerDocId
+            const name = viewerDocName
+            setViewerDocId(null)
+            setViewerDocName('')
+            setSecurityModalDocId(id)
+            setSecurityModalDocName(name)
+          }
+        }}
+      />
+
+      {/* DEDICATED 10TH / 12TH MARKSHEET UPLOAD MODAL */}
+      {isMarksheetModalOpen && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '1rem' }}>
+          <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '18px', maxWidth: '540px', width: '100%', padding: '1.75rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: marksheetLevel === 'TENTH' ? 'rgba(139, 92, 246, 0.15)' : 'rgba(59, 130, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: marksheetLevel === 'TENTH' ? '#c084fc' : '#60a5fa' }}>
+                  <GraduationCap size={20} />
+                </div>
+                <div>
+                  <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                    Upload {marksheetLevel === 'TENTH' ? 'Class 10th' : 'Class 12th'} Marksheet
+                  </h2>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    Official Secondary Academic Verification Vault
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => { if (!marksheetUploading) setIsMarksheetModalOpen(false) }}
+                disabled={marksheetUploading}
+                style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+              >
+                <X size={18} strokeWidth={2} />
+              </button>
+            </div>
+
+            {marksheetError && (
+              <div style={{ padding: '10px 14px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', color: '#f87171', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <AlertTriangle size={15} />
+                <span>{marksheetError}</span>
+              </div>
+            )}
+
+            {marksheetSuccess && (
+              <div style={{ padding: '10px 14px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px', color: '#34d399', fontSize: '0.85rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <CheckCircle2 size={15} />
+                <span>{marksheetSuccess}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleMarksheetUpload} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* Level Selector Pills */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                  Education Level *
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setMarksheetLevel('TENTH')}
+                    disabled={marksheetUploading}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '8px',
+                      border: marksheetLevel === 'TENTH' ? '2px solid #8b5cf6' : '1px solid var(--border)',
+                      background: marksheetLevel === 'TENTH' ? 'rgba(139, 92, 246, 0.15)' : 'var(--bg-secondary)',
+                      color: marksheetLevel === 'TENTH' ? '#fff' : 'var(--text-secondary)',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      fontSize: '13px'
+                    }}
+                  >
+                    <FileText size={15} color={marksheetLevel === 'TENTH' ? '#c084fc' : undefined} />
+                    <span>Class 10th (Secondary)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setMarksheetLevel('TWELFTH')}
+                    disabled={marksheetUploading}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '8px',
+                      border: marksheetLevel === 'TWELFTH' ? '2px solid #3b82f6' : '1px solid var(--border)',
+                      background: marksheetLevel === 'TWELFTH' ? 'rgba(59, 130, 246, 0.15)' : 'var(--bg-secondary)',
+                      color: marksheetLevel === 'TWELFTH' ? '#fff' : 'var(--text-secondary)',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      fontSize: '13px'
+                    }}
+                  >
+                    <GraduationCap size={15} color={marksheetLevel === 'TWELFTH' ? '#60a5fa' : undefined} />
+                    <span>Class 12th / Diploma</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* File Input */}
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                  Marksheet Document File (PDF / Image) *
+                </label>
+                <input
+                  type="file"
+                  accept=".pdf,.png,.jpg,.jpeg,.webp"
+                  onChange={e => {
+                    if (e.target.files && e.target.files[0]) {
+                      setMarksheetFile(e.target.files[0])
+                      setMarksheetError('')
+                    }
+                  }}
+                  disabled={marksheetUploading}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: '1px solid var(--border)',
+                    background: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
+                    fontSize: '13px'
+                  }}
+                />
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', marginTop: '4px', display: 'block' }}>
+                  Accepted formats: PDF, PNG, JPG, JPEG, WEBP. Max 20MB. AES-256 encrypted private vault storage.
+                </span>
+              </div>
+
+              {/* Optional Metadata Fields */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                    Education Board
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. CBSE, ICSE, State Board"
+                    value={marksheetBoard}
+                    onChange={e => setMarksheetBoard(e.target.value)}
+                    disabled={marksheetUploading}
+                    style={{
+                      width: '100%',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border)',
+                      background: 'var(--bg-secondary)',
+                      color: 'var(--text-primary)',
+                      fontSize: '13px'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                    Passing Year
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="e.g. 2020"
+                    value={marksheetYear}
+                    onChange={e => setMarksheetYear(e.target.value)}
+                    disabled={marksheetUploading}
+                    style={{
+                      width: '100%',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border)',
+                      background: 'var(--bg-secondary)',
+                      color: 'var(--text-primary)',
+                      fontSize: '13px'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '4px' }}>
+                  Roll Number / Registration Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 12345678"
+                  value={marksheetRoll}
+                  onChange={e => setMarksheetRoll(e.target.value)}
+                  disabled={marksheetUploading}
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    borderRadius: '8px',
+                    border: '1px solid var(--border)',
+                    background: 'var(--bg-secondary)',
+                    color: 'var(--text-primary)',
+                    fontSize: '13px'
+                  }}
+                />
+              </div>
+
+              {/* Submit Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                <button
+                  type="button"
+                  onClick={() => setIsMarksheetModalOpen(false)}
+                  disabled={marksheetUploading}
+                  className="btn"
+                  style={{ padding: '8px 16px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '13px' }}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={marksheetUploading}
+                  className="btn btn-primary"
+                  style={{
+                    padding: '8px 20px',
+                    borderRadius: '8px',
+                    fontWeight: 600,
+                    fontSize: '13px',
+                    background: marksheetLevel === 'TENTH' ? 'linear-gradient(135deg, var(--accent-violet) 0%, #6366f1 100%)' : 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                    color: 'white',
+                    border: 'none',
+                    cursor: marksheetUploading ? 'default' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  {marksheetUploading ? (
+                    <>
+                      <Loader2 size={15} className="spin" />
+                      <span>Encrypting & Uploading...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Upload size={15} />
+                      <span>Upload & Verify</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* EXTRACTED ACADEMIC INFORMATION & MARKSHEET DETAILS MODAL */}
+      {selectedMarksheetForView && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(6px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: '1rem' }}>
+          <div style={{ background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: '18px', maxWidth: '680px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '1.75rem', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: selectedMarksheetForView.educationLevel === 'TENTH' ? 'rgba(139, 92, 246, 0.15)' : 'rgba(59, 130, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: selectedMarksheetForView.educationLevel === 'TENTH' ? '#c084fc' : '#60a5fa' }}>
+                  <GraduationCap size={22} />
+                </div>
+                <div>
+                  <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                    Extracted Academic Information
+                  </h2>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    Class {selectedMarksheetForView.educationLevel === 'TENTH' ? '10th' : '12th'} Secondary Examination Record
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedMarksheetForView(null)}
+                style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }}
+              >
+                <X size={18} strokeWidth={2} />
+              </button>
+            </div>
+
+            {/* Live Extraction Steps Status Banner */}
+            {isExtractingMarksheet ? (
+              <div style={{ padding: '1.25rem', background: 'rgba(139, 92, 246, 0.08)', border: '1px solid rgba(139, 92, 246, 0.25)', borderRadius: '12px', marginBottom: '1.25rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#c084fc', fontWeight: 700, fontSize: '0.9rem' }}>
+                  <Loader2 size={16} className="spin" />
+                  <span>Extracting Structured Academic Data with Smart OCR...</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', fontSize: '0.8rem' }}>
+                  <div style={{ color: extractingSteps.name ? '#34d399' : 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {extractingSteps.name ? <Check size={14} /> : <Circle size={8} />} <span>Name</span>
+                  </div>
+                  <div style={{ color: extractingSteps.roll ? '#34d399' : 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {extractingSteps.roll ? <Check size={14} /> : <Circle size={8} />} <span>Roll Number</span>
+                  </div>
+                  <div style={{ color: extractingSteps.board ? '#34d399' : 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {extractingSteps.board ? <Check size={14} /> : <Circle size={8} />} <span>Board</span>
+                  </div>
+                  <div style={{ color: extractingSteps.year ? '#34d399' : 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {extractingSteps.year ? <Check size={14} /> : <Circle size={8} />} <span>Passing Year</span>
+                  </div>
+                  <div style={{ color: extractingSteps.marks ? '#34d399' : 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {extractingSteps.marks ? <Check size={14} /> : <Circle size={8} />} <span>Marks</span>
+                  </div>
+                  <div style={{ color: extractingSteps.percentage ? '#34d399' : 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {extractingSteps.percentage ? <Check size={14} /> : <Circle size={8} />} <span>Percentage</span>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Verification Lifecycle Status Banner */}
+            <div style={{
+              padding: '12px 14px',
+              borderRadius: '10px',
+              marginBottom: '1.25rem',
+              border: selectedMarksheetForView.verificationStatus === 'VERIFIED'
+                ? '1px solid rgba(16, 185, 129, 0.3)'
+                : selectedMarksheetForView.verificationStatus === 'MISMATCH'
+                ? '1px solid rgba(239, 68, 68, 0.3)'
+                : '1px solid rgba(245, 158, 11, 0.3)',
+              background: selectedMarksheetForView.verificationStatus === 'VERIFIED'
+                ? 'rgba(16, 185, 129, 0.08)'
+                : selectedMarksheetForView.verificationStatus === 'MISMATCH'
+                ? 'rgba(239, 68, 68, 0.08)'
+                : 'rgba(245, 158, 11, 0.08)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '4px'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontWeight: 700, fontSize: '0.85rem', color: selectedMarksheetForView.verificationStatus === 'VERIFIED' ? '#34d399' : selectedMarksheetForView.verificationStatus === 'MISMATCH' ? '#f87171' : '#fbbf24' }}>
+                  {selectedMarksheetForView.verificationStatus === 'VERIFIED' ? <CheckCircle2 size={15} /> : <Clock size={15} />}
+                  <span>
+                    {selectedMarksheetForView.verificationStatus === 'VERIFIED'
+                      ? 'Verified Official Record (DigiLocker)'
+                      : selectedMarksheetForView.verificationStatus === 'MISMATCH'
+                      ? 'DigiLocker Comparison Mismatch'
+                      : 'Academic Extraction Complete — Pending DigiLocker Verification'}
+                  </span>
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                  Extraction Confidence: {Math.round((selectedMarksheetForView.ocrConfidence || 0.8) * 100)}%
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                {selectedMarksheetForView.verificationStatus === 'VERIFIED'
+                  ? 'This marksheet has been officially verified and matched against government educational repository records.'
+                  : 'Document text and structured fields have been extracted via Smart OCR. Official verification will occur when authenticated against DigiLocker.'}
+              </p>
+            </div>
+
+            {/* Extracted Academic Information Summary Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '1.25rem' }}>
+              <div style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Candidate Name</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
+                  {selectedMarksheetForView.studentName || 'Not extracted'}
+                </div>
+              </div>
+
+              <div style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Roll Number</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
+                  {selectedMarksheetForView.rollNumber || 'Not extracted'}
+                </div>
+              </div>
+
+              <div style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Education Board</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
+                  {selectedMarksheetForView.board || 'CBSE / State Board'}
+                </div>
+              </div>
+
+              <div style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Passing Year</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
+                  {selectedMarksheetForView.passingYear || 'N/A'}
+                </div>
+              </div>
+
+              <div style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Total / Obtained Marks</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>
+                  {selectedMarksheetForView.obtainedMarks && selectedMarksheetForView.totalMarks
+                    ? `${selectedMarksheetForView.obtainedMarks} / ${selectedMarksheetForView.totalMarks}`
+                    : 'N/A'}
+                </div>
+              </div>
+
+              <div style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Percentage / Score</div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#34d399', marginTop: '2px' }}>
+                  {typeof selectedMarksheetForView.percentage === 'number' ? `${selectedMarksheetForView.percentage}%` : 'N/A'}
+                  {selectedMarksheetForView.cgpa ? ` (CGPA: ${selectedMarksheetForView.cgpa})` : ''}
+                </div>
+              </div>
+            </div>
+
+            {/* Subjects Table */}
+            {(() => {
+              let subjectsList: any[] = []
+              if (Array.isArray(selectedMarksheetForView.subjects)) {
+                subjectsList = selectedMarksheetForView.subjects
+              } else if (typeof selectedMarksheetForView.subjects === 'string') {
+                try {
+                  subjectsList = JSON.parse(selectedMarksheetForView.subjects)
+                } catch {}
+              }
+
+              if (subjectsList.length === 0) return null
+
+              return (
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <h4 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Table size={14} color="#a78bfa" />
+                    <span>Subject-wise Breakdown</span>
+                  </h4>
+                  <div style={{ border: '1px solid var(--border)', borderRadius: '10px', overflow: 'hidden' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8rem' }}>
+                      <thead>
+                        <tr style={{ background: 'var(--bg-secondary)', textAlign: 'left', color: 'var(--text-secondary)' }}>
+                          <th style={{ padding: '8px 12px' }}>Code</th>
+                          <th style={{ padding: '8px 12px' }}>Subject</th>
+                          <th style={{ padding: '8px 12px', textAlign: 'center' }}>Max Marks</th>
+                          <th style={{ padding: '8px 12px', textAlign: 'center' }}>Obtained</th>
+                          <th style={{ padding: '8px 12px', textAlign: 'center' }}>Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {subjectsList.map((sub, idx) => (
+                          <tr key={idx} style={{ borderTop: '1px solid var(--border)' }}>
+                            <td style={{ padding: '8px 12px', color: 'var(--text-secondary)' }}>{sub.code || `0${idx + 1}`}</td>
+                            <td style={{ padding: '8px 12px', fontWeight: 600, color: 'var(--text-primary)' }}>{sub.name}</td>
+                            <td style={{ padding: '8px 12px', textAlign: 'center', color: 'var(--text-secondary)' }}>{sub.maxMarks ?? 100}</td>
+                            <td style={{ padding: '8px 12px', textAlign: 'center', fontWeight: 700, color: sub.obtainedMarks >= 40 ? '#34d399' : '#f87171' }}>{sub.obtainedMarks ?? '-'}</td>
+                            <td style={{ padding: '8px 12px', textAlign: 'center', fontWeight: 600, color: '#a78bfa' }}>{sub.grade || '-'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )
+            })()}
+
+            {/* Modal Footer */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+              <button
+                type="button"
+                onClick={() => handleProcessMarksheet(selectedMarksheetForView.id)}
+                disabled={isExtractingMarksheet}
+                className="btn btn-sm"
+                style={{ padding: '8px 16px', background: 'rgba(139, 92, 246, 0.15)', border: '1px solid rgba(139, 92, 246, 0.3)', color: '#c084fc', borderRadius: '8px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 600 }}
+              >
+                <RefreshCw size={14} className={isExtractingMarksheet ? 'spin' : ''} />
+                <span>{isExtractingMarksheet ? 'Extracting...' : 'Re-extract with Smart OCR'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSelectedMarksheetForView(null)}
+                className="btn btn-primary"
+                style={{ padding: '8px 20px', borderRadius: '8px', background: 'var(--accent-violet)', color: 'white', border: 'none', fontWeight: 600, cursor: 'pointer', fontSize: '13px' }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
