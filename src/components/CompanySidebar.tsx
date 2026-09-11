@@ -49,12 +49,10 @@ const COMPANY_NAV: { group: string; items: CompanyNavItem[] }[] = [
 export default function CompanySidebar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [logoDropdownOpen, setLogoDropdownOpen] = useState(false)
   const [showSecurityModal, setShowSecurityModal] = useState(false)
   const [userData, setUserData] = useState<any>(null)
   const pathname = usePathname()
   const { theme, toggleTheme } = useTheme()
-  const logoMenuRef = useRef<HTMLDivElement>(null)
   const userDropdownRef = useRef<HTMLDivElement>(null)
 
   const fetchUserData = async () => {
@@ -71,12 +69,9 @@ export default function CompanySidebar() {
     fetchUserData()
   }, [])
 
-  // Close dropdowns on outside click
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (logoMenuRef.current && !logoMenuRef.current.contains(e.target as Node)) {
-        setLogoDropdownOpen(false)
-      }
       if (userDropdownRef.current && !userDropdownRef.current.contains(e.target as Node)) {
         setDropdownOpen(false)
       }
@@ -100,7 +95,6 @@ export default function CompanySidebar() {
   // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false)
-    setLogoDropdownOpen(false)
     setDropdownOpen(false)
   }, [pathname])
 
@@ -116,67 +110,9 @@ export default function CompanySidebar() {
     <>
       <header className={`${styles.sidebar} ${styles.sidebarCompany}`} suppressHydrationWarning>
 
-        {/* Left Logo with Quick Dropdown */}
-        <div className={styles.sidebarTop} ref={logoMenuRef}>
-          <button
-            type="button"
-            className={styles.logoBtnWrapper}
-            onClick={() => setLogoDropdownOpen(!logoDropdownOpen)}
-            title="PlaceIQ Account & Security Menu"
-            aria-expanded={logoDropdownOpen}
-          >
-            <Logo variant="company" size="md" href={undefined} />
-            <ChevronDown
-              size={14}
-              strokeWidth={2}
-              className={styles.logoChevron}
-              style={{
-                transform: logoDropdownOpen ? 'rotate(180deg)' : 'rotate(0)'
-              }}
-            />
-          </button>
-
-          {logoDropdownOpen && (
-            <div className={styles.logoDropdown}>
-              <Link
-                href="/company/profile"
-                className={styles.dropdownItem}
-                onClick={() => setLogoDropdownOpen(false)}
-              >
-                <User size={15} strokeWidth={2} />
-                <span>Account</span>
-              </Link>
-              <button
-                type="button"
-                className={styles.dropdownItem}
-                onClick={() => {
-                  setLogoDropdownOpen(false)
-                  setShowSecurityModal(true)
-                }}
-              >
-                <ShieldCheck size={15} strokeWidth={2} color="#10b981" />
-                <span>Security Activity 🔐</span>
-              </button>
-              <Link
-                href="/company/profile"
-                className={styles.dropdownItem}
-                onClick={() => setLogoDropdownOpen(false)}
-              >
-                <Settings size={15} strokeWidth={2} />
-                <span>Settings</span>
-              </Link>
-              <div className={styles.dropdownDivider} />
-              <button
-                type="button"
-                onClick={handleLogout}
-                className={styles.dropdownItem}
-                style={{ color: '#f87171' }}
-              >
-                <LogOut size={15} strokeWidth={2} />
-                <span>Logout</span>
-              </button>
-            </div>
-          )}
+        {/* Left Brand Logo */}
+        <div className={styles.sidebarTop}>
+          <Logo variant="company" size="md" href="/company/dashboard" />
         </div>
 
         {/* Mobile Backdrop */}
@@ -268,6 +204,14 @@ export default function CompanySidebar() {
                 <ShieldCheck size={16} strokeWidth={2} color="#10b981" />
                 <span>Security Activity 🔐</span>
               </button>
+              <Link
+                href="/company/profile"
+                className={styles.dropdownItem}
+                onClick={() => setDropdownOpen(false)}
+              >
+                <Settings size={16} strokeWidth={2} />
+                <span>Settings</span>
+              </Link>
               <button type="button" suppressHydrationWarning onClick={toggleTheme} className={styles.dropdownItem}>
                 {theme === 'dark' ? <Sun size={16} strokeWidth={2} /> : <Moon size={16} strokeWidth={2} />}
                 <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
