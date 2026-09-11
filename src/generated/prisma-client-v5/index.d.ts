@@ -9281,10 +9281,8 @@ export namespace Prisma {
     twelfthMarks: number | null
     tenthPassingYear: number | null
     tenthDocumentId: number | null
-    tenthMarksheetDocumentId: number | null
     twelfthPassingYear: number | null
     twelfthDocumentId: number | null
-    twelfthMarksheetDocumentId: number | null
   }
 
   export type StudentSumAggregateOutputType = {
@@ -9296,10 +9294,8 @@ export namespace Prisma {
     twelfthMarks: number | null
     tenthPassingYear: number | null
     tenthDocumentId: number | null
-    tenthMarksheetDocumentId: number | null
     twelfthPassingYear: number | null
     twelfthDocumentId: number | null
-    twelfthMarksheetDocumentId: number | null
   }
 
   export type StudentMinAggregateOutputType = {
@@ -9318,19 +9314,13 @@ export namespace Prisma {
     tenthBoard: string | null
     tenthPassingYear: number | null
     tenthDocumentId: number | null
-    tenthMarksheetDocumentId: number | null
     tenthPercentageSource: string | null
-    tenthPercentageVerified: boolean | null
     twelfthBoard: string | null
     twelfthPassingYear: number | null
     twelfthDocumentId: number | null
-    twelfthMarksheetDocumentId: number | null
     twelfthPercentageSource: string | null
-    twelfthPercentageVerified: boolean | null
-    nameVerified: boolean | null
     academicVerificationStatus: string | null
     academicVerifiedAt: Date | null
-    academicVerificationCompletedAt: Date | null
     academicVerificationData: string | null
     isAcademicLocked: boolean | null
     githubUrl: string | null
@@ -9356,19 +9346,13 @@ export namespace Prisma {
     tenthBoard: string | null
     tenthPassingYear: number | null
     tenthDocumentId: number | null
-    tenthMarksheetDocumentId: number | null
     tenthPercentageSource: string | null
-    tenthPercentageVerified: boolean | null
     twelfthBoard: string | null
     twelfthPassingYear: number | null
     twelfthDocumentId: number | null
-    twelfthMarksheetDocumentId: number | null
     twelfthPercentageSource: string | null
-    twelfthPercentageVerified: boolean | null
-    nameVerified: boolean | null
     academicVerificationStatus: string | null
     academicVerifiedAt: Date | null
-    academicVerificationCompletedAt: Date | null
     academicVerificationData: string | null
     isAcademicLocked: boolean | null
     githubUrl: string | null
@@ -9394,19 +9378,13 @@ export namespace Prisma {
     tenthBoard: number
     tenthPassingYear: number
     tenthDocumentId: number
-    tenthMarksheetDocumentId: number
     tenthPercentageSource: number
-    tenthPercentageVerified: number
     twelfthBoard: number
     twelfthPassingYear: number
     twelfthDocumentId: number
-    twelfthMarksheetDocumentId: number
     twelfthPercentageSource: number
-    twelfthPercentageVerified: number
-    nameVerified: number
     academicVerificationStatus: number
     academicVerifiedAt: number
-    academicVerificationCompletedAt: number
     academicVerificationData: number
     isAcademicLocked: number
     githubUrl: number
@@ -9427,10 +9405,8 @@ export namespace Prisma {
     twelfthMarks?: true
     tenthPassingYear?: true
     tenthDocumentId?: true
-    tenthMarksheetDocumentId?: true
     twelfthPassingYear?: true
     twelfthDocumentId?: true
-    twelfthMarksheetDocumentId?: true
   }
 
   export type StudentSumAggregateInputType = {
@@ -9442,10 +9418,8 @@ export namespace Prisma {
     twelfthMarks?: true
     tenthPassingYear?: true
     tenthDocumentId?: true
-    tenthMarksheetDocumentId?: true
     twelfthPassingYear?: true
     twelfthDocumentId?: true
-    twelfthMarksheetDocumentId?: true
   }
 
   export type StudentMinAggregateInputType = {
@@ -9464,19 +9438,13 @@ export namespace Prisma {
     tenthBoard?: true
     tenthPassingYear?: true
     tenthDocumentId?: true
-    tenthMarksheetDocumentId?: true
     tenthPercentageSource?: true
-    tenthPercentageVerified?: true
     twelfthBoard?: true
     twelfthPassingYear?: true
     twelfthDocumentId?: true
-    twelfthMarksheetDocumentId?: true
     twelfthPercentageSource?: true
-    twelfthPercentageVerified?: true
-    nameVerified?: true
     academicVerificationStatus?: true
     academicVerifiedAt?: true
-    academicVerificationCompletedAt?: true
     academicVerificationData?: true
     isAcademicLocked?: true
     githubUrl?: true
@@ -9502,19 +9470,13 @@ export namespace Prisma {
     tenthBoard?: true
     tenthPassingYear?: true
     tenthDocumentId?: true
-    tenthMarksheetDocumentId?: true
     tenthPercentageSource?: true
-    tenthPercentageVerified?: true
     twelfthBoard?: true
     twelfthPassingYear?: true
     twelfthDocumentId?: true
-    twelfthMarksheetDocumentId?: true
     twelfthPercentageSource?: true
-    twelfthPercentageVerified?: true
-    nameVerified?: true
     academicVerificationStatus?: true
     academicVerifiedAt?: true
-    academicVerificationCompletedAt?: true
     academicVerificationData?: true
     isAcademicLocked?: true
     githubUrl?: true
@@ -9540,19 +9502,13 @@ export namespace Prisma {
     tenthBoard?: true
     tenthPassingYear?: true
     tenthDocumentId?: true
-    tenthMarksheetDocumentId?: true
     tenthPercentageSource?: true
-    tenthPercentageVerified?: true
     twelfthBoard?: true
     twelfthPassingYear?: true
     twelfthDocumentId?: true
-    twelfthMarksheetDocumentId?: true
     twelfthPercentageSource?: true
-    twelfthPercentageVerified?: true
-    nameVerified?: true
     academicVerificationStatus?: true
     academicVerifiedAt?: true
-    academicVerificationCompletedAt?: true
     academicVerificationData?: true
     isAcademicLocked?: true
     githubUrl?: true
@@ -9665,19 +9621,13 @@ export namespace Prisma {
     tenthBoard: string | null
     tenthPassingYear: number | null
     tenthDocumentId: number | null
-    tenthMarksheetDocumentId: number | null
     tenthPercentageSource: string | null
-    tenthPercentageVerified: boolean | null
     twelfthBoard: string | null
     twelfthPassingYear: number | null
     twelfthDocumentId: number | null
-    twelfthMarksheetDocumentId: number | null
     twelfthPercentageSource: string | null
-    twelfthPercentageVerified: boolean | null
-    nameVerified: boolean | null
     academicVerificationStatus: string | null
     academicVerifiedAt: Date | null
-    academicVerificationCompletedAt: Date | null
     academicVerificationData: string | null
     isAcademicLocked: boolean | null
     githubUrl: string | null
@@ -9722,19 +9672,13 @@ export namespace Prisma {
     tenthBoard?: boolean
     tenthPassingYear?: boolean
     tenthDocumentId?: boolean
-    tenthMarksheetDocumentId?: boolean
     tenthPercentageSource?: boolean
-    tenthPercentageVerified?: boolean
     twelfthBoard?: boolean
     twelfthPassingYear?: boolean
     twelfthDocumentId?: boolean
-    twelfthMarksheetDocumentId?: boolean
     twelfthPercentageSource?: boolean
-    twelfthPercentageVerified?: boolean
-    nameVerified?: boolean
     academicVerificationStatus?: boolean
     academicVerifiedAt?: boolean
-    academicVerificationCompletedAt?: boolean
     academicVerificationData?: boolean
     isAcademicLocked?: boolean
     githubUrl?: boolean
@@ -9792,19 +9736,13 @@ export namespace Prisma {
     tenthBoard?: boolean
     tenthPassingYear?: boolean
     tenthDocumentId?: boolean
-    tenthMarksheetDocumentId?: boolean
     tenthPercentageSource?: boolean
-    tenthPercentageVerified?: boolean
     twelfthBoard?: boolean
     twelfthPassingYear?: boolean
     twelfthDocumentId?: boolean
-    twelfthMarksheetDocumentId?: boolean
     twelfthPercentageSource?: boolean
-    twelfthPercentageVerified?: boolean
-    nameVerified?: boolean
     academicVerificationStatus?: boolean
     academicVerifiedAt?: boolean
-    academicVerificationCompletedAt?: boolean
     academicVerificationData?: boolean
     isAcademicLocked?: boolean
     githubUrl?: boolean
@@ -9831,19 +9769,13 @@ export namespace Prisma {
     tenthBoard?: boolean
     tenthPassingYear?: boolean
     tenthDocumentId?: boolean
-    tenthMarksheetDocumentId?: boolean
     tenthPercentageSource?: boolean
-    tenthPercentageVerified?: boolean
     twelfthBoard?: boolean
     twelfthPassingYear?: boolean
     twelfthDocumentId?: boolean
-    twelfthMarksheetDocumentId?: boolean
     twelfthPercentageSource?: boolean
-    twelfthPercentageVerified?: boolean
-    nameVerified?: boolean
     academicVerificationStatus?: boolean
     academicVerifiedAt?: boolean
-    academicVerificationCompletedAt?: boolean
     academicVerificationData?: boolean
     isAcademicLocked?: boolean
     githubUrl?: boolean
@@ -9942,19 +9874,13 @@ export namespace Prisma {
       tenthBoard: string | null
       tenthPassingYear: number | null
       tenthDocumentId: number | null
-      tenthMarksheetDocumentId: number | null
       tenthPercentageSource: string | null
-      tenthPercentageVerified: boolean | null
       twelfthBoard: string | null
       twelfthPassingYear: number | null
       twelfthDocumentId: number | null
-      twelfthMarksheetDocumentId: number | null
       twelfthPercentageSource: string | null
-      twelfthPercentageVerified: boolean | null
-      nameVerified: boolean | null
       academicVerificationStatus: string | null
       academicVerifiedAt: Date | null
-      academicVerificationCompletedAt: Date | null
       academicVerificationData: string | null
       isAcademicLocked: boolean | null
       githubUrl: string | null
@@ -10401,19 +10327,13 @@ export namespace Prisma {
     readonly tenthBoard: FieldRef<"Student", 'String'>
     readonly tenthPassingYear: FieldRef<"Student", 'Int'>
     readonly tenthDocumentId: FieldRef<"Student", 'Int'>
-    readonly tenthMarksheetDocumentId: FieldRef<"Student", 'Int'>
     readonly tenthPercentageSource: FieldRef<"Student", 'String'>
-    readonly tenthPercentageVerified: FieldRef<"Student", 'Boolean'>
     readonly twelfthBoard: FieldRef<"Student", 'String'>
     readonly twelfthPassingYear: FieldRef<"Student", 'Int'>
     readonly twelfthDocumentId: FieldRef<"Student", 'Int'>
-    readonly twelfthMarksheetDocumentId: FieldRef<"Student", 'Int'>
     readonly twelfthPercentageSource: FieldRef<"Student", 'String'>
-    readonly twelfthPercentageVerified: FieldRef<"Student", 'Boolean'>
-    readonly nameVerified: FieldRef<"Student", 'Boolean'>
     readonly academicVerificationStatus: FieldRef<"Student", 'String'>
     readonly academicVerifiedAt: FieldRef<"Student", 'DateTime'>
-    readonly academicVerificationCompletedAt: FieldRef<"Student", 'DateTime'>
     readonly academicVerificationData: FieldRef<"Student", 'String'>
     readonly isAcademicLocked: FieldRef<"Student", 'Boolean'>
     readonly githubUrl: FieldRef<"Student", 'String'>
@@ -96958,19 +96878,13 @@ export namespace Prisma {
     tenthBoard: 'tenthBoard',
     tenthPassingYear: 'tenthPassingYear',
     tenthDocumentId: 'tenthDocumentId',
-    tenthMarksheetDocumentId: 'tenthMarksheetDocumentId',
     tenthPercentageSource: 'tenthPercentageSource',
-    tenthPercentageVerified: 'tenthPercentageVerified',
     twelfthBoard: 'twelfthBoard',
     twelfthPassingYear: 'twelfthPassingYear',
     twelfthDocumentId: 'twelfthDocumentId',
-    twelfthMarksheetDocumentId: 'twelfthMarksheetDocumentId',
     twelfthPercentageSource: 'twelfthPercentageSource',
-    twelfthPercentageVerified: 'twelfthPercentageVerified',
-    nameVerified: 'nameVerified',
     academicVerificationStatus: 'academicVerificationStatus',
     academicVerifiedAt: 'academicVerifiedAt',
-    academicVerificationCompletedAt: 'academicVerificationCompletedAt',
     academicVerificationData: 'academicVerificationData',
     isAcademicLocked: 'isAcademicLocked',
     githubUrl: 'githubUrl',
@@ -98388,13 +98302,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -98405,6 +98312,13 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
   /**
    * Deep Input Types
@@ -98430,19 +98344,13 @@ export namespace Prisma {
     tenthBoard?: StringNullableFilter<"Student"> | string | null
     tenthPassingYear?: IntNullableFilter<"Student"> | number | null
     tenthDocumentId?: IntNullableFilter<"Student"> | number | null
-    tenthMarksheetDocumentId?: IntNullableFilter<"Student"> | number | null
     tenthPercentageSource?: StringNullableFilter<"Student"> | string | null
-    tenthPercentageVerified?: BoolNullableFilter<"Student"> | boolean | null
     twelfthBoard?: StringNullableFilter<"Student"> | string | null
     twelfthPassingYear?: IntNullableFilter<"Student"> | number | null
     twelfthDocumentId?: IntNullableFilter<"Student"> | number | null
-    twelfthMarksheetDocumentId?: IntNullableFilter<"Student"> | number | null
     twelfthPercentageSource?: StringNullableFilter<"Student"> | string | null
-    twelfthPercentageVerified?: BoolNullableFilter<"Student"> | boolean | null
-    nameVerified?: BoolNullableFilter<"Student"> | boolean | null
     academicVerificationStatus?: StringNullableFilter<"Student"> | string | null
     academicVerifiedAt?: DateTimeNullableFilter<"Student"> | Date | string | null
-    academicVerificationCompletedAt?: DateTimeNullableFilter<"Student"> | Date | string | null
     academicVerificationData?: StringNullableFilter<"Student"> | string | null
     isAcademicLocked?: BoolNullableFilter<"Student"> | boolean | null
     githubUrl?: StringNullableFilter<"Student"> | string | null
@@ -98499,19 +98407,13 @@ export namespace Prisma {
     tenthBoard?: SortOrderInput | SortOrder
     tenthPassingYear?: SortOrderInput | SortOrder
     tenthDocumentId?: SortOrderInput | SortOrder
-    tenthMarksheetDocumentId?: SortOrderInput | SortOrder
     tenthPercentageSource?: SortOrderInput | SortOrder
-    tenthPercentageVerified?: SortOrderInput | SortOrder
     twelfthBoard?: SortOrderInput | SortOrder
     twelfthPassingYear?: SortOrderInput | SortOrder
     twelfthDocumentId?: SortOrderInput | SortOrder
-    twelfthMarksheetDocumentId?: SortOrderInput | SortOrder
     twelfthPercentageSource?: SortOrderInput | SortOrder
-    twelfthPercentageVerified?: SortOrderInput | SortOrder
-    nameVerified?: SortOrderInput | SortOrder
     academicVerificationStatus?: SortOrderInput | SortOrder
     academicVerifiedAt?: SortOrderInput | SortOrder
-    academicVerificationCompletedAt?: SortOrderInput | SortOrder
     academicVerificationData?: SortOrderInput | SortOrder
     isAcademicLocked?: SortOrderInput | SortOrder
     githubUrl?: SortOrderInput | SortOrder
@@ -98571,19 +98473,13 @@ export namespace Prisma {
     tenthBoard?: StringNullableFilter<"Student"> | string | null
     tenthPassingYear?: IntNullableFilter<"Student"> | number | null
     tenthDocumentId?: IntNullableFilter<"Student"> | number | null
-    tenthMarksheetDocumentId?: IntNullableFilter<"Student"> | number | null
     tenthPercentageSource?: StringNullableFilter<"Student"> | string | null
-    tenthPercentageVerified?: BoolNullableFilter<"Student"> | boolean | null
     twelfthBoard?: StringNullableFilter<"Student"> | string | null
     twelfthPassingYear?: IntNullableFilter<"Student"> | number | null
     twelfthDocumentId?: IntNullableFilter<"Student"> | number | null
-    twelfthMarksheetDocumentId?: IntNullableFilter<"Student"> | number | null
     twelfthPercentageSource?: StringNullableFilter<"Student"> | string | null
-    twelfthPercentageVerified?: BoolNullableFilter<"Student"> | boolean | null
-    nameVerified?: BoolNullableFilter<"Student"> | boolean | null
     academicVerificationStatus?: StringNullableFilter<"Student"> | string | null
     academicVerifiedAt?: DateTimeNullableFilter<"Student"> | Date | string | null
-    academicVerificationCompletedAt?: DateTimeNullableFilter<"Student"> | Date | string | null
     academicVerificationData?: StringNullableFilter<"Student"> | string | null
     isAcademicLocked?: BoolNullableFilter<"Student"> | boolean | null
     githubUrl?: StringNullableFilter<"Student"> | string | null
@@ -98640,19 +98536,13 @@ export namespace Prisma {
     tenthBoard?: SortOrderInput | SortOrder
     tenthPassingYear?: SortOrderInput | SortOrder
     tenthDocumentId?: SortOrderInput | SortOrder
-    tenthMarksheetDocumentId?: SortOrderInput | SortOrder
     tenthPercentageSource?: SortOrderInput | SortOrder
-    tenthPercentageVerified?: SortOrderInput | SortOrder
     twelfthBoard?: SortOrderInput | SortOrder
     twelfthPassingYear?: SortOrderInput | SortOrder
     twelfthDocumentId?: SortOrderInput | SortOrder
-    twelfthMarksheetDocumentId?: SortOrderInput | SortOrder
     twelfthPercentageSource?: SortOrderInput | SortOrder
-    twelfthPercentageVerified?: SortOrderInput | SortOrder
-    nameVerified?: SortOrderInput | SortOrder
     academicVerificationStatus?: SortOrderInput | SortOrder
     academicVerifiedAt?: SortOrderInput | SortOrder
-    academicVerificationCompletedAt?: SortOrderInput | SortOrder
     academicVerificationData?: SortOrderInput | SortOrder
     isAcademicLocked?: SortOrderInput | SortOrder
     githubUrl?: SortOrderInput | SortOrder
@@ -98686,19 +98576,13 @@ export namespace Prisma {
     tenthBoard?: StringNullableWithAggregatesFilter<"Student"> | string | null
     tenthPassingYear?: IntNullableWithAggregatesFilter<"Student"> | number | null
     tenthDocumentId?: IntNullableWithAggregatesFilter<"Student"> | number | null
-    tenthMarksheetDocumentId?: IntNullableWithAggregatesFilter<"Student"> | number | null
     tenthPercentageSource?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    tenthPercentageVerified?: BoolNullableWithAggregatesFilter<"Student"> | boolean | null
     twelfthBoard?: StringNullableWithAggregatesFilter<"Student"> | string | null
     twelfthPassingYear?: IntNullableWithAggregatesFilter<"Student"> | number | null
     twelfthDocumentId?: IntNullableWithAggregatesFilter<"Student"> | number | null
-    twelfthMarksheetDocumentId?: IntNullableWithAggregatesFilter<"Student"> | number | null
     twelfthPercentageSource?: StringNullableWithAggregatesFilter<"Student"> | string | null
-    twelfthPercentageVerified?: BoolNullableWithAggregatesFilter<"Student"> | boolean | null
-    nameVerified?: BoolNullableWithAggregatesFilter<"Student"> | boolean | null
     academicVerificationStatus?: StringNullableWithAggregatesFilter<"Student"> | string | null
     academicVerifiedAt?: DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
-    academicVerificationCompletedAt?: DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
     academicVerificationData?: StringNullableWithAggregatesFilter<"Student"> | string | null
     isAcademicLocked?: BoolNullableWithAggregatesFilter<"Student"> | boolean | null
     githubUrl?: StringNullableWithAggregatesFilter<"Student"> | string | null
@@ -106040,19 +105924,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -106109,19 +105987,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -106175,19 +106047,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -106244,19 +106110,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -106312,19 +106172,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -106348,19 +106202,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -106386,19 +106234,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -114219,11 +114061,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type BoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -114233,6 +114070,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -114557,19 +114399,13 @@ export namespace Prisma {
     tenthBoard?: SortOrder
     tenthPassingYear?: SortOrder
     tenthDocumentId?: SortOrder
-    tenthMarksheetDocumentId?: SortOrder
     tenthPercentageSource?: SortOrder
-    tenthPercentageVerified?: SortOrder
     twelfthBoard?: SortOrder
     twelfthPassingYear?: SortOrder
     twelfthDocumentId?: SortOrder
-    twelfthMarksheetDocumentId?: SortOrder
     twelfthPercentageSource?: SortOrder
-    twelfthPercentageVerified?: SortOrder
-    nameVerified?: SortOrder
     academicVerificationStatus?: SortOrder
     academicVerifiedAt?: SortOrder
-    academicVerificationCompletedAt?: SortOrder
     academicVerificationData?: SortOrder
     isAcademicLocked?: SortOrder
     githubUrl?: SortOrder
@@ -114588,10 +114424,8 @@ export namespace Prisma {
     twelfthMarks?: SortOrder
     tenthPassingYear?: SortOrder
     tenthDocumentId?: SortOrder
-    tenthMarksheetDocumentId?: SortOrder
     twelfthPassingYear?: SortOrder
     twelfthDocumentId?: SortOrder
-    twelfthMarksheetDocumentId?: SortOrder
   }
 
   export type StudentMaxOrderByAggregateInput = {
@@ -114610,19 +114444,13 @@ export namespace Prisma {
     tenthBoard?: SortOrder
     tenthPassingYear?: SortOrder
     tenthDocumentId?: SortOrder
-    tenthMarksheetDocumentId?: SortOrder
     tenthPercentageSource?: SortOrder
-    tenthPercentageVerified?: SortOrder
     twelfthBoard?: SortOrder
     twelfthPassingYear?: SortOrder
     twelfthDocumentId?: SortOrder
-    twelfthMarksheetDocumentId?: SortOrder
     twelfthPercentageSource?: SortOrder
-    twelfthPercentageVerified?: SortOrder
-    nameVerified?: SortOrder
     academicVerificationStatus?: SortOrder
     academicVerifiedAt?: SortOrder
-    academicVerificationCompletedAt?: SortOrder
     academicVerificationData?: SortOrder
     isAcademicLocked?: SortOrder
     githubUrl?: SortOrder
@@ -114648,19 +114476,13 @@ export namespace Prisma {
     tenthBoard?: SortOrder
     tenthPassingYear?: SortOrder
     tenthDocumentId?: SortOrder
-    tenthMarksheetDocumentId?: SortOrder
     tenthPercentageSource?: SortOrder
-    tenthPercentageVerified?: SortOrder
     twelfthBoard?: SortOrder
     twelfthPassingYear?: SortOrder
     twelfthDocumentId?: SortOrder
-    twelfthMarksheetDocumentId?: SortOrder
     twelfthPercentageSource?: SortOrder
-    twelfthPercentageVerified?: SortOrder
-    nameVerified?: SortOrder
     academicVerificationStatus?: SortOrder
     academicVerifiedAt?: SortOrder
-    academicVerificationCompletedAt?: SortOrder
     academicVerificationData?: SortOrder
     isAcademicLocked?: SortOrder
     githubUrl?: SortOrder
@@ -114679,10 +114501,8 @@ export namespace Prisma {
     twelfthMarks?: SortOrder
     tenthPassingYear?: SortOrder
     tenthDocumentId?: SortOrder
-    tenthMarksheetDocumentId?: SortOrder
     twelfthPassingYear?: SortOrder
     twelfthDocumentId?: SortOrder
-    twelfthMarksheetDocumentId?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -114769,14 +114589,6 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -114789,6 +114601,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -120413,12 +120233,12 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
-  }
-
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -127670,11 +127490,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedBoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -127684,6 +127499,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -127790,14 +127610,6 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -127810,6 +127622,14 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
@@ -130570,19 +130390,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -130638,19 +130452,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -130719,19 +130527,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -130787,19 +130589,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -130991,19 +130787,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -131059,19 +130849,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -131170,19 +130954,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131238,19 +131016,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131339,19 +131111,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -131407,19 +131173,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -131488,19 +131248,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131556,19 +131310,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131621,19 +131369,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -131689,19 +131431,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -131770,19 +131506,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131838,19 +131568,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -131949,19 +131673,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -132017,19 +131735,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -132150,19 +131862,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -132218,19 +131924,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -132577,19 +132277,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -132644,19 +132338,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -133403,19 +133091,13 @@ export namespace Prisma {
     tenthBoard?: StringNullableFilter<"Student"> | string | null
     tenthPassingYear?: IntNullableFilter<"Student"> | number | null
     tenthDocumentId?: IntNullableFilter<"Student"> | number | null
-    tenthMarksheetDocumentId?: IntNullableFilter<"Student"> | number | null
     tenthPercentageSource?: StringNullableFilter<"Student"> | string | null
-    tenthPercentageVerified?: BoolNullableFilter<"Student"> | boolean | null
     twelfthBoard?: StringNullableFilter<"Student"> | string | null
     twelfthPassingYear?: IntNullableFilter<"Student"> | number | null
     twelfthDocumentId?: IntNullableFilter<"Student"> | number | null
-    twelfthMarksheetDocumentId?: IntNullableFilter<"Student"> | number | null
     twelfthPercentageSource?: StringNullableFilter<"Student"> | string | null
-    twelfthPercentageVerified?: BoolNullableFilter<"Student"> | boolean | null
-    nameVerified?: BoolNullableFilter<"Student"> | boolean | null
     academicVerificationStatus?: StringNullableFilter<"Student"> | string | null
     academicVerifiedAt?: DateTimeNullableFilter<"Student"> | Date | string | null
-    academicVerificationCompletedAt?: DateTimeNullableFilter<"Student"> | Date | string | null
     academicVerificationData?: StringNullableFilter<"Student"> | string | null
     isAcademicLocked?: BoolNullableFilter<"Student"> | boolean | null
     githubUrl?: StringNullableFilter<"Student"> | string | null
@@ -135444,19 +135126,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -135512,19 +135188,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -135687,19 +135357,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -135755,19 +135419,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -136621,19 +136279,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -136689,19 +136341,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -136814,19 +136460,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -136882,19 +136522,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -137236,19 +136870,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -137304,19 +136932,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -137429,19 +137051,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -137497,19 +137113,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -137562,19 +137172,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -137630,19 +137234,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -137765,19 +137363,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -137833,19 +137425,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -138409,19 +137995,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -138477,19 +138057,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -138614,19 +138188,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -138682,19 +138250,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -138775,19 +138337,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -138843,19 +138399,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -139915,19 +139465,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -139983,19 +139527,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -140961,19 +140499,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -141029,19 +140561,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -141320,19 +140846,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -141388,19 +140908,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -144513,19 +144027,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -144581,19 +144089,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -144818,19 +144320,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -144886,19 +144382,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -149057,19 +148547,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -149125,19 +148609,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -149409,19 +148887,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -149477,19 +148949,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -150536,19 +150002,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -150604,19 +150064,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -150759,19 +150213,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -150827,19 +150275,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -151889,19 +151331,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -151957,19 +151393,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -152113,19 +151543,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -152181,19 +151605,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -152994,19 +152412,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -153062,19 +152474,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -153354,19 +152760,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -153422,19 +152822,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -153577,19 +152971,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -153645,19 +153033,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -153812,19 +153194,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -153880,19 +153256,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154063,19 +153433,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -154131,19 +153495,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -154342,19 +153700,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154410,19 +153762,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -154593,19 +153939,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -154661,19 +154001,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -155060,19 +154394,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -155128,19 +154456,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -155771,19 +155093,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -155839,19 +155155,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -156153,19 +155463,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -156221,19 +155525,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -156559,19 +155857,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -156627,19 +155919,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -156794,19 +156080,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -156862,19 +156142,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157019,19 +156293,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -157087,19 +156355,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -157254,19 +156516,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157322,19 +156578,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157565,19 +156815,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -157633,19 +156877,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -157747,19 +156985,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157815,19 +157047,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -157926,19 +157152,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -157994,19 +157214,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -158111,19 +157325,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158179,19 +157387,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158244,19 +157446,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -158312,19 +157508,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -158393,19 +157583,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158461,19 +157645,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158526,19 +157704,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -158594,19 +157766,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -158675,19 +157841,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158743,19 +157903,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -158808,19 +157962,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -158876,19 +158024,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -159107,19 +158249,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -159175,19 +158311,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -159396,19 +158526,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -159464,19 +158588,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -159545,19 +158663,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -159613,19 +158725,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -159678,19 +158784,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -159746,19 +158846,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -159827,19 +158921,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -159895,19 +158983,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -161862,19 +160944,13 @@ export namespace Prisma {
     tenthBoard?: string | null
     tenthPassingYear?: number | null
     tenthDocumentId?: number | null
-    tenthMarksheetDocumentId?: number | null
     tenthPercentageSource?: string | null
-    tenthPercentageVerified?: boolean | null
     twelfthBoard?: string | null
     twelfthPassingYear?: number | null
     twelfthDocumentId?: number | null
-    twelfthMarksheetDocumentId?: number | null
     twelfthPercentageSource?: string | null
-    twelfthPercentageVerified?: boolean | null
-    nameVerified?: boolean | null
     academicVerificationStatus?: string | null
     academicVerifiedAt?: Date | string | null
-    academicVerificationCompletedAt?: Date | string | null
     academicVerificationData?: string | null
     isAcademicLocked?: boolean | null
     githubUrl?: string | null
@@ -162361,19 +161437,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -162428,19 +161498,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -162495,19 +161559,13 @@ export namespace Prisma {
     tenthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     tenthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     tenthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    tenthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     tenthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    tenthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     twelfthBoard?: NullableStringFieldUpdateOperationsInput | string | null
     twelfthPassingYear?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
-    twelfthMarksheetDocumentId?: NullableIntFieldUpdateOperationsInput | number | null
     twelfthPercentageSource?: NullableStringFieldUpdateOperationsInput | string | null
-    twelfthPercentageVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    nameVerified?: NullableBoolFieldUpdateOperationsInput | boolean | null
     academicVerificationStatus?: NullableStringFieldUpdateOperationsInput | string | null
     academicVerifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    academicVerificationCompletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     academicVerificationData?: NullableStringFieldUpdateOperationsInput | string | null
     isAcademicLocked?: NullableBoolFieldUpdateOperationsInput | boolean | null
     githubUrl?: NullableStringFieldUpdateOperationsInput | string | null

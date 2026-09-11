@@ -1736,7 +1736,9 @@ model AcademicMarksheet {
   board              String?
   studentName        String? @map("student_name")
   rollNumber         String? @map("roll_number")
+  seatNumber         String? @map("seat_number")
   registrationNumber String? @map("registration_number")
+  certificateNumber  String? @map("certificate_number")
   passingYear        Int?    @map("passing_year")
   totalMarks         Float?  @map("total_marks")
   obtainedMarks      Float?  @map("obtained_marks")
@@ -1754,6 +1756,7 @@ model AcademicMarksheet {
   // Field-level comparison indicators
   nameMatch       Boolean? @map("name_match")
   rollNumberMatch Boolean? @map("roll_number_match")
+  seatNumberMatch Boolean? @map("seat_number_match")
   boardMatch      Boolean? @map("board_match")
   yearMatch       Boolean? @map("year_match")
   marksMatch      Boolean? @map("marks_match")
