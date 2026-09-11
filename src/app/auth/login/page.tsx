@@ -108,7 +108,7 @@ function LoginContent() {
       const data = await res.json()
 
       if (!res.ok) {
-        setErrorMessage(data.error || 'Invalid email/username or password.')
+        setErrorMessage(data.details ? `${data.error} — ${data.details}` : (data.error || 'Invalid email/username or password.'))
         setPending(false)
         return
       }

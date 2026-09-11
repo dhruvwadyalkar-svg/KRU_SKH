@@ -383,6 +383,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: (error as any).errors[0]?.message || 'Validation error' }, { status: 400 })
     }
     console.error('Login error:', error)
-    return NextResponse.json({ error: 'Authentication service error. Please try again.' }, { status: 500 })
+    return NextResponse.json(
+      {
+        error: 'Authentication service error. Please try again.',
+        details: error?.message || String(error)
+      },
+      { status: 500 }
+    )
   }
 }
