@@ -9,6 +9,7 @@ export interface CircularGalleryItem {
   tag?: string
   badge?: string
   gradient?: string
+  iconColor?: string
 }
 
 interface CircularGalleryProps {
@@ -24,20 +25,20 @@ interface CircularGalleryProps {
 }
 
 const DEFAULT_ITEMS: CircularGalleryItem[] = [
-  { icon: '📄', title: 'Resume Upload & ATS Score', desc: 'Upload PDF resumes. Get ATS compatibility score like real companies run it.', tag: 'Core', badge: 'badge-purple', gradient: 'linear-gradient(135deg,#EAB308,#FDE047)' },
-  { icon: '🧠', title: 'Semantic Skill Extraction', desc: 'AI reads between the lines and extracts hard + soft skills intelligently.', tag: 'AI', badge: 'badge-blue', gradient: 'linear-gradient(135deg,#96c8ff,#60a5fa)' },
-  { icon: '🎯', title: 'Company Match Score', desc: 'Vector similarity matching against real company requirement profiles.', tag: 'AI', badge: 'badge-blue', gradient: 'linear-gradient(135deg,#EAB308,#96c8ff)' },
-  { icon: '🔍', title: 'Skill Gap Detection', desc: 'Pinpoint exact missing skills — both technical and soft skills breakdown.', tag: 'Core', badge: 'badge-purple', gradient: 'linear-gradient(135deg,#ef4444,#f59e0b)' },
-  { icon: '🗺️', title: 'AI 4-Week Roadmap', desc: 'Personalized day-by-day learning plan to close your skill gaps fast.', tag: 'AI', badge: 'badge-blue', gradient: 'linear-gradient(135deg,#10b981,#96c8ff)' },
-  { icon: '🎤', title: 'Live Interview Simulator', desc: 'Voice & chat AI for mock interviews. Get confidence scores instantly.', tag: 'Advanced', badge: 'badge-orange', gradient: 'linear-gradient(135deg,#f59e0b,#ef4444)' },
-  { icon: '💻', title: 'DSA Coding Judge', desc: 'Real-time coding round evaluator with test cases — like LeetCode meets AI.', tag: 'Advanced', badge: 'badge-orange', gradient: 'linear-gradient(135deg,#96c8ff,#60a5fa)' },
-  { icon: '📊', title: 'Skill Radar Chart', desc: 'Beautiful visual radar showing your strengths across all domains.', tag: 'Visual', badge: 'badge-green', gradient: 'linear-gradient(135deg,#10b981,#34d399)' }
+  { icon: '📄', title: 'Resume Upload & ATS Score', desc: 'Upload PDF resumes. Get ATS compatibility score like real companies run it.', tag: 'Core', badge: 'badge-purple', gradient: 'linear-gradient(135deg, rgba(99,102,241,0.15), rgba(139,92,246,0.15))', iconColor: '#6366f1' },
+  { icon: '🧠', title: 'Semantic Skill Extraction', desc: 'AI reads between the lines and extracts hard + soft skills intelligently.', tag: 'AI', badge: 'badge-blue', gradient: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.15))', iconColor: '#3b82f6' },
+  { icon: '🎯', title: 'Company Match Score', desc: 'Vector similarity matching against real company requirement profiles.', tag: 'AI', badge: 'badge-blue', gradient: 'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.15))', iconColor: '#8b5cf6' },
+  { icon: '🔍', title: 'Skill Gap Detection', desc: 'Pinpoint exact missing skills — both technical and soft skills breakdown.', tag: 'Core', badge: 'badge-purple', gradient: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.15))', iconColor: '#f59e0b' },
+  { icon: '🗺️', title: 'AI 4-Week Roadmap', desc: 'Personalized day-by-day learning plan to close your skill gaps fast.', tag: 'AI', badge: 'badge-blue', gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15))', iconColor: '#10b981' },
+  { icon: '🎤', title: 'Live Interview Simulator', desc: 'Voice & chat AI for mock interviews. Get confidence scores instantly.', tag: 'Advanced', badge: 'badge-orange', gradient: 'linear-gradient(135deg, rgba(245,158,11,0.15), rgba(217,119,6,0.15))', iconColor: '#d97706' },
+  { icon: '💻', title: 'DSA Coding Judge', desc: 'Real-time coding round evaluator with test cases — like LeetCode meets AI.', tag: 'Advanced', badge: 'badge-orange', gradient: 'linear-gradient(135deg, rgba(59,130,246,0.15), rgba(37,99,235,0.15))', iconColor: '#2563eb' },
+  { icon: '📊', title: 'Skill Radar Chart', desc: 'Beautiful visual radar showing your strengths across all domains.', tag: 'Visual', badge: 'badge-green', gradient: 'linear-gradient(135deg, rgba(16,185,129,0.15), rgba(5,150,105,0.15))', iconColor: '#059669' }
 ]
 
 export default function CircularGallery({
   items = DEFAULT_ITEMS,
   bend = 3,
-  textColor = '#ffffff',
+  textColor = 'var(--text-primary)',
   borderRadius = 0.05,
   scrollEase = 0.08,
   autoRotate = true,
@@ -265,16 +266,16 @@ export default function CircularGallery({
               >
                 <div
                   style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '10px',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '11px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '19px',
-                    background: item.gradient || 'linear-gradient(135deg, #ffffff, #cbd5e1)',
-                    color: '#000',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                    fontSize: '20px',
+                    background: item.gradient || 'rgba(37, 99, 235, 0.12)',
+                    color: item.iconColor || 'var(--primary)',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
                     flexShrink: 0,
                   }}
                 >
@@ -282,21 +283,23 @@ export default function CircularGallery({
                 </div>
                 <h4
                   style={{
-                    fontSize: '14px',
+                    fontSize: '14.5px',
                     fontWeight: 700,
-                    lineHeight: '1.25',
+                    lineHeight: '1.3',
                     fontFamily: font ? font.split(' ').slice(2).join(' ') : 'inherit',
-                    color: textColor,
+                    color: textColor || 'var(--text-primary)',
                     letterSpacing: '-0.01em',
+                    margin: 0,
                   }}
                 >
                   {item.title}
                 </h4>
                 <p
                   style={{
-                    fontSize: '11px',
-                    lineHeight: '1.45',
-                    color: 'rgba(255, 255, 255, 0.65)',
+                    fontSize: '11.5px',
+                    lineHeight: '1.5',
+                    color: 'var(--text-secondary)',
+                    fontWeight: 450,
                     flex: 1,
                     margin: 0,
                   }}

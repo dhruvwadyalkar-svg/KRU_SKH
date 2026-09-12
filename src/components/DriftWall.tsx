@@ -194,15 +194,15 @@ export default function DriftWall({
                           </div>
 
                           {item.type === 'progress' && (
-                            <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden', marginTop: '4px' }}>
-                              <div style={{ width: `${item.val || 50}%`, height: '100%', background: 'linear-gradient(90deg, #ffffff, #cbd5e1)' }} />
+                            <div style={{ width: '100%', height: '4px', background: 'var(--bg-secondary)', borderRadius: '2px', overflow: 'hidden', marginTop: '4px' }}>
+                              <div style={{ width: `${item.val || 50}%`, height: '100%', background: 'linear-gradient(90deg, var(--primary), var(--secondary))' }} />
                             </div>
                           )}
 
                           {item.type === 'tags' && item.tags && (
                             <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginTop: '4px' }}>
                               {item.tags.slice(0, 2).map((tag, tIdx) => (
-                                <span key={tIdx} style={{ fontSize: '8px', padding: '2px 6px', background: 'rgba(255,255,255,0.06)', borderRadius: '4px', color: '#cbd5e1', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                <span key={tIdx} style={{ fontSize: '8.5px', padding: '2px 6px', background: 'var(--bg-secondary)', borderRadius: '4px', color: 'var(--text-secondary)', border: '1px solid var(--border)' }}>
                                   {tag}
                                 </span>
                               ))}
@@ -211,28 +211,28 @@ export default function DriftWall({
 
                           {item.type === 'match' && (
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '4px' }}>
-                              <span style={{ fontSize: '8px', color: 'var(--text-muted)' }}>Match</span>
-                              <span style={{ fontSize: '10px', fontWeight: 800, color: '#cbd5e1' }}>{item.val}</span>
+                              <span style={{ fontSize: '9px', color: 'var(--text-muted)' }}>Match</span>
+                              <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--primary)' }}>{item.val}</span>
                             </div>
                           )}
 
                           {item.type === 'code' && (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', padding: '2px 6px', borderRadius: '4px', alignSelf: 'flex-start', marginTop: '4px' }}>
-                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#cbd5e1' }} />
-                              <span style={{ fontSize: '8px', color: '#cbd5e1', fontWeight: 600 }}>{item.val}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '2px 7px', borderRadius: '4px', alignSelf: 'flex-start', marginTop: '4px' }}>
+                              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981' }} />
+                              <span style={{ fontSize: '9px', color: '#059669', fontWeight: 700 }}>{item.val}</span>
                             </div>
                           )}
 
                           {item.type === 'badge' && (
-                            <span style={{ fontSize: '8px', padding: '2px 6px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px', color: '#cbd5e1', alignSelf: 'flex-start', marginTop: '4px', fontWeight: 600 }}>
+                            <span style={{ fontSize: '9px', padding: '2px 7px', background: 'rgba(139, 92, 246, 0.12)', border: '1px solid rgba(139, 92, 246, 0.3)', borderRadius: '4px', color: '#8b5cf6', alignSelf: 'flex-start', marginTop: '4px', fontWeight: 700 }}>
                               {item.val}
                             </span>
                           )}
 
                           {item.type === 'step' && (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '8px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9px', color: 'var(--text-muted)', marginTop: '4px' }}>
                               <span>Status</span>
-                              <span style={{ color: '#fff', fontWeight: 600 }}>{item.val}</span>
+                              <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{item.val}</span>
                             </div>
                           )}
                         </div>
