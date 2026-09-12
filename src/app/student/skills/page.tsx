@@ -145,6 +145,7 @@ export default function SkillRadarChart() {
                       if (scopeError) setScopeError('')
                     }}
                     className={styles.input}
+                    suppressHydrationWarning
                   />
                 </div>
 
@@ -167,6 +168,7 @@ export default function SkillRadarChart() {
                   disabled={loading || !company} 
                   className={styles.button}
                   style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  suppressHydrationWarning
                 >
                   {loading ? <MorphingInfinity className="size-4" style={{ width: '16px', height: '16px' }} /> : <Sparkles size={16} strokeWidth={2} />}
                   <span>{loading ? 'Analyzing...' : 'Analyze Company'}</span>
@@ -199,6 +201,7 @@ export default function SkillRadarChart() {
                       value={answers[q.skill] || 0}
                       onChange={(e) => handleAnswerChange(q.skill, parseInt(e.target.value))}
                       className={styles.slider}
+                      suppressHydrationWarning
                     />
                     <div className={styles.sliderLabels}>
                       <span>Beginner</span>
@@ -208,7 +211,7 @@ export default function SkillRadarChart() {
                 ))}
               </div>
               
-              <button onClick={generateResults} className={styles.button} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <button onClick={generateResults} className={styles.button} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }} suppressHydrationWarning>
                 <BarChart2 size={16} strokeWidth={2} />
                 <span>Generate Analysis</span>
               </button>
@@ -222,7 +225,7 @@ export default function SkillRadarChart() {
                   <Target size={20} strokeWidth={2} color="#8b5cf6" />
                   <h2>Your Skill Gap Analysis</h2>
                 </div>
-                <button onClick={() => { setStep(1); setResults([]); setAnswers({}); }} className={styles.resetBtn} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                <button onClick={() => { setStep(1); setResults([]); setAnswers({}); }} className={styles.resetBtn} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }} suppressHydrationWarning>
                   <RotateCcw size={14} strokeWidth={2} />
                   <span>New Analysis</span>
                 </button>

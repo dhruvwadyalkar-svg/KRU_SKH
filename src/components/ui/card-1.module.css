@@ -2,22 +2,22 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: rgba(15, 10, 30, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-xl, 16px);
-  padding: 20px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  background: var(--card);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl, 18px);
+  padding: 22px;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--glass-shadow);
   overflow: hidden;
 }
 
 .card:hover {
-  background: rgba(20, 14, 40, 0.85);
-  border-color: rgba(124, 58, 237, 0.35);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.15), 0 2px 10px rgba(0, 0, 0, 0.3);
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(37, 99, 235, 0.14);
 }
 
 /* ── TOP BAR: PRESENCE & DATE ── */
@@ -38,7 +38,7 @@
   border-radius: 9999px;
   font-size: 11.5px;
   font-weight: 600;
-  color: #34d399;
+  color: #059669;
 }
 
 .presenceDot {
@@ -63,7 +63,7 @@
 
 .postedDate {
   font-size: 12px;
-  color: var(--text-muted, #94a3b8);
+  color: var(--muted);
   font-weight: 500;
 }
 
@@ -86,8 +86,8 @@
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
@@ -103,9 +103,10 @@
 }
 
 .jobTitle {
+  font-family: 'Outfit', 'Inter', sans-serif;
   font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary, #f8fafc);
+  font-weight: 700;
+  color: var(--foreground);
   margin: 0 0 4px 0;
   line-height: 1.3;
   overflow: hidden;
@@ -118,8 +119,8 @@
   align-items: center;
   gap: 6px;
   font-size: 13.5px;
-  font-weight: 500;
-  color: var(--text-secondary, #cbd5e1);
+  font-weight: 600;
+  color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
@@ -128,16 +129,16 @@
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: var(--text-muted, #94a3b8);
+  color: var(--muted);
 }
 
 /* ── THREE-UP STAT STRIP ── */
 .statStrip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-md, 8px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 10px);
   margin-bottom: 18px;
   overflow: hidden;
 }
@@ -159,7 +160,7 @@
   top: 15%;
   bottom: 15%;
   width: 1px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--border);
 }
 
 .statLabel {
@@ -167,14 +168,14 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
-  color: var(--text-muted, #94a3b8);
+  color: var(--muted);
   margin-bottom: 2px;
 }
 
 .statValue {
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary, #f8fafc);
+  font-weight: 700;
+  color: var(--foreground);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -196,30 +197,31 @@
   justify-content: center;
   gap: 6px;
   padding: 10px 16px;
-  background: #7c3aed;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   color: #ffffff;
   font-size: 13.5px;
   font-weight: 600;
-  border-radius: var(--radius-md, 8px);
+  border-radius: var(--radius-md, 10px);
   text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
 }
 
 .applyButton:hover {
-  background: #6d28d9;
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
   transform: translateY(-1px);
   color: #ffffff;
 }
 
 .secondaryAction {
   padding: 10px;
-  border-radius: var(--radius-md, 8px);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-secondary, #cbd5e1);
+  border-radius: var(--radius-md, 10px);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -229,9 +231,9 @@
 }
 
 .secondaryAction:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
+  background: rgba(37, 99, 235, 0.1);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* ── GRID CONTAINER ── */

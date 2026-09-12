@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import StudentSidebar from '@/components/StudentSidebar'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
 import styles from '../dashboard.module.css'
@@ -463,6 +464,7 @@ export default function SkillGapPage() {
   return (
     <div className={styles.layout}>
       <StudentSidebar />
+      <AmbientBlooms />
       <div className={styles.content}>
         {/* ================= HEADER ================= */}
         <header className={styles.header}>
@@ -553,7 +555,7 @@ export default function SkillGapPage() {
                   {baseMatchScore >= 80 ? 'High Alignment' : baseMatchScore >= 65 ? 'Job Ready' : 'Developing'}
                 </span>
               </div>
-              <div style={{ height: '6px', width: '100%', borderRadius: '3px', background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+              <div style={{ height: '6px', width: '100%', borderRadius: '3px', background: 'var(--border)', overflow: 'hidden' }}>
                 <div style={{ height: '100%', width: `${baseMatchScore}%`, background: 'linear-gradient(90deg, #10b981, #34d399)', borderRadius: '3px' }} />
               </div>
             </div>
@@ -654,7 +656,7 @@ export default function SkillGapPage() {
             </div>
 
             {/* Quick Preset Roles Bar */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', paddingTop: '6px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', paddingTop: '6px', borderTop: '1px solid var(--border)' }}>
               <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.4px', marginRight: '4px' }}>
                 Benchmark Against:
               </span>
@@ -668,9 +670,9 @@ export default function SkillGapPage() {
                     fontSize: '0.76rem',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    border: activePresetRole === preset.role ? '1px solid #8b5cf6' : '1px solid var(--border)',
-                    background: activePresetRole === preset.role ? 'rgba(139, 92, 246, 0.2)' : 'rgba(0,0,0,0.25)',
-                    color: activePresetRole === preset.role ? '#c4b5fd' : 'var(--text-secondary)',
+                    border: activePresetRole === preset.role ? '1px solid var(--primary)' : '1px solid var(--border)',
+                    background: activePresetRole === preset.role ? 'rgba(37, 99, 235, 0.15)' : 'var(--bg-secondary)',
+                    color: activePresetRole === preset.role ? 'var(--primary)' : 'var(--text-secondary)',
                     transition: 'all 0.15s ease'
                   }}
                 >
@@ -733,8 +735,8 @@ export default function SkillGapPage() {
                       fontWeight: 600,
                       cursor: 'pointer',
                       border: isChecked ? '1px solid #10b981' : '1px solid var(--border)',
-                      background: isChecked ? 'rgba(16, 185, 129, 0.18)' : 'rgba(0,0,0,0.25)',
-                      color: isChecked ? '#34d399' : 'var(--text-primary)',
+                      background: isChecked ? 'rgba(16, 185, 129, 0.15)' : 'var(--bg-secondary)',
+                      color: isChecked ? '#059669' : 'var(--text-primary)',
                       transition: 'all 0.15s ease'
                     }}
                   >
@@ -773,7 +775,7 @@ export default function SkillGapPage() {
                   alignItems: 'center',
                   gap: '24px',
                   padding: '16px 20px',
-                  background: 'rgba(0,0,0,0.2)',
+                  background: 'var(--bg-secondary)',
                   borderRadius: '12px',
                   border: '1px solid var(--border)',
                   flexWrap: 'wrap'
@@ -781,7 +783,7 @@ export default function SkillGapPage() {
                   {/* Circular Radial Gauge */}
                   <div style={{ position: 'relative', width: '100px', height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <svg width="100" height="100" viewBox="0 0 100 100" style={{ transform: 'rotate(-90deg)' }}>
-                      <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.08)" strokeWidth="9" fill="transparent" />
+                      <circle cx="50" cy="50" r="40" stroke="var(--border)" strokeWidth="9" fill="transparent" />
                       <circle
                         cx="50"
                         cy="50"
@@ -830,7 +832,7 @@ export default function SkillGapPage() {
                       <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Overall Readiness</span>
                       <strong style={{ color: '#10b981' }}>{simulatedMatchScore}%</strong>
                     </div>
-                    <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${simulatedMatchScore}%`, background: 'linear-gradient(90deg, #10b981, #34d399)', borderRadius: '3px' }} />
                     </div>
                   </div>
@@ -841,7 +843,7 @@ export default function SkillGapPage() {
                       <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Strong Verified Skills ({strongCount})</span>
                       <strong style={{ color: '#34d399' }}>{strongPercent}%</strong>
                     </div>
-                    <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${strongPercent}%`, background: '#34d399', borderRadius: '3px' }} />
                     </div>
                   </div>
@@ -852,7 +854,7 @@ export default function SkillGapPage() {
                       <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Skills to Improve ({priorityCount})</span>
                       <strong style={{ color: '#fbbf24' }}>{improvePercent}%</strong>
                     </div>
-                    <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${improvePercent}%`, background: '#f59e0b', borderRadius: '3px' }} />
                     </div>
                   </div>
@@ -863,7 +865,7 @@ export default function SkillGapPage() {
                       <span style={{ color: 'var(--text-secondary)', fontWeight: 600 }}>Missing Gaps ({missingCount})</span>
                       <strong style={{ color: '#f87171' }}>{missingPercent}%</strong>
                     </div>
-                    <div style={{ height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                    <div style={{ height: '6px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: `${missingPercent}%`, background: '#ef4444', borderRadius: '3px' }} />
                     </div>
                   </div>
@@ -879,7 +881,7 @@ export default function SkillGapPage() {
                   </h3>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', marginBottom: '14px', border: '1px solid var(--border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', background: 'var(--bg-secondary)', borderRadius: '8px', marginBottom: '14px', border: '1px solid var(--border)' }}>
                   <div>
                     <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Current Match</div>
                     <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#10b981' }}>{baseMatchScore}%</div>
@@ -944,7 +946,7 @@ export default function SkillGapPage() {
                           style={{
                             padding: '14px 16px',
                             borderRadius: '10px',
-                            background: 'rgba(0,0,0,0.2)',
+                            background: 'var(--bg-secondary)',
                             border: `1px solid ${pBorder}`,
                             display: 'flex',
                             flexDirection: 'column',
@@ -989,7 +991,7 @@ export default function SkillGapPage() {
                               <span>Gap: Significant</span>
                               <span>Est: {item.learning_time || '1-2 weeks'}</span>
                             </div>
-                            <div style={{ height: '5px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                            <div style={{ height: '5px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
                               <div style={{ height: '100%', width: '35%', background: pColor, borderRadius: '3px' }} />
                             </div>
                           </div>
@@ -1052,7 +1054,7 @@ export default function SkillGapPage() {
                       <div style={{
                         padding: '10px 14px',
                         borderRadius: '8px',
-                        background: 'rgba(255,255,255,0.02)',
+                        background: 'var(--bg-secondary)',
                         border: '1px solid var(--border)',
                         display: 'flex',
                         alignItems: 'center',
@@ -1125,9 +1127,9 @@ export default function SkillGapPage() {
                         fontSize: '0.72rem',
                         fontWeight: 700,
                         cursor: 'pointer',
-                        border: studyHoursPerWeek === hrs ? '1px solid #06b6d4' : '1px solid var(--border)',
-                        background: studyHoursPerWeek === hrs ? 'rgba(6, 182, 212, 0.2)' : 'rgba(0,0,0,0.2)',
-                        color: studyHoursPerWeek === hrs ? '#22d3ee' : 'var(--text-secondary)'
+                        border: studyHoursPerWeek === hrs ? '1px solid var(--primary)' : '1px solid var(--border)',
+                        background: studyHoursPerWeek === hrs ? 'rgba(37, 99, 235, 0.15)' : 'var(--bg-secondary)',
+                        color: studyHoursPerWeek === hrs ? 'var(--primary)' : 'var(--text-secondary)'
                       }}
                     >
                       {hrs} hrs/wk
@@ -1171,9 +1173,9 @@ export default function SkillGapPage() {
                       fontSize: '0.78rem',
                       fontWeight: 700,
                       cursor: 'pointer',
-                      border: activeFilter === tab.id ? '1px solid #8b5cf6' : '1px solid var(--border)',
-                      background: activeFilter === tab.id ? 'rgba(139, 92, 246, 0.15)' : 'rgba(0,0,0,0.2)',
-                      color: activeFilter === tab.id ? '#c4b5fd' : 'var(--text-secondary)',
+                      border: activeFilter === tab.id ? '1px solid var(--primary)' : '1px solid var(--border)',
+                      background: activeFilter === tab.id ? 'rgba(37, 99, 235, 0.15)' : 'var(--bg-secondary)',
+                      color: activeFilter === tab.id ? 'var(--primary)' : 'var(--text-secondary)',
                       transition: 'all 0.15s ease'
                     }}
                   >
@@ -1207,7 +1209,7 @@ export default function SkillGapPage() {
                       style={{
                         padding: '14px',
                         borderRadius: '10px',
-                        background: 'rgba(0,0,0,0.2)',
+                        background: 'var(--bg-secondary)',
                         border: `1px solid ${border}`,
                         display: 'flex',
                         flexDirection: 'column',
@@ -1237,7 +1239,7 @@ export default function SkillGapPage() {
                           <span>Level: {sk.currentLevel}</span>
                           <strong style={{ color }}>{sk.levelPercent}%</strong>
                         </div>
-                        <div style={{ height: '5px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+                        <div style={{ height: '5px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
                           <div style={{ height: '100%', width: `${sk.levelPercent}%`, background: color, borderRadius: '3px' }} />
                         </div>
                       </div>
@@ -1269,8 +1271,9 @@ export default function SkillGapPage() {
           <div style={{
             position: 'fixed',
             inset: 0,
-            background: 'rgba(0, 0, 0, 0.75)',
-            backdropFilter: 'blur(8px)',
+            background: 'rgba(15, 23, 42, 0.65)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1280,46 +1283,71 @@ export default function SkillGapPage() {
             <div className={`glass ${styles.panel}`} style={{
               maxWidth: '560px',
               width: '100%',
-              background: '#0d1117',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
-              borderRadius: '16px',
+              background: 'var(--card)',
+              border: '1px solid var(--border)',
+              borderRadius: '20px',
               padding: '28px',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.7)',
+              boxShadow: 'var(--shadow-lg), 0 25px 60px rgba(0, 0, 0, 0.3)',
               display: 'flex',
               flexDirection: 'column',
-              gap: '18px'
+              gap: '18px',
+              color: 'var(--foreground)'
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Sparkles size={20} color="#8b5cf6" />
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '10px',
+                    background: 'rgba(139, 92, 246, 0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Sparkles size={20} color="#8b5cf6" />
+                  </div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
                     Analyze Role Skill Gaps
                   </h3>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setShowUploadModal(false)}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4 }}
+                  style={{
+                    background: 'var(--bg-secondary)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text-secondary)',
+                    cursor: 'pointer',
+                    padding: '6px',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.2s ease'
+                  }}
+                  aria-label="Close"
                 >
                   <X size={18} />
                 </button>
               </div>
 
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.55 }}>
                 Upload your resume and the target job description PDF or document to compute AI alignment and priority gaps.
               </p>
 
               {/* Resume Upload Box */}
               <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
                   1. Your Resume (PDF, PNG, JPG)
                 </label>
                 <div style={{
-                  border: '1px dashed rgba(139, 92, 246, 0.4)',
-                  borderRadius: '10px',
-                  padding: '16px',
+                  border: '2px dashed rgba(139, 92, 246, 0.5)',
+                  borderRadius: '12px',
+                  padding: '22px 16px',
                   textAlign: 'center',
-                  background: 'rgba(139, 92, 246, 0.05)',
-                  cursor: 'pointer'
+                  background: 'rgba(139, 92, 246, 0.06)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}>
                   <input
                     type="file"
@@ -1329,9 +1357,12 @@ export default function SkillGapPage() {
                     style={{ display: 'none' }}
                   />
                   <label htmlFor="modal-resume-file" style={{ cursor: 'pointer', display: 'block' }}>
-                    <Upload size={24} color="#8b5cf6" style={{ margin: '0 auto 6px' }} />
-                    <div style={{ fontSize: '0.84rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+                    <Upload size={26} color="#8b5cf6" style={{ margin: '0 auto 8px' }} />
+                    <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600 }}>
                       {resumeFile ? resumeFile.name : 'Click to select Resume'}
+                    </div>
+                    <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                      {resumeFile ? 'Ready for processing' : 'PDF or image up to 10MB'}
                     </div>
                   </label>
                 </div>
@@ -1339,16 +1370,17 @@ export default function SkillGapPage() {
 
               {/* Job Description Upload Box */}
               <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '6px' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-primary)', display: 'block', marginBottom: '8px' }}>
                   2. Target Job Description (PDF, PNG, JPG)
                 </label>
                 <div style={{
-                  border: '1px dashed rgba(16, 185, 129, 0.4)',
-                  borderRadius: '10px',
-                  padding: '16px',
+                  border: '2px dashed rgba(16, 185, 129, 0.5)',
+                  borderRadius: '12px',
+                  padding: '22px 16px',
                   textAlign: 'center',
-                  background: 'rgba(16, 185, 129, 0.05)',
-                  cursor: 'pointer'
+                  background: 'rgba(16, 185, 129, 0.06)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
                 }}>
                   <input
                     type="file"
@@ -1358,21 +1390,24 @@ export default function SkillGapPage() {
                     style={{ display: 'none' }}
                   />
                   <label htmlFor="modal-jd-file" style={{ cursor: 'pointer', display: 'block' }}>
-                    <FileText size={24} color="#10b981" style={{ margin: '0 auto 6px' }} />
-                    <div style={{ fontSize: '0.84rem', color: 'var(--text-primary)', fontWeight: 600 }}>
+                    <FileText size={26} color="#10b981" style={{ margin: '0 auto 8px' }} />
+                    <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', fontWeight: 600 }}>
                       {jobDescFile ? jobDescFile.name : 'Click to select Job Description'}
+                    </div>
+                    <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+                      {jobDescFile ? 'Ready for processing' : 'PDF, doc, or text job posting'}
                     </div>
                   </label>
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+              {/* Submit Buttons */}
+              <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
                 <button
                   type="button"
                   onClick={() => setShowUploadModal(false)}
-                  className="btn btn-ghost"
-                  style={{ flex: 1 }}
+                  className="btn btn-secondary"
+                  style={{ flex: 1, padding: '10px 18px', fontWeight: 600 }}
                 >
                   Cancel
                 </button>
@@ -1381,7 +1416,7 @@ export default function SkillGapPage() {
                   onClick={handleAnalyze}
                   disabled={analyzing || !resumeFile || !jobDescFile}
                   className="btn btn-primary"
-                  style={{ flex: 2, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  style={{ flex: 2, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '10px 18px', fontWeight: 600 }}
                 >
                   {analyzing ? <MorphingInfinity className="size-4" style={{ width: '16px', height: '16px' }} /> : <Sparkles size={16} />}
                   <span>{analyzing ? 'Analyzing Alignment...' : 'Run Skill Gap Analysis'}</span>

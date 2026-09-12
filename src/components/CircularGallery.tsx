@@ -242,25 +242,25 @@ export default function CircularGallery({
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '10px',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+                  border: '1px solid var(--glass-border)',
+                  background: 'var(--card)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  boxShadow: 'var(--glass-shadow)',
                   transform: 'translateZ(0px)',
                   transition: 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, box-shadow 0.3s',
-                  color: textColor,
+                  color: textColor || 'var(--foreground)',
                   cursor: isDraggingState ? 'grabbing' : 'pointer',
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateZ(20px) scale(1.03)'
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)'
-                  e.currentTarget.style.boxShadow = '0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 255, 255, 0.06)'
+                  e.currentTarget.style.borderColor = 'var(--border-hover)'
+                  e.currentTarget.style.boxShadow = 'var(--glass-shadow)'
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateZ(0px) scale(1)'
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'
-                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)'
+                  e.currentTarget.style.borderColor = 'var(--glass-border)'
+                  e.currentTarget.style.boxShadow = 'var(--glass-shadow)'
                 }}
               >
                 <div

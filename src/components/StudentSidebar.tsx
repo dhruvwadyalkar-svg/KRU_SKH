@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import Logo from '@/components/Logo'
 import NotificationBell from '@/components/NotificationBell'
 import SecurityActivityModal from '@/components/SecurityActivityModal'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import styles from './sidebar.module.css'
 import { useTheme } from '@/contexts/ThemeContext'
 import { logout } from '@/app/actions/logout'
@@ -222,6 +223,7 @@ export default function StudentSidebar() {
             onClick={() => setLogoDropdownOpen(!logoDropdownOpen)}
             title="PlaceIQ Account & Security Menu"
             aria-expanded={logoDropdownOpen}
+            suppressHydrationWarning
           >
             <Logo variant="student" size="md" href={undefined} />
             <ChevronDown
@@ -247,6 +249,7 @@ export default function StudentSidebar() {
               <button
                 type="button"
                 className={styles.dropdownItem}
+                suppressHydrationWarning
                 onClick={() => {
                   setLogoDropdownOpen(false)
                   setShowSecurityModal(true)
@@ -266,6 +269,7 @@ export default function StudentSidebar() {
               <div className={styles.dropdownDivider} />
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={handleLogout}
                 className={styles.dropdownItem}
                 style={{ color: '#f87171' }}
@@ -408,9 +412,10 @@ export default function StudentSidebar() {
                     onChange={e => setSearchQuery(e.target.value)}
                     autoFocus
                     className={styles.searchInput}
+                    suppressHydrationWarning
                   />
                   {searchQuery && (
-                    <button type="button" onClick={() => setSearchQuery('')} className={styles.clearSearch}>
+                    <button type="button" suppressHydrationWarning onClick={() => setSearchQuery('')} className={styles.clearSearch}>
                       ✕
                     </button>
                   )}
@@ -457,6 +462,7 @@ export default function StudentSidebar() {
 
         {/* Aesthetic User Profile Pill */}
         <div className={styles.userTag} ref={userDropdownRef} suppressHydrationWarning>
+          <ThemeToggle variant="icon" />
           <NotificationBell role="student" />
           {userData && (
             <button

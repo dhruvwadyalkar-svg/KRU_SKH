@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
 import styles from '../dashboard.module.css'
 import SpecularButton from '@/components/SpecularButton'
@@ -296,6 +297,7 @@ export default function ResumeAnalyzer() {
 
   return (
     <div className={styles.layout}>
+      <AmbientBlooms />
       <StudentSidebar />
       <div className={styles.content}>
         <header className={styles.header}>
@@ -464,7 +466,7 @@ export default function ResumeAnalyzer() {
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
                       <RadarChart data={getSkillRadarData()}>
-                        <PolarGrid stroke="rgba(255,255,255,0.1)" />
+                        <PolarGrid stroke="var(--border)" />
                         <PolarAngleAxis dataKey="skill" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
                         <PolarRadiusAxis angle={90} domain={[0, 100]} tick={{ fill: 'var(--text-muted)' }} />
                         <Radar name="Score" dataKey="value" stroke="#7c3aed" fill="#7c3aed" fillOpacity={0.6} />
@@ -512,10 +514,10 @@ export default function ResumeAnalyzer() {
                         { name: 'Current', ats: analysis.ats_score, rating: analysis.overall_rating * 10 },
                         { name: 'Previous', ats: comparisonData.ats_score, rating: comparisonData.overall_rating * 10 }
                       ] : getScoreData()}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                         <XAxis dataKey="name" tick={{ fill: 'var(--text-secondary)' }} />
                         <YAxis tick={{ fill: 'var(--text-secondary)' }} />
-                        <Tooltip contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)' }} />
+                        <Tooltip contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '8px', color: 'var(--foreground)' }} />
                         <Legend />
                         <Bar dataKey="ats" fill="#10b981" name="ATS Score" />
                         <Bar dataKey="rating" fill="#7c3aed" name="Rating" />

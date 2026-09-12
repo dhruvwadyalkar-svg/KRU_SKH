@@ -6,6 +6,7 @@ import AcademicProfileModal from '@/components/AcademicProfileModal'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
 import Card1 from '@/components/ui/card-1'
 import CampusResourcesSection from '@/components/CampusResourcesSection'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from '../dashboard.module.css'
 import Link from 'next/link'
 import {
@@ -159,6 +160,7 @@ export default function StudentDashboard() {
 
   return (
     <div className={styles.layout}>
+      <AmbientBlooms />
       <StudentSidebar />
       <div className={styles.content}>
         {/* Header */}

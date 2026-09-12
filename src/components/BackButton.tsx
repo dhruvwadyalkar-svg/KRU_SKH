@@ -45,6 +45,7 @@ export default function BackButton({
       style={style}
       title={title}
       aria-label={label || 'Go back'}
+      suppressHydrationWarning
     >
       <ArrowLeft size={16} strokeWidth={2.2} className={styles.icon} />
       {showLabel && <span>{label}</span>}

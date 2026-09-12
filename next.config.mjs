@@ -9,9 +9,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   outputFileTracingRoot: path.resolve(__dirname),
   serverExternalPackages: [
     'better-sqlite3',

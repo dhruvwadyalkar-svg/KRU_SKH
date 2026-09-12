@@ -164,9 +164,11 @@ export default function DriftWall({
                         transition: 'opacity 0.3s',
                         textDecoration: 'none',
                         position: 'relative',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        background: 'rgba(255, 255, 255, 0.02)',
+                        border: '1px solid var(--glass-border)',
+                        background: 'var(--card)',
                         boxSizing: 'border-box',
+                        backdropFilter: 'blur(16px)',
+                        WebkitBackdropFilter: 'blur(16px)',
                       }}
                     >
                       {item.icon ? (
@@ -178,11 +180,11 @@ export default function DriftWall({
                           flexDirection: 'column',
                           justifyContent: 'space-between',
                           boxSizing: 'border-box',
-                          background: 'rgba(255,255,255,0.01)',
+                          background: 'transparent',
                         }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <span style={{ fontSize: '18px' }}>{item.icon}</span>
-                            <span style={{ fontSize: '12px', fontWeight: 700, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <span style={{ fontSize: '18px', color: 'var(--primary)' }}>{item.icon}</span>
+                            <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--foreground)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {item.title}
                             </span>
                           </div>

@@ -98,30 +98,30 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: rgba(15, 10, 30, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-xl, 16px);
+  background: var(--card);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl, 18px);
   padding: 24px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--glass-shadow);
   overflow: hidden;
   text-decoration: none;
-  color: inherit;
+  color: var(--foreground);
   outline: none;
 }
 
 .card:hover {
-  background: rgba(22, 16, 44, 0.85);
-  border-color: rgba(139, 92, 246, 0.35);
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(139, 92, 246, 0.12), 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.15);
 }
 
 .card:focus-visible {
-  border-color: var(--accent-primary, #8b5cf6);
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.4);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.35);
 }
 
 /* Subtle Top Accent Glow per card */
@@ -131,9 +131,9 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 2px;
-  background: var(--card-accent-grad, linear-gradient(90deg, #8b5cf6, #3b82f6));
-  opacity: 0.7;
+  height: 3px;
+  background: var(--card-accent-grad, linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899));
+  opacity: 0.8;
   transition: opacity 0.25s ease;
 }
 
@@ -158,13 +158,15 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(139, 92, 246, 0.12));
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  color: var(--primary);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover .iconWrapper {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .statusBadge {
@@ -181,25 +183,25 @@
 .statusGreen {
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #34d399;
+  color: #059669;
 }
 
 .statusPurple {
   background: rgba(139, 92, 246, 0.12);
   border: 1px solid rgba(139, 92, 246, 0.3);
-  color: #c084fc;
+  color: #7c3aed;
 }
 
 .statusBlue {
-  background: rgba(59, 130, 246, 0.12);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  color: #60a5fa;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  color: #2563eb;
 }
 
 .statusOrange {
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.3);
-  color: #fbbf24;
+  color: #d97706;
 }
 
 .pulseDot {
@@ -224,10 +226,10 @@
 
 /* ── CARD CONTENT ── */
 .cardTitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 17px;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: 18px;
   font-weight: 700;
-  color: var(--text-primary, #f8fafc);
+  color: var(--foreground);
   margin: 0 0 6px 0;
   display: flex;
   align-items: center;
@@ -235,9 +237,9 @@
 }
 
 .cardDescription {
-  font-size: 13px;
-  color: var(--text-secondary, #94a3b8);
-  line-height: 1.5;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
   margin: 0 0 16px 0;
   flex: 1;
 }
@@ -254,26 +256,26 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 9px;
+  padding: 4px 10px;
   border-radius: var(--radius-sm, 6px);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.07));
-  font-size: 11px;
-  color: var(--text-secondary, #94a3b8);
+  background: rgba(37, 99, 235, 0.05);
+  border: 1px solid var(--border);
+  font-size: 11.5px;
+  color: var(--text-secondary);
   font-weight: 500;
   transition: var(--transition, all 0.15s ease);
 }
 
 .card:hover .chip {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.12);
-  color: var(--text-primary, #f8fafc);
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: var(--foreground);
 }
 
 .highlightChip {
-  background: rgba(139, 92, 246, 0.1);
-  border-color: rgba(139, 92, 246, 0.25);
-  color: #c084fc;
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.3);
+  color: var(--primary);
 }
 
 /* ── METRIC HIGHLIGHT BOX ── */
@@ -283,8 +285,8 @@
   justify-content: space-between;
   padding: 10px 14px;
   border-radius: var(--radius-md, 8px);
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
   margin-bottom: 18px;
 }
 
@@ -298,12 +300,12 @@
   font-family: 'Outfit', sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: var(--text-primary, #f8fafc);
+  color: var(--foreground);
 }
 
 .metricLabel {
   font-size: 11.5px;
-  color: var(--text-muted, #64748b);
+  color: var(--muted);
 }
 
 /* ── CARD FOOTER / ACTION CTA ── */
@@ -313,7 +315,7 @@
   justify-content: space-between;
   gap: 12px;
   padding-top: 14px;
-  border-top: 1px solid var(--border, rgba(255, 255, 255, 0.06));
+  border-top: 1px solid var(--border);
   margin-top: auto;
 }
 
@@ -322,31 +324,32 @@
   align-items: center;
   gap: 6px;
   font-size: 11.5px;
-  color: var(--text-muted, #64748b);
+  color: var(--muted);
 }
 
 .ctaButton {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius-md, 8px);
   font-size: 12.5px;
   font-weight: 600;
   font-family: 'Inter', sans-serif;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: #c084fc;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  border: none;
+  color: #ffffff;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
 }
 
 .card:hover .ctaButton {
-  background: #7c3aed;
-  border-color: #8b5cf6;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
 }
 
 .ctaIcon {
@@ -360,13 +363,17 @@
 /* ── FULL WIDTH 5TH CARD (MY DOCUMENTS) ── */
 .cardFullWidth {
   grid-column: 1 / -1;
-  background: linear-gradient(135deg, rgba(20, 15, 40, 0.75) 0%, rgba(10, 8, 25, 0.85) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.18);
+  background: var(--card);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border);
+  box-shadow: var(--glass-shadow);
 }
 
 .cardFullWidth:hover {
-  background: linear-gradient(135deg, rgba(28, 20, 56, 0.9) 0%, rgba(15, 12, 35, 0.95) 100%);
-  border-color: rgba(139, 92, 246, 0.45);
+  background: var(--bg-card-hover);
+  border-color: var(--primary);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.15);
 }
 
 .fullWidthLayout {
@@ -388,8 +395,8 @@
   gap: 10px;
   padding: 12px 16px;
   border-radius: var(--radius-lg, 12px);
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
 }
 
 .securityItem {
@@ -397,11 +404,11 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: var(--text-secondary, #94a3b8);
+  color: var(--text-secondary);
 }
 
 .securityItem strong {
-  color: var(--text-primary, #f8fafc);
+  color: var(--foreground);
   font-weight: 600;
 }
 

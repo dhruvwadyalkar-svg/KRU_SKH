@@ -4,11 +4,13 @@ import { useState, useEffect, Suspense, FormEvent } from 'react'
 import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Logo from '@/components/Logo'
-import SpecularButton from '@/components/SpecularButton'
+import AmbientBlooms from '@/components/ui/AmbientBlooms'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
 import LoginSecurityChallenge from '@/components/LoginSecurityChallenge'
 import styles from './login.module.css'
 import { GraduationCap, Building2, Landmark, ArrowLeft, ArrowRight, ShieldCheck, AlertTriangle } from 'lucide-react'
+import { getClientDeviceTelemetry } from '@/lib/clientDevice'
 
 type Role = 'student' | 'company' | 'institution'
 
@@ -18,28 +20,29 @@ const ROLES = [
     icon: GraduationCap,
     label: 'Student',
     desc: 'Analyze resume & get placed',
-    color: '#EAB308',
-    gradient: 'linear-gradient(135deg, #EAB308, #FDE047)',
+    color: 'var(--primary)',
+    gradient: 'linear-gradient(135deg, #2563EB, #38BDF8)',
+    btnGradient: 'linear-gradient(135deg, #2563EB, #38BDF8)',
   },
   {
     id: 'company' as Role,
     icon: Building2,
     label: 'Company',
     desc: 'Hire skill-verified talent',
-    color: '#10b981',
-    gradient: 'linear-gradient(135deg, #10b981, #34d399)',
+    color: '#10B981',
+    gradient: 'linear-gradient(135deg, #059669, #10B981)',
+    btnGradient: 'linear-gradient(135deg, #059669, #10B981)',
   },
   {
     id: 'institution' as Role,
     icon: Landmark,
     label: 'Institution',
     desc: 'Manage cohorts & placements',
-    color: '#f472b6',
-    gradient: 'linear-gradient(135deg, #f472b6, #96c8ff)',
+    color: '#7C3AED',
+    gradient: 'linear-gradient(135deg, #7C3AED, #A855F7)',
+    btnGradient: 'linear-gradient(135deg, #7C3AED, #A855F7)',
   },
 ]
-
-import { getClientDeviceTelemetry } from '@/lib/clientDevice'
 
 interface ChallengeState {
   challengeToken: string
@@ -148,14 +151,30 @@ function LoginContent() {
 
   return (
     <div className={styles.page} suppressHydrationWarning>
-      <Link href="/" className={styles.backBtn} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-        <ArrowLeft size={16} strokeWidth={2} />
-        <span>Back to home</span>
-      </Link>
+      {/* Ambient blooms and 2% SVG noise grain */}
+      <AmbientBlooms />
 
-      <div className={styles.card} suppressHydrationWarning>
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-          <Logo variant={role === 'company' ? 'company' : role === 'institution' ? 'institution' : 'student'} size="lg" href="/" withBadge badgeText={role.toUpperCase()} />
+      {/* Floating Top Navigation Bar */}
+      <div className={styles.topBar}>
+        <Link href="/" className={styles.backBtn} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <ArrowLeft size={16} strokeWidth={2.2} />
+          <span>Back to home</span>
+        </Link>
+        <div className={styles.topBarActions}>
+          <ThemeToggle variant="pill" />
+        </div>
+      </div>
+
+      {/* Main Glass Login Card */}
+      <div className={`glass-panel ${styles.card}`} suppressHydrationWarning>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+          <Logo
+            variant={role === 'company' ? 'company' : role === 'institution' ? 'institution' : 'student'}
+            size="lg"
+            href="/"
+            withBadge
+            badgeText={role.toUpperCase()}
+          />
         </div>
 
         {/* Challenge State Active */}
@@ -185,20 +204,20 @@ function LoginContent() {
             <div className={styles.roleSelector} suppressHydrationWarning>
               {ROLES.map(r => {
                 const TabIcon = r.icon
+                const isActive = role === r.id
                 return (
                   <button
                     key={r.id}
                     type="button"
                     suppressHydrationWarning
-                    className={`${styles.roleTab} ${role === r.id ? styles.roleTabActive : ''}`}
+                    className={`${styles.roleTab} ${isActive ? styles.roleTabActive : ''}`}
                     onClick={() => {
                       setRole(r.id)
                       setErrorMessage(null)
                     }}
-                    style={role === r.id ? { borderColor: r.color, boxShadow: `0 0 16px ${r.color}30` } : {}}
                   >
-                    <span className={styles.roleTabIcon}>
-                      <TabIcon size={20} strokeWidth={2} />
+                    <span className={styles.roleTabIcon} style={{ color: isActive ? r.color : 'var(--muted)' }}>
+                      <TabIcon size={20} strokeWidth={isActive ? 2.4 : 2} />
                     </span>
                     <div className={styles.roleTabText}>
                       <span className={styles.roleTabLabel}>{r.label}</span>
@@ -211,8 +230,14 @@ function LoginContent() {
 
             {/* Header */}
             <div className={styles.cardHeader}>
-              <div className={styles.roleIcon} style={{ background: currentRole.gradient, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: '#000' }}>
-                <RoleIcon size={24} strokeWidth={2} />
+              <div
+                className={styles.roleIcon}
+                style={{
+                  background: currentRole.gradient,
+                  color: '#ffffff',
+                }}
+              >
+                <RoleIcon size={26} strokeWidth={2.2} />
               </div>
               <h1 className={styles.title}>{currentRole.label} Login</h1>
               <p className={styles.subtitle}>
@@ -222,8 +247,8 @@ function LoginContent() {
               </p>
 
               {/* Security Shield Badge */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', marginTop: '6px', padding: '3px 10px', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.25)', borderRadius: '20px', fontSize: '11px', color: '#c4b5fd', fontWeight: 600 }}>
-                <ShieldCheck size={12} color="#a78bfa" />
+              <div className={styles.shieldBadge}>
+                <ShieldCheck size={13} strokeWidth={2.2} />
                 <span>Protected by PlaceIQ Intelligent Login Shield</span>
               </div>
             </div>
@@ -269,38 +294,25 @@ function LoginContent() {
               </div>
 
               {errorMessage && (
-                <div style={{ background: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#f87171', padding: '8px 12px', borderRadius: '8px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <AlertTriangle size={14} style={{ flexShrink: 0 }} />
+                <div style={{ background: 'rgba(239, 68, 68, 0.12)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#f87171', padding: '10px 14px', borderRadius: '12px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <AlertTriangle size={15} style={{ flexShrink: 0 }} />
                   <span>{errorMessage}</span>
                 </div>
               )}
 
-              <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'center' }}>
-                <SpecularButton
-                  type="submit"
-                  disabled={pending}
-                  size="md"
-                  radius={8}
-                  tint={role === 'student' ? '#7c3aed' : role === 'company' ? '#059669' : '#2563eb'}
-                  tintOpacity={0.2}
-                  blur={0}
-                  textColor="#ffffff"
-                  lineColor={role === 'student' ? '#c4b5fd' : role === 'company' ? '#6ee7b7' : '#93c5fd'}
-                  baseColor={role === 'student' ? '#581c87' : role === 'company' ? '#065f46' : '#1e3a8a'}
-                  intensity={0.85}
-                  shineSize={8}
-                  shineFade={35}
-                  thickness={1}
-                  speed={0.3}
-                  followMouse
-                  proximity={220}
-                  style={{ width: '100%', minHeight: '46px' }}
-                >
-                  {pending ? <MorphingInfinity className="size-4" style={{ width: '16px', height: '16px' }} /> : null}
-                  <span>{pending ? 'Evaluating Security...' : `Sign in as ${currentRole.label}`}</span>
-                  {!pending && <ArrowRight size={16} strokeWidth={2} />}
-                </SpecularButton>
-              </div>
+              <button
+                type="submit"
+                disabled={pending}
+                suppressHydrationWarning
+                className={styles.submitBtn}
+                style={{
+                  background: currentRole.btnGradient,
+                }}
+              >
+                {pending ? <MorphingInfinity className="size-4" style={{ width: '16px', height: '16px' }} /> : null}
+                <span>{pending ? 'Evaluating Security...' : `Sign in as ${currentRole.label}`}</span>
+                {!pending && <ArrowRight size={16} strokeWidth={2.2} />}
+              </button>
             </form>
 
             {/* Sign up links */}
@@ -310,10 +322,9 @@ function LoginContent() {
                 <Link
                   href={`/auth/signup?role=${role}`}
                   className={styles.signupBtn}
-                  style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
                   <span>Create {currentRole.label} Account</span>
-                  <ArrowRight size={14} strokeWidth={2} />
+                  <ArrowRight size={14} strokeWidth={2.2} />
                 </Link>
               </>
             )}
@@ -326,10 +337,8 @@ function LoginContent() {
 
 export default function UnifiedLoginPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f8fafc' }}>Loading...</div>}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--foreground)' }}>Loading...</div>}>
       <LoginContent />
     </Suspense>
   )
 }
-
-
