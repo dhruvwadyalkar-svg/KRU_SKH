@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import Logo from '@/components/Logo'
 import AcademicVerificationFlow from '@/components/AcademicVerificationFlow'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import { ArrowLeft, ShieldCheck, HelpCircle } from 'lucide-react'
 
 export default function VerifyAcademicsPage() {
@@ -11,10 +12,11 @@ export default function VerifyAcademicsPage() {
     <div
       style={{
         minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.15), rgba(15, 23, 42, 0.98) 70%)',
-        color: '#f8fafc',
+        background: 'var(--bg-primary)',
+        color: 'var(--text-primary)',
         padding: '32px 20px 80px',
-        fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)'
+        fontFamily: 'var(--font-sans, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif)',
+        position: 'relative'
       }}
     >
       {/* Top Bar */}
@@ -25,7 +27,7 @@ export default function VerifyAcademicsPage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          borderBottom: '1px solid var(--border)',
           paddingBottom: '16px'
         }}
       >
@@ -34,8 +36,8 @@ export default function VerifyAcademicsPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Link
             href="/student/dashboard"
-            className="btn btn-ghost btn-sm"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#94a3b8' }}
+            className="btn btn-secondary btn-sm"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}
           >
             <ArrowLeft size={15} />
             <span>Dashboard</span>
@@ -45,6 +47,7 @@ export default function VerifyAcademicsPage() {
 
       {/* Main Flow */}
       <AcademicVerificationFlow />
+      <AmbientBlooms />
     </div>
   )
 }

@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
     const [student, resumeStatsRaw, skillCount, codingSessionsRaw] = await Promise.all([
       prisma.student.findUnique({
         where: { id: session.userId },
-        select: { name: true }
+        select: { name: true, email: true }
       }),
       prisma.resume.aggregate({
         where: { studentId: session.userId },
@@ -32,9 +32,17 @@ export async function GET(request: NextRequest) {
 
     const avgAts = resumeStatsRaw._avg.atsScore || 0
     const avgScore = codingSessionsRaw._avg.score || 0
+    const resolvedName = student?.name || session.name || (session.email ? session.email.split('@')[0] : 'Student')
+    const resolvedEmail = student?.email || session.email || ''
 
     return NextResponse.json({
-      name: student?.name || 'Student',
+      name: resolvedName,
+      email: resolvedEmail,
+      student: {
+        id: session.userId,
+        name: resolvedName,
+        email: resolvedEmail
+      },
       atsScore: Math.round(avgAts),
       skillMatch: skillCount,
       jobsMatched: 24, // Static for now

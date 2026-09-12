@@ -3,13 +3,23 @@ import { useState, useEffect } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
-import styles from '../dashboard.module.css'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
+import styles from './placements.module.css'
 import {
   GraduationCap,
   Rocket,
   Building2,
   Loader2,
-  Search
+  Search,
+  CheckCircle2,
+  Calendar,
+  DollarSign,
+  AlertCircle,
+  Sparkles,
+  X,
+  ExternalLink,
+  ShieldCheck,
+  Check
 } from 'lucide-react'
 
 export default function StudentPlacementsPage() {
@@ -17,42 +27,64 @@ export default function StudentPlacementsPage() {
   const [loading, setLoading] = useState(true)
   const [applying, setApplying] = useState<number | null>(null)
   const [search, setSearch] = useState('')
+  const [filterTab, setFilterTab] = useState<'all' | 'active' | 'upcoming' | 'registered'>('all')
+  const [appliedDriveIds, setAppliedDriveIds] = useState<Set<number>>(new Set())
+  const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const [blockedNotice, setBlockedNotice] = useState<string | null>(null)
 
   useEffect(() => {
-    async function fetchDrives() {
-      try {
-        const res = await fetch('/api/placements')
-        const data = await res.json()
-        if (data.drives) {
-          setDrives(data.drives)
-        }
-      } catch (err) {
-        console.error('Error fetching drives:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
     fetchDrives()
   }, [])
 
-  const handleApply = async (driveId: number) => {
-    setApplying(driveId)
+  const fetchDrives = async () => {
     try {
-      const res = await fetch(`/api/placements/${driveId}/applications`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ student_id: 1 }) // Hardcoded for demo purposes
-      })
+      const res = await fetch('/api/placements')
       const data = await res.json()
-      if (res.ok) {
-        alert('Successfully applied to the placement drive!')
-      } else {
-        alert(data.error || 'Failed to apply')
+      if (data.drives) {
+        setDrives(data.drives)
+        const applied = new Set<number>()
+        data.drives.forEach((d: any) => {
+          if (d.hasApplied) applied.add(d.id)
+        })
+        setAppliedDriveIds(applied)
       }
     } catch (err) {
+      console.error('Error fetching drives:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleApply = async (drive: any) => {
+    setApplying(drive.id)
+    setNotification(null)
+
+    try {
+      const res = await fetch(`/api/placements/${drive.id}/applications`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      })
+      const data = await res.json()
+
+      if (res.ok || data.success) {
+        setAppliedDriveIds(prev => new Set(prev).add(drive.id))
+        setNotification({
+          type: 'success',
+          message: `🎉 Successfully registered for ${drive.company_name || drive.title}! Your application profile has been submitted to the placement officer.`
+        })
+      } else {
+        setNotification({
+          type: 'error',
+          message: data.error || data.details || 'Registration request could not be completed. Please try again.'
+        })
+      }
+    } catch (err: any) {
       console.error(err)
-      alert('An error occurred while applying.')
+      setNotification({
+        type: 'error',
+        message: err?.message || 'A network error occurred while registering for the placement drive.'
+      })
     } finally {
       setApplying(null)
     }
@@ -63,25 +95,38 @@ export default function StudentPlacementsPage() {
       <div className={styles.layout}>
         <StudentSidebar />
         <div className={styles.content}>
-          <div style={{ padding: '60px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+          <div style={{ padding: '80px 20px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
             <MorphingInfinity className="size-16" style={{ width: '64px', height: '64px', color: '#8b5cf6' }} />
-            <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Loading placement drives...</p>
+            <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500, color: 'var(--text-secondary)' }}>Loading campus placement drives...</p>
           </div>
         </div>
+        <AmbientBlooms />
       </div>
     )
   }
 
   const filteredDrives = drives.filter(d => {
     if (blockedNotice) return false
+    
+    // Filter tab
+    if (filterTab === 'active' && d.status !== 'active') return false
+    if (filterTab === 'upcoming' && d.status !== 'upcoming') return false
+    if (filterTab === 'registered' && !appliedDriveIds.has(d.id)) return false
+
+    // Search query
     if (!search.trim()) return true
     const q = search.toLowerCase()
     return (
       d.title?.toLowerCase().includes(q) ||
       d.company_name?.toLowerCase().includes(q) ||
-      d.eligibility_criteria?.toLowerCase().includes(q)
+      d.eligibilityCriteria?.toLowerCase().includes(q) ||
+      d.description?.toLowerCase().includes(q)
     )
   })
+
+  const activeCount = drives.filter(d => d.status === 'active').length
+  const upcomingCount = drives.filter(d => d.status === 'upcoming').length
+  const registeredCount = appliedDriveIds.size
 
   return (
     <div className={styles.layout}>
@@ -92,107 +137,301 @@ export default function StudentPlacementsPage() {
             <BackButton fallbackHref="/student/dashboard" />
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <GraduationCap size={24} strokeWidth={2} color="#8b5cf6" />
+                <GraduationCap size={26} strokeWidth={2} color="#8b5cf6" />
                 <h1 className={styles.pageTitle}>Campus Placements</h1>
               </div>
-              <p className={styles.pageSubtitle}>View and apply to mass recruitment drives hosted by your institution.</p>
+              <p className={styles.pageSubtitle}>Official on-campus placement and mass recruitment drives organized by your institution</p>
             </div>
           </div>
         </header>
 
         <main className={styles.main}>
-          {/* Placement Search Bar */}
-          <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <span style={{ position: 'absolute', left: '16px', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
-                <Search size={18} strokeWidth={2} color="var(--text-muted)" />
-              </span>
-              <input
-                type="text"
-                placeholder="Search placement drives, roles, or eligibility..."
-                value={search}
-                onChange={(e) => {
-                  const val = e.target.value
-                  setSearch(val)
-                  const offScopePatterns = /\b(latest movies?|celebrity news|gaming|cricket score|best phone|dating|casino|betting|random entertainment)\b/i
-                  if (offScopePatterns.test(val)) {
-                    setBlockedNotice("This search is outside PlaceIQ's career and learning scope. Try searching for jobs, internships, placements, skills, or career preparation.")
-                  } else {
-                    setBlockedNotice(null)
-                  }
-                }}
-                style={{
-                  width: '100%',
-                  padding: '12px 16px 12px 46px',
-                  borderRadius: '12px',
-                  border: '1px solid var(--border)',
-                  background: 'var(--bg-card)',
-                  color: 'var(--text-primary)',
-                  fontSize: '0.92rem'
-                }}
-              />
-            </div>
-
-            {blockedNotice && (
-              <div style={{ padding: '14px 18px', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '1.4rem' }}>🎓</span>
-                <div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fca5a5' }}>
-                    Placement Search Notice
-                  </div>
-                  <div style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
-                    {blockedNotice}
-                  </div>
-                </div>
+          {/* Notification banner */}
+          {notification && (
+            <div className={`${styles.bannerNotice} ${notification.type === 'success' ? styles.bannerSuccess : styles.bannerError}`}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                {notification.type === 'success' ? (
+                  <CheckCircle2 size={20} strokeWidth={2} color="#10b981" />
+                ) : (
+                  <AlertCircle size={20} strokeWidth={2} color="#ef4444" />
+                )}
+                <span>{notification.message}</span>
               </div>
+              <button
+                onClick={() => setNotification(null)}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'inherit', display: 'flex', alignItems: 'center', padding: '4px' }}
+              >
+                <X size={16} strokeWidth={2} />
+              </button>
+            </div>
+          )}
+
+          {/* Search Bar */}
+          <div className={styles.searchBar}>
+            <span style={{ display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}>
+              <Search size={18} strokeWidth={2} />
+            </span>
+            <input
+              type="text"
+              placeholder="Search placement drives, role titles, target companies, or eligibility..."
+              value={search}
+              onChange={(e) => {
+                const val = e.target.value
+                setSearch(val)
+                const offScopePatterns = /\b(latest movies?|celebrity news|gaming|cricket score|best phone|dating|casino|betting|random entertainment)\b/i
+                if (offScopePatterns.test(val)) {
+                  setBlockedNotice("This search is outside PlaceIQ's career and learning scope. Try searching for jobs, internships, placements, skills, or career preparation.")
+                } else {
+                  setBlockedNotice(null)
+                }
+              }}
+              className={styles.searchInput}
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px', display: 'flex', alignItems: 'center' }}
+              >
+                <X size={16} strokeWidth={2} />
+              </button>
             )}
           </div>
 
-          <div className={`glass ${styles.panel}`}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-              <Rocket size={18} strokeWidth={2} color="#8b5cf6" />
-              <h3 className={styles.panelTitle}>Upcoming Drives ({filteredDrives.length})</h3>
+          {blockedNotice && (
+            <div style={{ padding: '14px 18px', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '1.4rem' }}>🎓</span>
+              <div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fca5a5' }}>
+                  Placement Search Notice
+                </div>
+                <div style={{ fontSize: '0.84rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
+                  {blockedNotice}
+                </div>
+              </div>
             </div>
+          )}
+
+          {/* Drives Panel */}
+          <div className={styles.panel}>
+            <div className={styles.panelHeader}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Rocket size={20} strokeWidth={2} color="#8b5cf6" />
+                <h2 className={styles.panelTitle}>Available Drives ({filteredDrives.length})</h2>
+              </div>
+
+              {/* Tabs */}
+              <div style={{ display: 'flex', gap: '6px', background: 'var(--bg-secondary)', padding: '4px', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                <button
+                  onClick={() => setFilterTab('all')}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    background: filterTab === 'all' ? 'var(--card)' : 'transparent',
+                    color: filterTab === 'all' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                    boxShadow: filterTab === 'all' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  All ({drives.length})
+                </button>
+                <button
+                  onClick={() => setFilterTab('active')}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    background: filterTab === 'active' ? 'var(--card)' : 'transparent',
+                    color: filterTab === 'active' ? '#10b981' : 'var(--text-secondary)',
+                    boxShadow: filterTab === 'active' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  Active ({activeCount})
+                </button>
+                <button
+                  onClick={() => setFilterTab('upcoming')}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    background: filterTab === 'upcoming' ? 'var(--card)' : 'transparent',
+                    color: filterTab === 'upcoming' ? '#6366f1' : 'var(--text-secondary)',
+                    boxShadow: filterTab === 'upcoming' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  Upcoming ({upcomingCount})
+                </button>
+                <button
+                  onClick={() => setFilterTab('registered')}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    background: filterTab === 'registered' ? 'var(--card)' : 'transparent',
+                    color: filterTab === 'registered' ? '#8b5cf6' : 'var(--text-secondary)',
+                    boxShadow: filterTab === 'registered' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  My Registered ({registeredCount})
+                </button>
+              </div>
+            </div>
+
             {filteredDrives.length === 0 ? (
-              <div style={{ color: 'var(--text-secondary)' }}>
-                {blockedNotice ? 'No matching opportunities within learning scope.' : 'No placement drives found. Keep checking!'}
+              <div style={{ textAlign: 'center', padding: '3.5rem 1rem', color: 'var(--text-secondary)' }}>
+                <Building2 size={40} strokeWidth={1.5} color="var(--text-muted)" style={{ marginBottom: '12px' }} />
+                <div style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '4px' }}>
+                  {blockedNotice ? 'No matching opportunities within learning scope' : 'No placement drives found'}
+                </div>
+                <div style={{ fontSize: '0.88rem' }}>
+                  {filterTab === 'registered' ? "You haven't registered for any placement drives yet." : 'Check back regularly as your college placement cell publishes new drives.'}
+                </div>
               </div>
             ) : (
-              <div className={styles.jobsList}>
-                {filteredDrives.map((drive) => (
-                  <div key={drive.id} className={styles.jobCard}>
-                    <div className={styles.jobLogo} style={{ background: 'linear-gradient(135deg, #10b981, #3b82f6)' }}>
-                      {drive.company_name ? drive.company_name.charAt(0) : <Building2 size={20} />}
-                    </div>
-                    <div className={styles.jobInfo}>
-                      <div className={styles.jobTitle} style={{ fontSize: '1.125rem', marginBottom: '4px' }}>{drive.title}</div>
-                      <div className={styles.jobMeta} style={{ fontSize: '0.875rem' }}>
-                        {drive.company_name || 'Multi-Company'} Drive
+              <div className={styles.drivesList}>
+                {filteredDrives.map((drive) => {
+                  const isRegistered = appliedDriveIds.has(drive.id)
+                  const isCompleted = drive.status === 'completed'
+                  const isApplying = applying === drive.id
+
+                  const logoGradient = drive.company_name === 'Google'
+                    ? 'linear-gradient(135deg, #4285F4, #34A853)'
+                    : drive.company_name === 'Microsoft'
+                    ? 'linear-gradient(135deg, #0078D4, #00BCF2)'
+                    : drive.company_name === 'Amazon'
+                    ? 'linear-gradient(135deg, #FF9900, #E47911)'
+                    : 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+
+                  return (
+                    <div key={drive.id} className={styles.driveCard}>
+                      <div className={styles.driveLogo} style={{ background: logoGradient }}>
+                        {drive.company_name ? drive.company_name.charAt(0) : <Building2 size={24} />}
                       </div>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '8px' }}>
-                        Eligibility: {drive.eligibility_criteria || 'Open for all'}
+
+                      <div className={styles.driveInfo}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                          <h3 className={styles.driveTitle}>{drive.title}</h3>
+                          {isRegistered && (
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '0.74rem', padding: '2px 8px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', fontWeight: 600, border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                              <Check size={12} strokeWidth={2.5} /> Registered
+                            </span>
+                          )}
+                        </div>
+
+                        <div className={styles.driveCompany}>
+                          <Building2 size={14} strokeWidth={2} />
+                          <span>{drive.company_name || 'Enterprise'} Placement Drive</span>
+                        </div>
+
+                        {drive.description && (
+                          <div className={styles.driveDesc}>{drive.description}</div>
+                        )}
+
+                        <div className={styles.driveMeta}>
+                          {drive.eligibilityCriteria && (
+                            <span className={styles.metaPill}>
+                              <GraduationCap size={13} strokeWidth={2} color="#8b5cf6" />
+                              <span>{drive.eligibilityCriteria}</span>
+                            </span>
+                          )}
+
+                          <span className={styles.metaPill}>
+                            <ShieldCheck size={13} strokeWidth={2} color="#10b981" />
+                            <span>Verified Campus Drive</span>
+                          </span>
+
+                          <span className={styles.metaPill}>
+                            <Calendar size={13} strokeWidth={2} color="#3b82f6" />
+                            <span>Batch of 2026</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles.driveActions}>
+                        <span
+                          style={{
+                            fontSize: '0.78rem',
+                            fontWeight: 600,
+                            padding: '4px 10px',
+                            borderRadius: '12px',
+                            textTransform: 'capitalize',
+                            background:
+                              drive.status === 'active'
+                                ? 'rgba(16, 185, 129, 0.12)'
+                                : drive.status === 'upcoming'
+                                ? 'rgba(99, 102, 241, 0.12)'
+                                : 'var(--bg-secondary)',
+                            color:
+                              drive.status === 'active'
+                                ? '#10b981'
+                                : drive.status === 'upcoming'
+                                ? '#6366f1'
+                                : 'var(--text-muted)',
+                            border: `1px solid ${
+                              drive.status === 'active'
+                                ? 'rgba(16, 185, 129, 0.25)'
+                                : drive.status === 'upcoming'
+                                ? 'rgba(99, 102, 241, 0.25)'
+                                : 'var(--border)'
+                            }`
+                          }}
+                        >
+                          {drive.status}
+                        </span>
+
+                        {isRegistered ? (
+                          <div className={styles.appliedBtn}>
+                            <CheckCircle2 size={16} strokeWidth={2.5} />
+                            <span>Registered ✓</span>
+                          </div>
+                        ) : isCompleted ? (
+                          <div className={styles.closedBtn}>
+                            <span>Concluded</span>
+                          </div>
+                        ) : (
+                          <button
+                            className={styles.registerBtn}
+                            onClick={() => handleApply(drive)}
+                            disabled={isApplying}
+                          >
+                            {isApplying ? (
+                              <>
+                                <Loader2 size={16} className="animate-spin" />
+                                <span>Registering...</span>
+                              </>
+                            ) : (
+                              <>
+                                <Sparkles size={15} strokeWidth={2} />
+                                <span>Register for Drive</span>
+                              </>
+                            )}
+                          </button>
+                        )}
                       </div>
                     </div>
-                    <div className={styles.jobRight} style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
-                      <span className={`badge ${drive.status === 'upcoming' ? 'badge-blue' : drive.status === 'active' ? 'badge-green' : 'badge-orange'}`}>
-                        {drive.status}
-                      </span>
-                      <button 
-                        className="btn btn-primary btn-sm"
-                        onClick={() => handleApply(drive.id)}
-                        disabled={applying === drive.id || drive.status === 'completed'}
-                      >
-                        {applying === drive.id ? 'Applying...' : drive.status === 'completed' ? 'Closed' : 'Register for Drive'}
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>
         </main>
       </div>
+      <AmbientBlooms />
     </div>
   )
 }
-

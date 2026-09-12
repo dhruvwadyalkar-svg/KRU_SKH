@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from './dream.module.css'
 import {
   Sparkles,
@@ -38,6 +39,7 @@ export default function DreamMode() {
   const [selected, setSelected] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<any>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const [blockedNotice, setBlockedNotice] = useState<string | null>(null)
 
   useEffect(() => {
@@ -66,6 +68,7 @@ export default function DreamMode() {
     setSelected(company)
     setLoading(true)
     setData(null)
+    setLoadError(null)
 
     try {
       const res = await fetch('/api/dream-company', {
@@ -75,13 +78,34 @@ export default function DreamMode() {
       })
 
       const result = await res.json()
-      if (res.ok) {
+      if (res.ok && result && !result.error) {
         setData(result)
+      } else {
+        setLoadError(result.error || 'Failed to load company insights')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error)
+      setLoadError(error?.message || 'Network error occurred while fetching company insights')
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleSearchSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault()
+    if (!search.trim() || blockedNotice) return
+    const match = companies.find(c => c.name.toLowerCase() === search.trim().toLowerCase())
+    if (match) {
+      fetchDreamCompany(match)
+    } else {
+      const customCompany = {
+        id: 'custom-' + Date.now(),
+        name: search.trim(),
+        industry: 'Target Enterprise / Tech',
+        color: '#8b5cf6',
+        logo: 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ctext y=".9em" font-size="90"%3E🏢%3C/text%3E%3C/svg%3E'
+      }
+      fetchDreamCompany(customCompany)
     }
   }
 
@@ -139,13 +163,13 @@ export default function DreamMode() {
         <main className={styles.main}>
           {!selected ? (
             <>
-              <div className={styles.searchBar}>
+              <form onSubmit={handleSearchSubmit} className={styles.searchBar}>
                 <span className={styles.searchIcon} style={{ display: 'flex', alignItems: 'center' }}>
                   <Search size={18} strokeWidth={2} color="var(--text-muted)" />
                 </span>
                 <input
                   type="text"
-                  placeholder="Search target companies (e.g. Google, Microsoft, TCS, Amazon)..."
+                  placeholder="Search or enter any target company (e.g. Google, Microsoft, TCS, Wipro, Accenture)..."
                   value={search}
                   onChange={(e) => {
                     const val = e.target.value
@@ -159,7 +183,17 @@ export default function DreamMode() {
                   }}
                   className={styles.searchInput}
                 />
-              </div>
+                {search.trim() && (
+                  <button
+                    type="submit"
+                    className="btn btn-primary btn-sm"
+                    style={{ marginRight: '8px', display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}
+                  >
+                    <span>Analyze</span>
+                    <Sparkles size={14} strokeWidth={2} />
+                  </button>
+                )}
+              </form>
 
               {blockedNotice && (
                 <div style={{ marginBottom: '1.5rem', padding: '14px 18px', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -195,6 +229,24 @@ export default function DreamMode() {
                       </button>
                     </div>
                   ))}
+
+                  {filtered.length === 0 && search.trim() && !blockedNotice && (
+                    <div 
+                      className={styles.card} 
+                      onClick={() => handleSearchSubmit()}
+                      style={{ border: '2px dashed var(--primary)', cursor: 'pointer', background: 'var(--card)' }}
+                    >
+                      <div className={styles.cardLogo} style={{ background: 'rgba(139, 92, 246, 0.15)' }}>
+                        <Sparkles size={32} strokeWidth={2} color="#8b5cf6" />
+                      </div>
+                      <h3 className={styles.cardName}>Analyze &quot;{search.trim()}&quot;</h3>
+                      <p className={styles.cardIndustry}>Custom AI Placement & Hiring Intelligence</p>
+                      <button className={`btn btn-primary btn-sm ${styles.cardBtn}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', justifyContent: 'center' }}>
+                        <span>Generate Insights</span>
+                        <Rocket size={14} strokeWidth={2} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </>
@@ -472,15 +524,41 @@ export default function DreamMode() {
                   </div>
                 </>
               ) : (
-                <div className={styles.error} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                  <TriangleAlert size={32} strokeWidth={2} color="#ef4444" />
-                  <p>Failed to load data</p>
+                <div className={styles.error} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px', padding: '3rem 2rem', background: 'var(--card)', borderRadius: '16px', border: '1px solid var(--border)', textAlign: 'center', maxWidth: '520px', margin: '2rem auto' }}>
+                  <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TriangleAlert size={28} strokeWidth={2} color="#ef4444" />
+                  </div>
+                  <div>
+                    <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', fontWeight: 600, color: 'var(--text-primary)' }}>
+                      Unable to load {selected?.name || 'company'} intelligence
+                    </h3>
+                    <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                      {loadError || 'The network or AI service took longer than expected to respond.'}
+                    </p>
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => fetchDreamCompany(selected)}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    >
+                      <Sparkles size={14} strokeWidth={2} />
+                      <span>Retry Analysis</span>
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => { setSelected(null); setData(null); setLoadError(null) }}
+                    >
+                      Browse Other Companies
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
           )}
         </main>
       </div>
+      <AmbientBlooms />
     </div>
   )
 }

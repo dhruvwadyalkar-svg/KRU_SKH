@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getSession } from '@/lib/session'
 import { z } from 'zod'
 
 const driveSchema = z.object({
@@ -30,10 +31,34 @@ export async function GET(request: Request) {
       },
       orderBy: { createdAt: 'desc' }
     })
+
+    // Check if current user is logged in as a student and has applied to any drives
+    let appliedDriveIds = new Set<number>()
+    try {
+      const session = await getSession()
+      let studentId = session?.role === 'student' ? session.userId : null
+
+      if (!studentId) {
+        // Check if demo student exists
+        const firstStudent = await prisma.student.findFirst({ select: { id: true } })
+        if (firstStudent) studentId = firstStudent.id
+      }
+
+      if (studentId) {
+        const myApps = await prisma.placementApplication.findMany({
+          where: { studentId },
+          select: { driveId: true }
+        })
+        appliedDriveIds = new Set(myApps.map((a: any) => a.driveId))
+      }
+    } catch (sessionErr) {
+      console.warn('Could not read session in placements GET:', sessionErr)
+    }
     
     const mappedDrives = drives.map((d: any) => ({
       ...d,
-      company_name: d.company?.companyName || null
+      company_name: d.company?.companyName || null,
+      hasApplied: appliedDriveIds.has(d.id)
     }))
 
     return NextResponse.json({ drives: mappedDrives })

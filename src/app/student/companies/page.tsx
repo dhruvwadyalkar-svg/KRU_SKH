@@ -3,6 +3,7 @@ import { useState } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from './companies.module.css'
 import {
   Building2,
@@ -309,6 +310,7 @@ export default function Companies() {
           )}
         </main>
       </div>
+      <AmbientBlooms />
     </div>
   )
 }

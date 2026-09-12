@@ -730,7 +730,7 @@ export default function DocumentSecurityModal({
                       <div className={styles.watermarkStamp}>
                         <div>{watermarkText || 'PLACEIQ CONFIDENTIAL'}</div>
                         <div style={{ fontSize: '11px', fontWeight: 500, marginTop: '4px' }}>
-                          ACCESSED BY SOHAM • {new Date().toLocaleDateString()} • DOC-{documentId}
+                          ACCESSED BY VERIFIED USER • {new Date().toLocaleDateString()} • DOC-{documentId}
                         </div>
                       </div>
                     </div>

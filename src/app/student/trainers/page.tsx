@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from '../dashboard.module.css'
 import {
   Presentation,
@@ -556,19 +557,19 @@ export default function StudentTrainersPage() {
 
       {/* Booking Modal */}
       {selectedTrainer && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' }}>
-          <div style={{ background: 'var(--bg-secondary)', width: '100%', maxWidth: '560px', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-primary)' }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '1rem' }}>
+          <div style={{ background: 'var(--card)', width: '100%', maxWidth: '560px', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow-lg), 0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+            <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-secondary)' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Calendar size={18} strokeWidth={2} color="#8b5cf6" />
-                  <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)' }}>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
                     Book Session with {selectedTrainer.name}
                   </h3>
                 </div>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Select date, time, and topic to confirm booking</p>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '2px 0 0 0' }}>Select date, time, and topic to confirm booking</p>
               </div>
-              <button onClick={() => setSelectedTrainer(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center' }}>
+              <button onClick={() => setSelectedTrainer(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', padding: '6px', borderRadius: '8px' }}>
                 <X size={18} strokeWidth={2} />
               </button>
             </div>
@@ -597,7 +598,7 @@ export default function StudentTrainersPage() {
                   value={selectedSubject}
                   onChange={(e) => setSelectedSubject(e.target.value)}
                   className="form-input"
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
                 >
                   {selectedTrainer.subjects ? (
                     selectedTrainer.subjects.split(',').map((sub: string) => (
@@ -621,7 +622,7 @@ export default function StudentTrainersPage() {
                   value={bookingDate}
                   onChange={(e) => setBookingDate(e.target.value)}
                   className="form-input"
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-primary)', color: 'var(--text-primary)' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
                 />
               </div>
 
@@ -645,34 +646,35 @@ export default function StudentTrainersPage() {
                           fontWeight: 600,
                           cursor: 'pointer',
                           border: isSelected ? '1px solid var(--accent-purple)' : '1px solid var(--border)',
-                          background: isSelected ? 'var(--grad-purple)' : 'var(--bg-primary)',
-                          color: isSelected ? 'white' : 'var(--text-secondary)',
+                          background: isSelected ? 'var(--grad-purple)' : 'var(--bg-secondary)',
+                          color: isSelected ? 'white' : 'var(--text-primary)',
                           display: 'inline-flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          gap: '6px'
+                          gap: '6px',
+                          transition: 'all 0.15s ease'
                         }}
                       >
-                        <Clock size={13} strokeWidth={2} />
-                        <span>{slot.label}</span>
+                        <Clock size={12} />
+                        <span>{slot.label.split(' - ')[0]}</span>
                       </button>
                     )
                   })}
                 </div>
               </div>
 
-              {/* Notes / Specific Questions */}
+              {/* Notes Input */}
               <div style={{ marginBottom: '1.5rem' }}>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '6px', color: 'var(--text-primary)' }}>
-                  Session Notes / What do you want help with?
+                  Specific Topics or Questions to Cover
                 </label>
                 <textarea
                   rows={3}
                   value={bookingNotes}
                   onChange={(e) => setBookingNotes(e.target.value)}
-                  placeholder="e.g., I need help understanding Dynamic Programming memoization tables and mock code review..."
+                  placeholder="Share any specific problems, project hurdles, or questions you want to discuss with the trainer..."
                   className="form-input"
-                  style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-primary)', color: 'var(--text-primary)', resize: 'vertical' }}
+                  style={{ width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', resize: 'vertical' }}
                 />
               </div>
 
@@ -699,7 +701,7 @@ export default function StudentTrainersPage() {
           </div>
         </div>
       )}
+      <AmbientBlooms />
     </div>
   )
 }
-

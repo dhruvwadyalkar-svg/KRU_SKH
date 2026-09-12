@@ -1,0 +1,317 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.content {
+  flex: 1;
+  padding: 2.25rem 2.75rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pageTitle {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.searchBar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 4px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.searchBar:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.searchInput::placeholder {
+  color: var(--text-muted);
+}
+
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.75rem;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.panelTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.drivesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.driveCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.driveCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+}
+
+.driveLogo {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.driveInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.driveTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.driveCompany {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.driveDesc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.driveMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.metaPill {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+.driveActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.appliedBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  cursor: default;
+  transition: all 0.2s ease;
+}
+
+.registerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+}
+
+.registerBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.45);
+}
+
+.registerBtn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.registerBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.closedBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  cursor: not-allowed;
+}
+
+.bannerNotice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  backdrop-filter: blur(12px);
+  animation: slideDown 0.3s ease-out;
+  border: 1px solid;
+}
+
+.bannerSuccess {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.bannerError {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 1.25rem 1rem;
+  }
+  .driveCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .driveActions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .registerBtn, .appliedBtn, .closedBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

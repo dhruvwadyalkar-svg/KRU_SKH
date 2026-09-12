@@ -6,6 +6,7 @@ import BackButton from '@/components/BackButton'
 import DocumentSecurityModal from '@/components/DocumentSecurityModal'
 import SecureDocumentViewer from '@/components/SecureDocumentViewer'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from '../dashboard.module.css'
 import {
   FolderLock,
@@ -705,61 +706,62 @@ export default function StudentDocumentVaultPage() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
             gap: '12px',
             marginBottom: '1.5rem',
-            background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(99, 102, 241, 0.04) 100%)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
-            borderRadius: '14px',
-            padding: '14px 18px'
+            background: 'var(--card)',
+            border: '1px solid var(--border)',
+            borderRadius: '16px',
+            padding: '16px 20px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)'
           }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Shield size={12} color="#a78bfa" /> Protected Docs
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Shield size={13} color="#8b5cf6" /> Protected Docs
               </span>
-              <span style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>
+              <span style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {documents.filter(d => d.securityLevel === 'PROTECTED' || d.securityLevel === 'HIGHLY_PROTECTED').length}
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Flame size={12} color="#10b981" /> Highly Protected
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Flame size={13} color="#10b981" /> Highly Protected
               </span>
-              <span style={{ fontSize: '18px', fontWeight: 700, color: '#34d399' }}>
+              <span style={{ fontSize: '20px', fontWeight: 800, color: '#10b981' }}>
                 {documents.filter(d => d.securityLevel === 'HIGHLY_PROTECTED').length}
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Globe size={12} color="#60a5fa" /> Active Shares
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Globe size={13} color="#3b82f6" /> Active Shares
               </span>
-              <span style={{ fontSize: '18px', fontWeight: 700, color: '#60a5fa' }}>
+              <span style={{ fontSize: '20px', fontWeight: 800, color: '#3b82f6' }}>
                 {documents.reduce((acc, d) => acc + (d.shares?.length || 0), 0)}
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Clock size={12} color="#f59e0b" /> Expiring Soon
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Clock size={13} color="#f59e0b" /> Expiring Soon
               </span>
-              <span style={{ fontSize: '18px', fontWeight: 700, color: '#f59e0b' }}>
+              <span style={{ fontSize: '20px', fontWeight: 800, color: '#f59e0b' }}>
                 {documents.filter(d => d.expiryDate && new Date(d.expiryDate).getTime() - Date.now() < 7 * 86400000 && new Date(d.expiryDate).getTime() > Date.now()).length}
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Lock size={12} color="#c084fc" /> Locked Docs
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <Lock size={13} color="#8b5cf6" /> Locked Docs
               </span>
-              <span style={{ fontSize: '18px', fontWeight: 700, color: '#c084fc' }}>
+              <span style={{ fontSize: '20px', fontWeight: 800, color: '#8b5cf6' }}>
                 {documents.filter(d => d.isLocked).length}
               </span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <AlertTriangle size={12} color="#ef4444" /> Integrity Alerts
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <AlertTriangle size={13} color="#ef4444" /> Integrity Alerts
               </span>
-              <span style={{ fontSize: '18px', fontWeight: 700, color: '#f87171' }}>
+              <span style={{ fontSize: '20px', fontWeight: 800, color: '#ef4444' }}>
                 {documents.filter(d => d.verificationStatus === 'SUSPICIOUS' || (d.tamperScore && d.tamperScore > 40)).length}
               </span>
             </div>
@@ -767,26 +769,26 @@ export default function StudentDocumentVaultPage() {
 
           {/* Academic Marksheets Verification Hub */}
           <div style={{
-            background: 'var(--bg-secondary)',
+            background: 'var(--card)',
             border: '1px solid var(--border)',
             borderRadius: '16px',
-            padding: '1.25rem',
+            padding: '1.5rem',
             marginBottom: '1.5rem',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.03)'
           }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '8px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '8px' }}>
               <div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <GraduationCap size={20} color="#a78bfa" />
-                  <span>Academic Marksheets & Placement Eligibility Credentials</span>
+                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <GraduationCap size={22} color="#8b5cf6" />
+                  <span>Academic Marksheets &amp; Placement Eligibility Credentials</span>
                 </h3>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: '2px 0 0 0' }}>
-                  Upload verified 10th & 12th secondary marksheet documents for automated placement drive eligibility.
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '4px 0 0 0' }}>
+                  Upload verified 10th &amp; 12th secondary marksheet documents for automated placement drive eligibility.
                 </p>
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
               {/* 10th Marksheet Card */}
               {(() => {
                 const tenth = marksheets.find(m => m.educationLevel === 'TENTH')
@@ -806,29 +808,30 @@ export default function StudentDocumentVaultPage() {
 
                 return (
                   <div style={{
-                    background: 'var(--bg-primary)',
-                    border: '1px solid ' + (status === 'VERIFIED' ? 'rgba(16,185,129,0.3)' : status === 'MISMATCH' ? 'rgba(239,68,68,0.3)' : 'var(--border)'),
-                    borderRadius: '12px',
-                    padding: '14px',
+                    background: 'var(--bg-surface)',
+                    border: '1px solid ' + (status === 'VERIFIED' ? 'rgba(16,185,129,0.4)' : status === 'MISMATCH' ? 'rgba(239,68,68,0.4)' : 'var(--border)'),
+                    borderRadius: '14px',
+                    padding: '16px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    gap: '12px'
+                    gap: '14px',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a78bfa' }}>
-                          <FileText size={20} />
+                        <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(139, 92, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#8b5cf6' }}>
+                          <FileText size={22} />
                         </div>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>Class 10th Marksheet</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Secondary School Examination</div>
+                          <div style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--text-primary)' }}>Class 10th Marksheet</div>
+                          <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Secondary School Examination</div>
                         </div>
                       </div>
 
                       <div>
                         {status === 'VERIFIED' ? (
-                          <span className="badge badge-green" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <span className="badge badge-green" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(16, 185, 129, 0.12)', color: '#059669', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                             <CheckCircle2 size={12} /> Verified (DigiLocker)
                           </span>
                         ) : status === 'MISMATCH' ? (
@@ -841,16 +844,16 @@ export default function StudentDocumentVaultPage() {
                           </span>
                         ) : isUploaded ? (
                           isExtractionComplete ? (
-                            <span className="badge badge-blue" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(99, 102, 241, 0.15)', color: '#818cf8', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+                            <span className="badge badge-blue" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(99, 102, 241, 0.15)', color: '#6366f1', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
                               <FileCheck size={12} /> Extraction Complete
                             </span>
                           ) : (
-                            <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                            <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#d97706', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                               <AlertTriangle size={12} /> Extraction Incomplete
                             </span>
                           )
                         ) : (
-                          <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', padding: '2px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', padding: '3px 9px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '6px' }}>
                             Not Uploaded
                           </span>
                         )}
@@ -858,45 +861,45 @@ export default function StudentDocumentVaultPage() {
                     </div>
 
                     {isUploaded && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'rgba(255,255,252,0.02)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px', borderBottom: '1px dashed var(--border)' }}>
-                          <span>Academic Extraction:</span>
-                          <span style={{ color: isExtractionComplete ? '#34d399' : '#f59e0b', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <div style={{ fontSize: '0.84rem', background: 'var(--bg-secondary)', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '5px', borderBottom: '1px dashed var(--border)' }}>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Academic Extraction:</span>
+                          <span style={{ color: isExtractionComplete ? '#059669' : '#d97706', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                             {isExtractionComplete ? '✓ Complete' : 'Incomplete'}
                           </span>
                         </div>
                         {!isExtractionComplete && missingFields.length > 0 && (
-                          <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '6px 8px', borderRadius: '6px', fontSize: '0.72rem', color: '#fbbf24', margin: '2px 0' }}>
+                          <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '6px 8px', borderRadius: '6px', fontSize: '0.75rem', color: '#d97706', margin: '2px 0' }}>
                             <strong>Missing:</strong> {missingFields.join(', ')}
                           </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Candidate Name:</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{tenth.studentName || 'Pending extraction'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Candidate Name:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{tenth.studentName || 'Pending extraction'}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Seat / Roll No:</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{tenth.seatNumber || tenth.rollNumber || 'Pending'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Seat / Roll No:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{tenth.seatNumber || tenth.rollNumber || 'Pending'}</span>
                         </div>
                         {(tenth.certificateNumber || tenth.registrationNumber) && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>Security / Reg Ref:</span>
-                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontFamily: 'monospace' }}>{tenth.certificateNumber || tenth.registrationNumber}</span>
+                            <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Security / Reg Ref:</span>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', fontFamily: 'monospace', fontWeight: 600 }}>{tenth.certificateNumber || tenth.registrationNumber}</span>
                           </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Board:</span>
-                          <span style={{ color: 'var(--text-primary)' }}>{tenth.board || 'CBSE / State Board'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Board:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{tenth.board || 'CBSE / State Board'}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Passing Year:</span>
-                          <span style={{ color: 'var(--text-primary)' }}>{tenth.passingYear || 'N/A'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Passing Year:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{tenth.passingYear || 'N/A'}</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', borderTop: '1px dashed var(--border)' }}>
-                          <span>Official Verification:</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '5px', borderTop: '1px dashed var(--border)' }}>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Official Verification:</span>
                           <span style={{
-                            fontWeight: 600,
-                            color: status === 'VERIFIED' ? '#34d399' : status === 'MISMATCH' ? '#f87171' : '#fbbf24'
+                            fontWeight: 700,
+                            color: status === 'VERIFIED' ? '#059669' : status === 'MISMATCH' ? '#ef4444' : '#d97706'
                           }}>
                             {status === 'VERIFIED' ? '✓ Verified (DigiLocker)' : status === 'MISMATCH' ? 'Mismatch' : 'Pending DigiLocker Verification'}
                           </span>
@@ -1009,29 +1012,30 @@ export default function StudentDocumentVaultPage() {
 
                 return (
                   <div style={{
-                    background: 'var(--bg-primary)',
-                    border: '1px solid ' + (status === 'VERIFIED' ? 'rgba(16,185,129,0.3)' : status === 'MISMATCH' ? 'rgba(239,68,68,0.3)' : 'var(--border)'),
-                    borderRadius: '12px',
-                    padding: '14px',
+                    background: 'var(--bg-surface)',
+                    border: '1px solid ' + (status === 'VERIFIED' ? 'rgba(16,185,129,0.4)' : status === 'MISMATCH' ? 'rgba(239,68,68,0.4)' : 'var(--border)'),
+                    borderRadius: '14px',
+                    padding: '16px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    gap: '12px'
+                    gap: '14px',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.02)'
                   }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa' }}>
-                          <GraduationCap size={20} />
+                        <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
+                          <GraduationCap size={22} />
                         </div>
                         <div>
-                          <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>Class 12th / Diploma Marksheet</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Higher Secondary Examination</div>
+                          <div style={{ fontWeight: 700, fontSize: '0.98rem', color: 'var(--text-primary)' }}>Class 12th / Diploma Marksheet</div>
+                          <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Higher Secondary Examination</div>
                         </div>
                       </div>
 
                       <div>
                         {status === 'VERIFIED' ? (
-                          <span className="badge badge-green" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                          <span className="badge badge-green" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(16, 185, 129, 0.12)', color: '#059669', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                             <CheckCircle2 size={12} /> Verified (DigiLocker)
                           </span>
                         ) : status === 'MISMATCH' ? (
@@ -1044,16 +1048,16 @@ export default function StudentDocumentVaultPage() {
                           </span>
                         ) : isUploaded ? (
                           isExtractionComplete ? (
-                            <span className="badge badge-blue" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(59, 130, 246, 0.15)', color: '#60a5fa', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                            <span className="badge badge-blue" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(59, 130, 246, 0.15)', color: '#2563eb', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
                               <FileCheck size={12} /> Extraction Complete
                             </span>
                           ) : (
-                            <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                            <span className="badge badge-orange" style={{ fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px', background: 'rgba(245, 158, 11, 0.15)', color: '#d97706', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                               <AlertTriangle size={12} /> Extraction Incomplete
                             </span>
                           )
                         ) : (
-                          <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', padding: '2px 8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', padding: '3px 9px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: '6px' }}>
                             Not Uploaded
                           </span>
                         )}
@@ -1061,45 +1065,45 @@ export default function StudentDocumentVaultPage() {
                     </div>
 
                     {isUploaded && (
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '4px', borderBottom: '1px dashed var(--border)' }}>
-                          <span>Academic Extraction:</span>
-                          <span style={{ color: isExtractionComplete ? '#34d399' : '#f59e0b', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      <div style={{ fontSize: '0.84rem', background: 'var(--bg-secondary)', padding: '12px 14px', borderRadius: '10px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '5px', borderBottom: '1px dashed var(--border)' }}>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Academic Extraction:</span>
+                          <span style={{ color: isExtractionComplete ? '#059669' : '#d97706', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                             {isExtractionComplete ? '✓ Complete' : 'Incomplete'}
                           </span>
                         </div>
                         {!isExtractionComplete && missingFields.length > 0 && (
-                          <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '6px 8px', borderRadius: '6px', fontSize: '0.72rem', color: '#fbbf24', margin: '2px 0' }}>
+                          <div style={{ background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '6px 8px', borderRadius: '6px', fontSize: '0.75rem', color: '#d97706', margin: '2px 0' }}>
                             <strong>Missing:</strong> {missingFields.join(', ')}
                           </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Candidate Name:</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{twelfth.studentName || 'Pending extraction'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Candidate Name:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{twelfth.studentName || 'Pending extraction'}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Seat / Roll No:</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{twelfth.seatNumber || twelfth.rollNumber || 'Pending'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Seat / Roll No:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{twelfth.seatNumber || twelfth.rollNumber || 'Pending'}</span>
                         </div>
                         {(twelfth.certificateNumber || twelfth.registrationNumber) && (
                           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>Security / Reg Ref:</span>
-                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontFamily: 'monospace' }}>{twelfth.certificateNumber || twelfth.registrationNumber}</span>
+                            <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Security / Reg Ref:</span>
+                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.78rem', fontFamily: 'monospace', fontWeight: 600 }}>{twelfth.certificateNumber || twelfth.registrationNumber}</span>
                           </div>
                         )}
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Board:</span>
-                          <span style={{ color: 'var(--text-primary)' }}>{twelfth.board || 'CBSE / State Board'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Board:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{twelfth.board || 'CBSE / State Board'}</span>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                          <span>Passing Year:</span>
-                          <span style={{ color: 'var(--text-primary)' }}>{twelfth.passingYear || 'N/A'}</span>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Passing Year:</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{twelfth.passingYear || 'N/A'}</span>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '4px', borderTop: '1px dashed var(--border)' }}>
-                          <span>Official Verification:</span>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '5px', borderTop: '1px dashed var(--border)' }}>
+                          <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Official Verification:</span>
                           <span style={{
-                            fontWeight: 600,
-                            color: status === 'VERIFIED' ? '#34d399' : status === 'MISMATCH' ? '#f87171' : '#fbbf24'
+                            fontWeight: 700,
+                            color: status === 'VERIFIED' ? '#059669' : status === 'MISMATCH' ? '#ef4444' : '#d97706'
                           }}>
                             {status === 'VERIFIED' ? '✓ Verified (DigiLocker)' : status === 'MISMATCH' ? 'Mismatch' : 'Pending DigiLocker Verification'}
                           </span>
@@ -1126,7 +1130,7 @@ export default function StudentDocumentVaultPage() {
                               fontSize: '11px',
                               fontWeight: 600,
                               background: 'rgba(59, 130, 246, 0.15)',
-                              color: '#60a5fa',
+                              color: '#3b82f6',
                               border: '1px solid rgba(59, 130, 246, 0.3)',
                               cursor: 'pointer',
                               display: 'inline-flex',
@@ -1175,7 +1179,7 @@ export default function StudentDocumentVaultPage() {
                           borderRadius: '8px',
                           fontSize: '11px',
                           fontWeight: 600,
-                          background: isUploaded ? 'var(--bg-secondary)' : '#3b82f6',
+                          background: isUploaded ? 'var(--bg-secondary)' : 'var(--accent-violet)',
                           color: isUploaded ? 'var(--text-primary)' : '#fff',
                           border: isUploaded ? '1px solid var(--border)' : 'none',
                           cursor: 'pointer',
@@ -1345,7 +1349,7 @@ export default function StudentDocumentVaultPage() {
                 <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
 
                 <thead>
-                  <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <tr style={{ background: 'var(--card)', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     <th style={{ padding: '12px 16px' }}>Document & Security</th>
                     <th style={{ padding: '12px 16px' }}>Category</th>
                     <th style={{ padding: '12px 16px' }}>Verification Status</th>
@@ -1776,7 +1780,7 @@ export default function StudentDocumentVaultPage() {
             </div>
 
             {/* 8 Modal Tabs */}
-            <div style={{ display: 'flex', gap: '4px', padding: '8px 1.5rem', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--border)', overflowX: 'auto' }}>
+            <div style={{ display: 'flex', gap: '4px', padding: '8px 1.5rem', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)', overflowX: 'auto' }}>
               {[
                 { id: 'overview', label: 'Overview', icon: Eye },
                 { id: 'fields', label: 'Extracted Fields', icon: FileCheck },
@@ -2687,6 +2691,7 @@ export default function StudentDocumentVaultPage() {
           </div>
         </div>
       )}
+      <AmbientBlooms />
     </div>
   )
 }

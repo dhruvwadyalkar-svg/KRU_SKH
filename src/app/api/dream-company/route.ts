@@ -57,17 +57,43 @@ function getFallbackDreamData(companyName: string) {
   }
 }
 
-export async function POST(req: NextRequest) {
-  let companyName = 'Target Company'
-  try {
-    const body = await req.json()
-    companyName = body.companyName || 'Target Company'
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const companyName = searchParams.get('companyName') || searchParams.get('company') || 'Google'
+  return processDreamCompany(companyName)
+}
 
-    if (!companyName || !companyName.trim()) {
+export async function POST(req: NextRequest) {
+  let companyName = 'Google'
+  try {
+    let body: any = {}
+    try {
+      body = await req.json()
+    } catch {
+      try {
+        const rawText = await req.text()
+        body = JSON.parse(rawText.replace(/\\"/g, '"'))
+      } catch {
+        body = {}
+      }
+    }
+    companyName = body.companyName || body.company || 'Google'
+    return processDreamCompany(companyName)
+  } catch (error: any) {
+    console.error('Dream Company API Exception:', error.message)
+    return NextResponse.json(getFallbackDreamData(companyName))
+  }
+}
+
+async function processDreamCompany(rawCompanyName: string) {
+  const companyName = (rawCompanyName || 'Target Company').trim()
+  try {
+    if (!companyName) {
       return NextResponse.json({ error: 'Company name is required' }, { status: 400 })
     }
 
-    const scopeCheck = await validateLearningScope(companyName.trim())
+    // Scope guard: evaluate company in placement & interview hiring context to prevent prompt injection while allowing all dream companies
+    const scopeCheck = await validateLearningScope(`${companyName} company placement recruitment hiring interview preparation`, { mode: 'jobs' })
     if (!scopeCheck.allowed) {
       return NextResponse.json({ error: BLOCKED_SCOPE_MESSAGE, blocked: true }, { status: 400 })
     }
@@ -101,9 +127,10 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 2. Query Groq AI with reliable model
+    // 2. Query Groq AI with reliable models
     if (GROQ_API_KEY) {
-      const modelsToTry = ['openai/gpt-oss-120b', 'openai/gpt-oss-20b']
+      const activeModel = process.env.AI_MODEL || 'llama-3.3-70b-versatile'
+      const modelsToTry = [activeModel, 'llama-3.1-8b-instant']
       
       for (const model of modelsToTry) {
         try {
@@ -158,7 +185,7 @@ Respond strictly in valid JSON format with this exact structure (no markdown fen
                 'Authorization': `Bearer ${GROQ_API_KEY}`,
                 'Content-Type': 'application/json'
               },
-              timeout: 15000
+              timeout: 8000
             }
           )
 

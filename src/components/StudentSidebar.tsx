@@ -138,23 +138,53 @@ export default function StudentSidebar() {
 
   const fetchUserData = async () => {
     try {
-      const res = await fetch('/api/student/dashboard', { cache: 'no-store' })
-      const data = await res.json()
-      if (data && data.student) {
-        setUserData({
-          name: data.student.name || 'Soham',
-          email: data.student.email || ''
-        })
-      } else {
-        setUserData({
-          name: 'Soham',
-          email: 'soham@placeiq.internal'
-        })
+      // 1. Direct check with /api/auth/me for authenticated user
+      const meRes = await fetch('/api/auth/me', { cache: 'no-store' })
+      if (meRes.ok) {
+        const meData = await meRes.json()
+        if (meData?.user?.name) {
+          setUserData({
+            name: meData.user.name,
+            email: meData.user.email || ''
+          })
+          return
+        }
       }
+
+      // 2. Secondary check /api/student/dashboard
+      const res = await fetch('/api/student/dashboard', { cache: 'no-store' })
+      if (res.ok) {
+        const data = await res.json()
+        const resolvedName = data.student?.name || data.name || (data.email ? data.email.split('@')[0] : 'Student')
+        const resolvedEmail = data.student?.email || data.email || ''
+        setUserData({
+          name: resolvedName,
+          email: resolvedEmail
+        })
+        return
+      }
+
+      // 3. Fallback to /api/student/profile
+      const profileRes = await fetch('/api/student/profile', { cache: 'no-store' })
+      if (profileRes.ok) {
+        const pData = await profileRes.json()
+        if (pData?.name) {
+          setUserData({
+            name: pData.name,
+            email: pData.email || ''
+          })
+          return
+        }
+      }
+
+      setUserData({
+        name: 'Student',
+        email: ''
+      })
     } catch {
       setUserData({
-        name: 'Soham',
-        email: 'soham@placeiq.internal'
+        name: 'Student',
+        email: ''
       })
     }
   }

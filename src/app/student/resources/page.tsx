@@ -3,6 +3,7 @@ import { useState } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import dashboardStyles from '../dashboard.module.css'
 import styles from './resources.module.css'
 import {
@@ -1223,6 +1224,7 @@ export default function LearningResources() {
           </div>
         </div>
       )}
+      <AmbientBlooms />
     </div>
   )
 }

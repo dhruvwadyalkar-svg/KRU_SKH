@@ -380,9 +380,9 @@ export default function SecurityActivityModal({ isOpen, onClose }: SecurityActiv
               style={{
                 padding: '12px 16px',
                 borderRadius: '14px',
-                background: statusMessage.type === 'success' ? 'rgba(16, 185, 129, 0.16)' : 'rgba(239, 68, 68, 0.16)',
-                border: `1px solid ${statusMessage.type === 'success' ? 'rgba(16, 185, 129, 0.35)' : 'rgba(239, 68, 68, 0.35)'}`,
-                color: statusMessage.type === 'success' ? '#34d399' : '#f87171',
+                background: statusMessage.type === 'success' ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)',
+                border: `1px solid ${statusMessage.type === 'success' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+                color: statusMessage.type === 'success' ? '#059669' : '#dc2626',
                 fontSize: '13px',
                 fontWeight: 600,
                 display: 'flex',
@@ -527,7 +527,7 @@ export default function SecurityActivityModal({ isOpen, onClose }: SecurityActiv
 
                       <div>
                         {session.isCurrent ? (
-                          <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 500 }}>
+                          <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontWeight: 600 }}>
                             Current Session
                           </span>
                         ) : (

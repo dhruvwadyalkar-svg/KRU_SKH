@@ -5,6 +5,7 @@ import Link from 'next/link'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import layoutStyles from '../dashboard.module.css'
 import styles from './bookings.module.css'
 import {
@@ -554,12 +555,12 @@ export default function StudentBookingsPage() {
         </main>
       </div>
 
-      {/* ── CANCEL CONFIRMATION MODAL ── */}
+      {/* ── CANCEL BOOKING CONFIRMATION MODAL ── */}
       {bookingToCancel && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}>
-          <div className="glass" style={{ width: '420px', maxWidth: '90vw', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', borderRadius: '16px', border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(18, 12, 30, 0.95)' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)' }}>
+          <div className="glass" style={{ width: '420px', maxWidth: '90vw', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', borderRadius: '16px', border: '1px solid rgba(239,68,68,0.3)', background: 'var(--card)', boxShadow: 'var(--shadow-lg)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'rgba(239,68,68,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f87171' }}>
+              <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: 'rgba(239,68,68,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
                 <TriangleAlert size={20} />
               </div>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Cancel Reservation?</h3>
@@ -569,7 +570,7 @@ export default function StudentBookingsPage() {
               Are you sure you want to cancel your reservation for <strong>{bookingToCancel.resourceName}</strong> on <strong>{formatDate(bookingToCancel.startTime)}</strong>?
             </p>
 
-            <div style={{ padding: '10px 14px', borderRadius: '8px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', fontSize: '0.8rem', color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ padding: '10px 14px', borderRadius: '8px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)', fontSize: '0.8rem', color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <AlertCircle size={15} style={{ flexShrink: 0 }} />
               <span>This action cannot be undone and your slot will be reopened for other students.</span>
             </div>
@@ -593,15 +594,15 @@ export default function StudentBookingsPage() {
 
       {/* ── VIEW BOOKING DETAILS MODAL ── */}
       {viewingBooking && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}>
-          <div className="glass" style={{ width: '480px', maxWidth: '90vw', padding: '26px', display: 'flex', flexDirection: 'column', gap: '18px', borderRadius: '16px', border: '1px solid rgba(139,92,246,0.3)', background: 'rgba(18, 12, 34, 0.95)' }}>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(8px)' }}>
+          <div className="glass" style={{ width: '480px', maxWidth: '90vw', padding: '26px', display: 'flex', flexDirection: 'column', gap: '18px', borderRadius: '16px', border: '1px solid var(--border)', background: 'var(--card)', boxShadow: 'var(--shadow-lg)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(139,92,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(139,92,246,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   {getCategoryIcon(viewingBooking.category || viewingBooking.resourceName)}
                 </div>
                 <div>
-                  <span style={{ fontSize: '11px', fontWeight: 600, color: '#c084fc', textTransform: 'uppercase' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--primary)', textTransform: 'uppercase' }}>
                     {viewingBooking.category || 'Resource'}
                   </span>
                   <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-primary)', margin: 0 }}>
@@ -620,38 +621,38 @@ export default function StudentBookingsPage() {
 
             {/* Modal Detail Items */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              <div style={{ padding: '10px 14px', borderRadius: '10px', background: 'rgba(0,0,0,0.25)', border: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ padding: '10px 14px', borderRadius: '10px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Status</span>
-                <span style={{ fontWeight: 700, color: viewingBooking.status === 'approved' ? '#34d399' : viewingBooking.status === 'rejected' ? '#f87171' : '#fbbf24', textTransform: 'capitalize' }}>
+                <span style={{ fontWeight: 700, color: viewingBooking.status === 'approved' ? '#10b981' : viewingBooking.status === 'rejected' ? '#ef4444' : '#f59e0b', textTransform: 'capitalize' }}>
                   {viewingBooking.status || 'Pending'}
                 </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Calendar size={15} color="#c084fc" />
+                <Calendar size={15} color="#8b5cf6" />
                 <span>Date: <strong style={{ color: 'var(--text-primary)' }}>{formatDate(viewingBooking.startTime)}</strong></span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Clock size={15} color="#c084fc" />
+                <Clock size={15} color="#8b5cf6" />
                 <span>Time: <strong style={{ color: 'var(--text-primary)' }}>{formatTime(viewingBooking.startTime)} – {formatTime(viewingBooking.endTime)}</strong></span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <MapPin size={15} color="#60a5fa" />
+                <MapPin size={15} color="#3b82f6" />
                 <span>Location: <strong style={{ color: 'var(--text-primary)' }}>{viewingBooking.location || 'Campus Center'}</strong></span>
               </div>
 
               {viewingBooking.ownerName && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <School size={15} color="#34d399" />
+                  <School size={15} color="#10b981" />
                   <span>Host: <strong style={{ color: 'var(--text-primary)' }}>{viewingBooking.ownerName}</strong></span>
                 </div>
               )}
 
               {viewingBooking.purpose && (
-                <div style={{ padding: '10px', borderRadius: '8px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', marginTop: '4px' }}>
-                  <div style={{ fontSize: '11px', color: '#fbbf24', fontWeight: 600, marginBottom: '2px' }}>Purpose of Booking:</div>
+                <div style={{ padding: '10px 12px', borderRadius: '8px', background: 'var(--bg-secondary)', border: '1px solid var(--border)', marginTop: '4px' }}>
+                  <div style={{ fontSize: '11px', color: '#f59e0b', fontWeight: 600, marginBottom: '2px' }}>Purpose of Booking:</div>
                   <div style={{ color: 'var(--text-primary)', fontSize: '0.825rem' }}>{viewingBooking.purpose}</div>
                 </div>
               )}
@@ -678,7 +679,7 @@ export default function StudentBookingsPage() {
           </div>
         </div>
       )}
-
+      <AmbientBlooms />
     </div>
   )
 }

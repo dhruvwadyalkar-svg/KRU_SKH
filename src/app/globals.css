@@ -64,18 +64,23 @@
 
   /* Legacy & compatibility aliases */
   --bg-primary: var(--background);
+  --bg-surface: #FFFFFF;
   --bg-secondary: #E2E8F0;
   --bg-card: var(--card);
   --bg-card-hover: #F8FAFC;
   --border-hover: rgba(37, 99, 235, 0.45);
   --text-primary: var(--foreground);
   --text-secondary: #334155;
+  --text-tertiary: #64748B;
   --text-muted: var(--muted);
   --accent-primary: var(--primary);
   --accent-secondary: var(--secondary);
   --accent-muted: var(--muted);
   --accent-green: #059669;
   --accent-orange: #D97706;
+  --accent-violet: #8B5CF6;
+  --accent-purple: #A855F7;
+  --accent-blue: #3B82F6;
   --grad-primary: linear-gradient(135deg, #2563EB 0%, #38BDF8 100%);
   --grad-secondary: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #38BDF8 100%);
   --text-grad-themed: linear-gradient(to right, #1E3A8A, #2563EB, #38BDF8);
@@ -115,18 +120,23 @@
 
   /* Legacy & compatibility aliases */
   --bg-primary: var(--background);
+  --bg-surface: #0f172a;
   --bg-secondary: #070d18;
   --bg-card: var(--card);
   --bg-card-hover: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.18);
   --text-primary: var(--foreground);
   --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
   --text-muted: #64748B;
   --accent-primary: var(--primary);
   --accent-secondary: var(--secondary);
   --accent-muted: var(--muted);
   --accent-green: #10B981;
   --accent-orange: #F59E0B;
+  --accent-violet: #8B5CF6;
+  --accent-purple: #A855F7;
+  --accent-blue: #3B82F6;
   --grad-primary: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
   --grad-secondary: linear-gradient(135deg, #3B82F6 0%, #60A5FA 50%, #06B6D4 100%);
   --text-grad-themed: linear-gradient(to right, #3B82F6, #60A5FA, #06B6D4);
@@ -223,10 +233,10 @@ body {
 .noise-overlay {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: -1;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.02;
+  opacity: 0.015;
   mix-blend-mode: overlay;
 }
 

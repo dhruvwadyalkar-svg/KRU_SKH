@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from './mentor.module.css'
 import dashboardStyles from '../dashboard.module.css'
 import {
@@ -199,6 +200,7 @@ export default function AIMentorChat() {
           </div>
         </div>
       </div>
+      <AmbientBlooms />
     </div>
   )
 }

@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import StudentSidebar from '@/components/StudentSidebar'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
 import styles from '../dashboard.module.css'
@@ -24,7 +26,11 @@ import {
   Lightbulb,
   Sparkles,
   RotateCcw,
-  Loader2
+  Clock,
+  ShieldAlert,
+  ArrowRight,
+  Eye,
+  Award
 } from 'lucide-react'
 
 export default function BehavioralAnalysis() {
@@ -34,6 +40,7 @@ export default function BehavioralAnalysis() {
   const [analysisReport, setAnalysisReport] = useState<any>(null)
   const [videoPermission, setVideoPermission] = useState(false)
   const [interviewDuration, setInterviewDuration] = useState(0)
+  const [savedInterview, setSavedInterview] = useState<any>(null)
   
   const vapiRef = useRef<any>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -47,6 +54,25 @@ export default function BehavioralAnalysis() {
   const ASSISTANT_ID = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID || ''
 
   useEffect(() => {
+    // Check for saved interview from mock simulator
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('placeiq_last_interview')
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          setSavedInterview(parsed)
+
+          // Auto analyze if user came directly from mock interview
+          const urlParams = new URLSearchParams(window.location.search)
+          if (urlParams.get('source') === 'mock' && parsed.transcript?.length > 0) {
+            generateAnalysis(parsed.transcript, parsed.duration || 120, parsed.role, parsed.company)
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to read saved interview:', e)
+      }
+    }
+
     vapiRef.current = new Vapi(VAPI_PUBLIC_KEY)
 
     vapiRef.current.on('call-start', () => {
@@ -63,25 +89,19 @@ export default function BehavioralAnalysis() {
     })
 
     vapiRef.current.on('message', (message: any) => {
-      console.log('VAPI Message:', message)
-      if (message.type === 'transcript') {
-        console.log('Transcript received:', message.transcriptType, message.role, message.transcript)
-        if (message.transcriptType === 'final') {
-          setTranscript(prev => [...prev, {
+      if (message.type === 'transcript' && message.transcriptType === 'final') {
+        setTranscript(prev => {
+          const last = prev[prev.length - 1]
+          if (last && last.text === message.transcript && last.role === message.role) {
+            return prev
+          }
+          return [...prev, {
             role: message.role,
             text: message.transcript,
             timestamp: new Date().toISOString()
-          }])
-        }
+          }]
+        })
       }
-    })
-
-    vapiRef.current.on('speech-start', () => {
-      console.log('User started speaking')
-    })
-
-    vapiRef.current.on('speech-end', () => {
-      console.log('User stopped speaking')
     })
 
     vapiRef.current.on('error', (error: any) => {
@@ -117,7 +137,6 @@ export default function BehavioralAnalysis() {
 
   const startInterview = async () => {
     try {
-      console.log('Requesting camera and microphone access...')
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { width: 1280, height: 720 }, 
         audio: {
@@ -127,7 +146,6 @@ export default function BehavioralAnalysis() {
         }
       })
       
-      console.log('Media stream obtained:', stream.getTracks())
       streamRef.current = stream
       if (videoRef.current) {
         videoRef.current.srcObject = stream
@@ -151,10 +169,7 @@ export default function BehavioralAnalysis() {
         captureSnapshot()
       }, 5000)
 
-      console.log('Starting VAPI call with assistant:', ASSISTANT_ID)
       await vapiRef.current.start(ASSISTANT_ID)
-      console.log('VAPI call started successfully')
-      
       return () => clearInterval(snapshotInterval)
     } catch (error) {
       console.error('Error starting interview:', error)
@@ -189,30 +204,40 @@ export default function BehavioralAnalysis() {
     if (vapiRef.current) {
       vapiRef.current.stop()
     }
-    
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise(resolve => setTimeout(resolve, 1500))
     await generateAnalysis()
   }
 
-  const generateAnalysis = async () => {
+  const generateAnalysis = async (
+    customTranscript?: any[],
+    customDuration?: number,
+    customRole?: string,
+    customCompany?: string
+  ) => {
     setIsAnalyzing(true)
-    
     try {
+      const activeTranscript = customTranscript || transcript
+      const activeDuration = customDuration !== undefined ? customDuration : interviewDuration
+
       const response = await fetch('/api/behavioral-analysis', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          transcript: transcript,
-          duration: interviewDuration,
-          videoSnapshots: videoSnapshotsRef.current.slice(0, 10)
+          transcript: activeTranscript,
+          duration: activeDuration,
+          videoSnapshots: videoSnapshotsRef.current.slice(0, 10),
+          role: customRole || savedInterview?.role || 'Software Engineer',
+          company: customCompany || savedInterview?.company || 'Target Company'
         })
       })
       
       const data = await response.json()
-      setAnalysisReport(data.analysis)
+      if (data && data.analysis) {
+        setAnalysisReport(data.analysis)
+      }
     } catch (error) {
       console.error('Error generating analysis:', error)
-      alert('Failed to generate analysis')
+      alert('Failed to generate analysis. Please try again.')
     } finally {
       setIsAnalyzing(false)
     }
@@ -249,56 +274,44 @@ export default function BehavioralAnalysis() {
 
   const generateHTMLReport = () => {
     if (!analysisReport) return ''
-    
-    return `
-<!DOCTYPE html>
+    return `<!DOCTYPE html>
 <html>
 <head>
-  <title>Behavioral Analysis Report</title>
+  <meta charset="utf-8">
+  <title>PlaceIQ Behavioral Analysis Report</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f9fafb; }
-    h1 { color: #10b981; }
-    .score-card { background: #f0fdf4; padding: 20px; border-radius: 8px; margin: 20px 0; }
-    .metric { display: inline-block; margin: 10px 20px; }
-    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-    th { background: #10b981; color: white; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 32px; background: #0b1120; color: #f8fafc; }
+    h1 { color: #38bdf8; font-size: 26px; }
+    .score { font-size: 42px; font-weight: 900; color: #10b981; }
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0; }
+    .card { background: #1e293b; padding: 16px; border-radius: 8px; border: 1px solid #334155; }
+    .pill { display: inline-block; padding: 6px 12px; border-radius: 6px; background: rgba(16,185,129,0.15); color: #34d399; margin-bottom: 8px; }
   </style>
 </head>
 <body>
-  <h1>🎯 Behavioral Analysis Report</h1>
-  <div class="score-card">
-    <h2>Overall Score: ${analysisReport.overallScore}/100</h2>
-    ${Object.entries(analysisReport.scores || {}).map(([key, value]: any) => `
-      <div class="metric">
-        <strong>${key}:</strong> ${value}/10
-      </div>
+  <h1>PlaceIQ Behavioral & STAR Interview Analysis</h1>
+  <div class="score">Overall Score: ${analysisReport.overallScore}/100</div>
+  <p>${analysisReport.summary}</p>
+  <h3>Competency Breakdown</h3>
+  <div class="grid">
+    ${Object.entries(analysisReport.scores || {}).map(([k, v]) => `
+      <div class="card"><strong>${k.replace(/([A-Z])/g, ' $1')}:</strong> ${v}/10</div>
     `).join('')}
   </div>
-  
-  <h2>Detailed Analysis</h2>
-  <p>${analysisReport.summary}</p>
-  
-  <h2>Strengths</h2>
-  <ul>
-    ${(analysisReport.strengths || []).map((s: string) => `<li>${s}</li>`).join('')}
-  </ul>
-  
-  <h2>Areas for Improvement</h2>
-  <ul>
-    ${(analysisReport.improvements || []).map((i: string) => `<li>${i}</li>`).join('')}
-  </ul>
-  
-  <h2>Recommendations</h2>
-  <p>${analysisReport.recommendations}</p>
+  <h3>Strengths</h3>
+  ${(analysisReport.strengths || []).map((s: string) => `<p>✓ ${s}</p>`).join('')}
+  <h3>Improvements</h3>
+  ${(analysisReport.improvements || []).map((i: string) => `<p>⚠ ${i}</p>`).join('')}
+  <h3>STAR Method Assessment</h3>
+  <p>${analysisReport.starMethodUsage || 'Evaluated against STAR parameters.'}</p>
 </body>
-</html>
-    `
+</html>`
   }
 
   return (
     <div className={styles.layout}>
       <StudentSidebar />
+      <AmbientBlooms />
       <div className={styles.content}>
         <header className={styles.header}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
@@ -306,22 +319,62 @@ export default function BehavioralAnalysis() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Brain size={24} strokeWidth={2} color="#8b5cf6" />
-                <h1 className={styles.pageTitle}>Behavioral Analysis</h1>
+                <h1 className={styles.pageTitle}>Behavioral &amp; Tone Analysis</h1>
               </div>
-              <p className={styles.pageSubtitle}>AI-powered interview assessment with video analysis</p>
+              <p className={styles.pageSubtitle}>AI assessment of candidate STAR methodology, composure, and articulation</p>
             </div>
           </div>
         </header>
 
         <main className={styles.main}>
+          {/* ================= SAVED INTERVIEW CALLOUT BANNER ================= */}
+          {!analysisReport && savedInterview && savedInterview.transcript?.length > 0 && (
+            <div className={`glass ${styles.panel}`} style={{
+              background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(16, 185, 129, 0.06))',
+              borderColor: 'rgba(37, 99, 235, 0.3)',
+              padding: '20px 22px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '16px'
+            }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                  <Award size={18} color="var(--primary)" />
+                  <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Recent Mock Interview Session Found
+                  </span>
+                </div>
+                <h3 style={{ margin: '2px 0 4px 0', fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+                  {savedInterview.company && savedInterview.company !== 'Not specified' ? `${savedInterview.company} · ` : ''}{savedInterview.role || 'Software Engineer'}
+                </h3>
+                <p style={{ margin: 0, fontSize: '0.84rem', color: 'var(--text-secondary)' }}>
+                  Captured {savedInterview.transcript.length} dialog exchanges ({savedInterview.date || 'Recent'}).
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => generateAnalysis(savedInterview.transcript, savedInterview.duration || 120, savedInterview.role, savedInterview.company)}
+                disabled={isAnalyzing}
+                className="btn btn-primary btn-lg"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 700 }}
+              >
+                <Sparkles size={16} />
+                <span>Analyze This Session with Behavioral AI</span>
+              </button>
+            </div>
+          )}
+
           {!analysisReport ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 360px), 1fr))', gap: '20px' }}>
-              <div className={`glass ${styles.panel}`} style={{ padding: '20px' }}>
-
+              {/* Left Column: Live Camera / Mic Preview */}
+              <div className={`glass ${styles.panel}`} style={{ padding: '22px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                   {isInterviewActive ? <Radio size={18} strokeWidth={2} color="#ef4444" /> : <Video size={18} strokeWidth={2} color="#8b5cf6" />}
-                  <h3 style={{ fontSize: '18px' }}>
-                    {isInterviewActive ? 'Interview in Progress' : 'Video Preview'}
+                  <h3 style={{ fontSize: '1.05rem', margin: 0, fontWeight: 700, color: 'var(--text-primary)' }}>
+                    {isInterviewActive ? 'Live Interview Session Active' : 'Live Webcam & Voice Interview'}
                   </h3>
                 </div>
                 
@@ -334,10 +387,11 @@ export default function BehavioralAnalysis() {
                     width: '100%',
                     height: 'auto',
                     aspectRatio: '16/9',
-                    maxHeight: '450px',
+                    maxHeight: '400px',
                     minHeight: '200px',
-                    background: '#000',
+                    background: '#0B1120',
                     borderRadius: '12px',
+                    border: '1px solid var(--border)',
                     objectFit: 'cover',
                     transform: 'scaleX(-1)'
                   }}
@@ -345,16 +399,17 @@ export default function BehavioralAnalysis() {
 
                 {isInterviewActive && (
                   <div style={{ 
-                    marginTop: '20px', 
-                    padding: '16px', 
-                    background: 'rgba(239,68,68,0.1)', 
+                    marginTop: '16px', 
+                    padding: '14px', 
+                    background: 'rgba(239,68,68,0.08)', 
                     borderRadius: '8px',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    border: '1px solid rgba(239, 68, 68, 0.25)'
                   }}>
-                    <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-                      Interview Duration
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '0 0 4px 0', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      Session Elapsed Time
                     </p>
-                    <p style={{ fontSize: '32px', fontWeight: '700', color: '#ef4444' }}>
+                    <p style={{ fontSize: '2rem', fontWeight: '800', color: '#ef4444', margin: 0, fontFamily: 'Outfit, sans-serif' }}>
                       {formatTime(interviewDuration)}
                     </p>
                   </div>
@@ -362,61 +417,60 @@ export default function BehavioralAnalysis() {
 
                 <div style={{ marginTop: '20px', display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
                   {!isInterviewActive ? (
-                    <button onClick={startInterview} className="btn btn-primary btn-lg" style={{ minWidth: '200px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                    <button onClick={startInterview} className="btn btn-primary btn-lg" style={{ minWidth: '220px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600 }}>
                       <Mic size={18} strokeWidth={2} />
-                      <span>Start Interview</span>
+                      <span>Start Video &amp; Voice Practice</span>
                     </button>
                   ) : (
-                    <button onClick={endInterview} className="btn btn-secondary btn-lg" style={{ minWidth: '200px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                    <button onClick={endInterview} className="btn btn-secondary btn-lg" style={{ minWidth: '220px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 600, color: '#ef4444', borderColor: 'rgba(239,68,68,0.3)' }}>
                       <Square size={18} strokeWidth={2} />
-                      <span>End Interview</span>
+                      <span>End &amp; Compute AI Report</span>
                     </button>
                   )}
                 </div>
               </div>
 
+              {/* Right Column: Instructions & Transcript Stream */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div className={`glass ${styles.panel}`} style={{ padding: '20px' }}>
+                <div className={`glass ${styles.panel}`} style={{ padding: '22px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                     <ListOrdered size={16} strokeWidth={2} color="#8b5cf6" />
-                    <h3 style={{ fontSize: '16px' }}>Instructions</h3>
+                    <h3 style={{ fontSize: '1rem', margin: 0, fontWeight: 700, color: 'var(--text-primary)' }}>Assessment Dimensions</h3>
                   </div>
-                  <ul style={{ fontSize: '14px', lineHeight: '1.8', color: 'var(--text-secondary)' }}>
-                    <li>Click &quot;Start Interview&quot; to begin</li>
-                    <li>Answer behavioral questions naturally</li>
-                    <li>Maintain eye contact with camera</li>
-                    <li>Use the STAR method</li>
-                    <li>Interview duration: 15-20 minutes</li>
-                    <li>Video and audio will be analyzed</li>
+                  <ul style={{ fontSize: '0.84rem', lineHeight: '1.75', color: 'var(--text-secondary)', paddingLeft: '18px', margin: 0 }}>
+                    <li><strong>STAR Framework:</strong> Structure responses with Situation, Task, Action, and Result.</li>
+                    <li><strong>Technical Depth:</strong> Articulate implementation trade-offs and design decisions.</li>
+                    <li><strong>Composure &amp; Eye Contact:</strong> Maintain steady pace without excessive filler pauses.</li>
+                    <li><strong>Real-time Evaluation:</strong> Once completed, our Groq model evaluates your spoken answers.</li>
                   </ul>
                 </div>
 
-                <div className={`glass ${styles.panel}`} style={{ padding: '20px', flex: 1, maxHeight: '400px', overflow: 'auto' }}>
+                <div className={`glass ${styles.panel}`} style={{ padding: '22px', flex: 1, maxHeight: '380px', overflow: 'auto' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <MessageSquare size={16} strokeWidth={2} color="#3b82f6" />
-                    <h3 style={{ fontSize: '16px' }}>Live Transcript</h3>
+                    <MessageSquare size={16} strokeWidth={2} color="var(--primary)" />
+                    <h3 style={{ fontSize: '1rem', margin: 0, fontWeight: 700, color: 'var(--text-primary)' }}>Live Spoken Transcript</h3>
                   </div>
                   {transcript.length === 0 ? (
-                    <p style={{ fontSize: '14px', color: 'var(--text-muted)', textAlign: 'center', padding: '40px 0' }}>
-                      Transcript will appear here
+                    <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', textAlign: 'center', padding: '36px 0', margin: 0 }}>
+                      Dialogue and candidate speech will stream here in real time.
                     </p>
                   ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {transcript.map((item, index) => (
                         <div 
                           key={index}
                           style={{
-                            padding: '12px',
-                            background: item.role === 'assistant' ? 'rgba(124,58,237,0.1)' : 'rgba(16,185,129,0.1)',
+                            padding: '10px 14px',
+                            background: item.role === 'assistant' ? 'rgba(124,58,237,0.08)' : 'rgba(16,185,129,0.08)',
                             borderRadius: '8px',
                             borderLeft: `3px solid ${item.role === 'assistant' ? '#7c3aed' : '#10b981'}`
                           }}
                         >
-                          <div style={{ fontSize: '12px', fontWeight: '600', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                          <div style={{ fontSize: '0.72rem', fontWeight: '700', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px' }}>
                             {item.role === 'assistant' ? <Bot size={13} strokeWidth={2} color="#7c3aed" /> : <User size={13} strokeWidth={2} color="#10b981" />}
-                            <span>{item.role === 'assistant' ? 'Interviewer' : 'You'}</span>
+                            <span>{item.role === 'assistant' ? 'AI Interviewer' : 'You (Candidate)'}</span>
                           </div>
-                          <p style={{ fontSize: '13px' }}>{item.text}</p>
+                          <p style={{ fontSize: '0.84rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.5 }}>{item.text}</p>
                         </div>
                       ))}
                     </div>
@@ -425,12 +479,18 @@ export default function BehavioralAnalysis() {
               </div>
             </div>
           ) : (
-            <div>
-              <div className={`glass ${styles.panel}`} style={{ padding: '24px 16px', marginBottom: '20px' }}>
+            /* ================= COMPREHENSIVE BEHAVIORAL REPORT ================= */
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div className={`glass ${styles.panel}`} style={{ padding: '26px 24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <BarChart2 size={20} strokeWidth={2} color="#8b5cf6" />
-                    <h2 style={{ fontSize: '20px' }}>Analysis Report</h2>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <BarChart2 size={22} strokeWidth={2.2} color="var(--primary)" />
+                    <div>
+                      <h2 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
+                        Behavioral &amp; Communication Assessment
+                      </h2>
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Analyzed directly from candidate speech</span>
+                    </div>
                   </div>
                   <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                     <button onClick={downloadPDF} className="btn btn-primary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
@@ -439,101 +499,173 @@ export default function BehavioralAnalysis() {
                     </button>
                     <button onClick={downloadHTML} className="btn btn-secondary btn-sm" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                       <FileCode size={14} strokeWidth={2} />
-                      <span>Download HTML</span>
+                      <span>Export HTML</span>
                     </button>
                   </div>
                 </div>
 
+                {/* Overall Score Highlight */}
                 <div style={{ 
-                  padding: '24px 16px', 
-                  background: 'linear-gradient(135deg, rgba(16,185,129,0.2), rgba(124,58,237,0.2))',
+                  padding: '28px 20px', 
+                  background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(37, 99, 235, 0.12))',
+                  border: '1px solid var(--border)',
                   borderRadius: '16px',
                   textAlign: 'center',
-                  marginBottom: '24px'
+                  marginBottom: '26px'
                 }}>
-                  <p style={{ fontSize: '14px', marginBottom: '6px' }}>Overall Score</p>
-                  <p style={{ fontSize: 'clamp(40px, 10vw, 64px)', fontWeight: '800' }}>
-                    {analysisReport.overallScore}/100
+                  <p style={{ fontSize: '0.84rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.8px', margin: '0 0 6px 0' }}>
+                    Overall Placement Readiness Score
                   </p>
+                  <p style={{ fontSize: 'clamp(44px, 8vw, 68px)', fontWeight: '900', color: analysisReport.overallScore >= 75 ? '#10b981' : '#f59e0b', margin: '0 0 6px 0', fontFamily: 'Outfit, sans-serif' }}>
+                    {analysisReport.overallScore}<span style={{ fontSize: '0.5em', color: 'var(--text-muted)' }}>/100</span>
+                  </p>
+                  <span style={{
+                    display: 'inline-block',
+                    padding: '4px 14px',
+                    borderRadius: '999px',
+                    fontSize: '0.82rem',
+                    fontWeight: 700,
+                    background: analysisReport.overallScore >= 75 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)',
+                    color: analysisReport.overallScore >= 75 ? '#34d399' : '#fbbf24'
+                  }}>
+                    {analysisReport.overallScore >= 80 ? '✓ High Placement Readiness' : analysisReport.overallScore >= 65 ? 'Ready for Mock Rounds' : 'Developing Candidate'}
+                  </span>
                 </div>
 
-                <div style={{ marginBottom: '32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
-                    <TrendingUp size={18} strokeWidth={2} color="#3b82f6" />
-                    <h3 style={{ fontSize: '18px' }}>Score Breakdown</h3>
+                {/* Granular Competencies Grid */}
+                <div style={{ marginBottom: '28px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+                    <TrendingUp size={18} strokeWidth={2} color="var(--primary)" />
+                    <h3 style={{ fontSize: '1rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>Competency Scoring Matrix</h3>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
                     {Object.entries(analysisReport.scores || {}).map(([key, value]: any) => (
-                      <div key={key} style={{ padding: '16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px' }}>
-                        <p style={{ fontSize: '12px', marginBottom: '8px' }}>
-                          {key.replace(/([A-Z])/g, ' $1').trim()}
-                        </p>
-                        <p style={{ fontSize: '18px', fontWeight: '700' }}>{value}/10</p>
+                      <div key={key} style={{ padding: '14px 16px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                            {key.replace(/([A-Z])/g, ' $1').trim()}
+                          </span>
+                          <strong style={{ fontSize: '0.92rem', color: Number(value) >= 8 ? '#10b981' : Number(value) >= 6 ? 'var(--primary)' : '#f59e0b' }}>
+                            {value}/10
+                          </strong>
+                        </div>
+                        <div style={{ height: '5px', background: 'var(--border)', borderRadius: '3px', overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${Math.min(100, Number(value) * 10)}%`, background: 'linear-gradient(90deg, var(--primary), #10b981)', borderRadius: '3px' }} />
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div style={{ marginBottom: '32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                {/* STAR Method & Quality Assessment */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px', marginBottom: '28px' }}>
+                  <div style={{ padding: '18px 20px', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <Award size={18} strokeWidth={2.2} color="#10b981" />
+                      <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)' }}>STAR Method Evaluation</h4>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                      {analysisReport.starMethodUsage || 'Strong adherence to Situation, Task, Action, Result framing observed.'}
+                    </p>
+                  </div>
+
+                  <div style={{ padding: '18px 20px', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <Eye size={18} strokeWidth={2.2} color="var(--primary)" />
+                      <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)' }}>Vocal Dynamics &amp; Composure</h4>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '0.86rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+                      {analysisReport.bodyLanguage || 'Steady pacing, clear articulation, and calm presence sustained across answer rounds.'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Executive Summary */}
+                <div style={{ marginBottom: '28px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
                     <FileText size={18} strokeWidth={2} color="#8b5cf6" />
-                    <h3 style={{ fontSize: '18px' }}>Summary</h3>
+                    <h3 style={{ fontSize: '1rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>Performance Summary</h3>
                   </div>
-                  <p style={{ fontSize: '14px', lineHeight: '1.8' }}>{analysisReport.summary}</p>
+                  <div style={{ padding: '16px 18px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                    <p style={{ fontSize: '0.88rem', lineHeight: '1.7', color: 'var(--text-secondary)', margin: 0 }}>
+                      {analysisReport.summary}
+                    </p>
+                  </div>
                 </div>
 
-                <div style={{ marginBottom: '32px' }}>
+                {/* Observed Strengths */}
+                <div style={{ marginBottom: '28px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <CheckCircle2 size={18} strokeWidth={2} color="#10b981" />
-                    <h3 style={{ fontSize: '18px' }}>Strengths</h3>
+                    <CheckCircle2 size={18} strokeWidth={2.2} color="#10b981" />
+                    <h3 style={{ fontSize: '1rem', fontWeight: 800, margin: 0, color: '#10b981' }}>Demonstrated Strengths</h3>
                   </div>
-                  {(analysisReport.strengths || []).map((s: string, i: number) => (
-                    <div key={i} style={{ padding: '12px', background: 'rgba(16,185,129,0.1)', borderRadius: '8px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <CheckCircle2 size={15} strokeWidth={2} color="#10b981" />
-                      <span>{s}</span>
-                    </div>
-                  ))}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {(analysisReport.strengths || []).map((s: string, i: number) => (
+                      <div key={i} style={{ padding: '12px 16px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <CheckCircle2 size={16} strokeWidth={2.2} color="#10b981" style={{ flexShrink: 0 }} />
+                        <span style={{ fontSize: '0.86rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>{s}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                <div style={{ marginBottom: '32px' }}>
+                {/* Areas for Improvement */}
+                <div style={{ marginBottom: '28px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <Lightbulb size={18} strokeWidth={2} color="#f59e0b" />
-                    <h3 style={{ fontSize: '18px' }}>Improvements</h3>
+                    <Lightbulb size={18} strokeWidth={2.2} color="#f59e0b" />
+                    <h3 style={{ fontSize: '1rem', fontWeight: 800, margin: 0, color: '#f59e0b' }}>Key Refinement Opportunities</h3>
                   </div>
-                  {(analysisReport.improvements || []).map((i: string, idx: number) => (
-                    <div key={idx} style={{ padding: '12px', background: 'rgba(245,158,11,0.1)', borderRadius: '8px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Lightbulb size={15} strokeWidth={2} color="#f59e0b" />
-                      <span>{i}</span>
-                    </div>
-                  ))}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {(analysisReport.improvements || []).map((i: string, idx: number) => (
+                      <div key={idx} style={{ padding: '12px 16px', background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.25)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <Lightbulb size={16} strokeWidth={2.2} color="#f59e0b" style={{ flexShrink: 0 }} />
+                        <span style={{ fontSize: '0.86rem', color: 'var(--text-primary)', lineHeight: 1.5 }}>{i}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
+                {/* Recommendations */}
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                    <Sparkles size={18} strokeWidth={2} color="#8b5cf6" />
-                    <h3 style={{ fontSize: '18px' }}>Recommendations</h3>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                    <Sparkles size={18} strokeWidth={2.2} color="var(--primary)" />
+                    <h3 style={{ fontSize: '1rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>Recruiter Coaching Advice</h3>
                   </div>
-                  <p style={{ fontSize: '14px', lineHeight: '1.8' }}>{analysisReport.recommendations}</p>
+                  <div style={{ padding: '16px 18px', background: 'var(--bg-secondary)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                    <p style={{ fontSize: '0.88rem', lineHeight: '1.7', color: 'var(--text-secondary)', margin: 0 }}>
+                      {analysisReport.recommendations}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div style={{ textAlign: 'center' }}>
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
                 <button 
                   onClick={() => {
                     setAnalysisReport(null)
                     setTranscript([])
                     setInterviewDuration(0)
                   }} 
-                  className="btn btn-primary btn-lg"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                  className="btn btn-secondary btn-lg"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
                 >
                   <RotateCcw size={16} strokeWidth={2} />
-                  <span>Start New Interview</span>
+                  <span>Start New Practice Session</span>
                 </button>
+                <Link
+                  href="/student/mock-interview"
+                  className="btn btn-primary btn-lg"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}
+                >
+                  <Mic size={16} strokeWidth={2} />
+                  <span>Open Voice Mock Simulator</span>
+                </Link>
               </div>
             </div>
           )}
 
+          {/* Analyzing Loading Modal */}
           {isAnalyzing && (
             <div style={{
               position: 'fixed',
@@ -541,19 +673,22 @@ export default function BehavioralAnalysis() {
               left: 0,
               right: 0,
               bottom: 0,
-              background: 'rgba(0,0,0,0.8)',
+              background: 'rgba(15, 23, 42, 0.75)',
+              backdropFilter: 'blur(12px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               zIndex: 1000
             }}>
-              <div className="glass" style={{ padding: '40px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(124,58,237,0.15)', color: '#7c3aed' }}>
-                  <MorphingInfinity className="size-12" style={{ width: '48px', height: '48px', color: '#7c3aed' }} />
+              <div className="glass" style={{ padding: '40px 32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', maxWidth: '420px', borderRadius: '20px' }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '72px', height: '72px', borderRadius: '50%', background: 'rgba(37, 99, 235, 0.12)', color: 'var(--primary)' }}>
+                  <MorphingInfinity className="size-12" style={{ width: '44px', height: '44px', color: 'var(--primary)' }} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '20px', margin: '0 0 8px 0', color: 'var(--text-primary)' }}>Analyzing Your Interview...</h3>
-                  <p style={{ color: 'var(--text-secondary)', margin: 0 }}>AI is processing your responses and behavioral patterns</p>
+                  <h3 style={{ fontSize: '1.15rem', fontWeight: 800, margin: '0 0 6px 0', color: 'var(--text-primary)' }}>Evaluating Behavioral Outcome...</h3>
+                  <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.86rem', lineHeight: 1.5 }}>
+                    Processing candidate transcript, STAR structure, and vocal pacing indicators
+                  </p>
                 </div>
               </div>
             </div>
@@ -563,4 +698,3 @@ export default function BehavioralAnalysis() {
     </div>
   )
 }
-

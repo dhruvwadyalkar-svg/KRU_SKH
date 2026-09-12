@@ -1,8 +1,10 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 import StudentSidebar from '@/components/StudentSidebar'
 import BackButton from '@/components/BackButton'
 import { MorphingInfinity } from '@/components/ui/morphing-infinity'
+import { AmbientBlooms } from '@/components/ui/AmbientBlooms'
 import styles from '../dashboard.module.css'
 import Vapi from '@vapi-ai/web'
 import {
@@ -22,7 +24,10 @@ import {
   User,
   BarChart2,
   FileQuestion,
-  Target
+  Target,
+  Brain,
+  ArrowRight,
+  Sparkles
 } from 'lucide-react'
 
 export default function MockInterviewPage() {
@@ -242,13 +247,77 @@ export default function MockInterviewPage() {
       qaList,
       feedbackList,
       finalSummary,
-      duration: transcript.length > 0 ? 'Completed' : 'N/A',
+      duration: transcript.length > 0 ? `${Math.max(1, Math.round(transcript.length * 0.4))}m` : 'Completed',
       date: new Date().toLocaleDateString(),
-      fullTranscript: transcript
+      fullTranscript: transcript,
+      transcript: transcript,
+      completedAt: Date.now()
     }
     
     console.log('Complete summary data:', summaryData)
     setSummary(summaryData)
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('placeiq_last_interview', JSON.stringify(summaryData))
+      } catch (e) {
+        console.warn('Failed to save session to localStorage', e)
+      }
+    }
+  }
+
+  const loadDemoSession = () => {
+    const demoCompany = 'Google'
+    const demoRole = 'Senior Frontend Engineer'
+    const demoTranscript = [
+      { role: 'assistant', text: 'Welcome to your mock interview! What company and role are you preparing for today?', timestamp: '10:00 AM' },
+      { role: 'user', text: "I'm preparing for a Frontend Engineer role at Google focusing on Next.js and high-performance web systems.", timestamp: '10:01 AM' },
+      { role: 'assistant', text: 'Excellent. Tell me about a challenging frontend performance optimization problem you tackled recently. What was the situation and how did you resolve it?', timestamp: '10:01 AM' },
+      { role: 'user', text: 'In my last project, our dashboard initial render time was over 4.5 seconds due to massive unbundled vendor chunks and unoptimized SVG rendering. I spearheaded the refactoring by implementing dynamic code-splitting with React lazy and Suspense, migrating expensive charts to virtualized canvas rendering, and adding Service Worker asset caching. As a result, our Largest Contentful Paint dropped to 1.1 seconds and user engagement increased by 38%.', timestamp: '10:02 AM' },
+      { role: 'assistant', text: 'Impressive breakdown! How did you handle pushback from teammates who were hesitant about migrating the charts?', timestamp: '10:03 AM' },
+      { role: 'user', text: 'I set up an isolated benchmark branch and gathered Chrome DevTools performance traces showing the exact frame drop comparison. I held a brief 20-minute knowledge sharing session walk-through and made the migration progressive with backward-compatible adapters. The team quickly gained confidence once they saw 60fps scrolling on low-end test devices.', timestamp: '10:04 AM' },
+      { role: 'assistant', text: 'Great use of objective metrics to build consensus. That concludes our mock interview session today! You communicated clearly and demonstrated solid STAR structure.', timestamp: '10:05 AM' }
+    ]
+
+    setTranscript(demoTranscript)
+    setCompany(demoCompany)
+    setRole(demoRole)
+    setCallStatus('ended')
+    setInterviewComplete(true)
+
+    const sessionPayload = {
+      company: demoCompany,
+      role: demoRole,
+      totalQuestions: 2,
+      qaList: [
+        {
+          question: 'Tell me about a challenging frontend performance optimization problem you tackled recently. What was the situation and how did you resolve it?',
+          answer: 'In my last project, our dashboard initial render time was over 4.5 seconds due to massive unbundled vendor chunks and unoptimized SVG rendering. I spearheaded the refactoring by implementing dynamic code-splitting with React lazy and Suspense, migrating expensive charts to virtualized canvas rendering, and adding Service Worker asset caching. As a result, our Largest Contentful Paint dropped to 1.1 seconds and user engagement increased by 38%.'
+        },
+        {
+          question: 'How did you handle pushback from teammates who were hesitant about migrating the charts?',
+          answer: 'I set up an isolated benchmark branch and gathered Chrome DevTools performance traces showing the exact frame drop comparison. I held a brief 20-minute knowledge sharing session walk-through and made the migration progressive with backward-compatible adapters. The team quickly gained confidence once they saw 60fps scrolling on low-end test devices.'
+        }
+      ],
+      feedbackList: [
+        'Great use of objective metrics to build consensus.',
+        'Clear demonstration of STAR methodology with quantifiable business impacts.'
+      ],
+      finalSummary: 'You communicated clearly and demonstrated solid STAR structure with measurable outcomes and leadership initiative.',
+      duration: '4m 30s',
+      date: new Date().toLocaleDateString(),
+      transcript: demoTranscript,
+      completedAt: Date.now()
+    }
+
+    setSummary(sessionPayload)
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('placeiq_last_interview', JSON.stringify(sessionPayload))
+      } catch (e) {
+        console.warn('Failed to save to localStorage', e)
+      }
+    }
   }
 
   const downloadPDF = async () => {
@@ -477,10 +546,21 @@ export default function MockInterviewPage() {
                   <TriangleAlert size={15} strokeWidth={2} />
                   <span>Make sure you&apos;re using HTTPS or localhost</span>
                 </p>
-                <button onClick={startInterview} className="btn btn-primary btn-lg" style={{ minWidth: '220px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-                  <Play size={18} strokeWidth={2} />
-                  <span>Start Interview</span>
-                </button>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <button onClick={startInterview} className="btn btn-primary btn-lg" style={{ minWidth: '200px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                    <Play size={18} strokeWidth={2} />
+                    <span>Start Interview</span>
+                  </button>
+                  <button 
+                    onClick={loadDemoSession} 
+                    className="btn btn-secondary" 
+                    title="Load an instant simulated Google interview transcript to test behavioral analysis"
+                    style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                  >
+                    <Sparkles size={16} color="#a855f7" />
+                    <span>Load Demo Session</span>
+                  </button>
+                </div>
               </>
             )}
 
@@ -525,12 +605,23 @@ export default function MockInterviewPage() {
                 </div>
                 <h3 style={{ fontSize: '20px', marginBottom: '12px' }}>Interview Complete!</h3>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                  Great job! Review your transcript and download your report below
+                  Great job! You can now analyze your full behavioral metrics or review your transcript below.
                 </p>
-                <button onClick={startInterview} className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-                  <RotateCcw size={16} strokeWidth={2} />
-                  <span>Start New Interview</span>
-                </button>
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                  <Link 
+                    href="/student/behavioral-analysis?source=mock" 
+                    className="btn btn-primary btn-lg" 
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', textDecoration: 'none', boxShadow: '0 4px 20px rgba(124, 58, 237, 0.3)' }}
+                  >
+                    <Brain size={20} />
+                    <span>View Deep Behavioral &amp; STAR Analysis</span>
+                    <ArrowRight size={18} />
+                  </Link>
+                  <button onClick={startInterview} className="btn btn-secondary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <RotateCcw size={16} strokeWidth={2} />
+                    <span>Start New Interview</span>
+                  </button>
+                </div>
               </>
             )}
 
@@ -608,6 +699,56 @@ export default function MockInterviewPage() {
           {/* Summary Report */}
           {interviewComplete && summary && (
             <>
+              {/* Behavioral Analysis CTA Card */}
+              <div style={{
+                margin: '24px 0',
+                padding: '24px',
+                borderRadius: '16px',
+                background: 'linear-gradient(135deg, rgba(124,58,237,0.14) 0%, rgba(59,130,246,0.12) 50%, rgba(16,185,129,0.1) 100%)',
+                border: '1px solid rgba(124,58,237,0.3)',
+                boxShadow: '0 8px 32px rgba(124,58,237,0.15)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '20px'
+              }}>
+                <div style={{ maxWidth: '650px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#7c3aed', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Brain size={18} />
+                    </div>
+                    <h4 style={{ margin: 0, fontSize: '18px', fontWeight: '800' }}>Deep Behavioral AI Analysis Ready</h4>
+                    <span style={{ fontSize: '11px', padding: '3px 8px', borderRadius: '12px', background: 'rgba(124,58,237,0.2)', color: '#a855f7', fontWeight: '700', textTransform: 'uppercase' }}>
+                      STAR Method
+                    </span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                    Evaluate your actual responses for STAR methodology structure (Situation, Task, Action, Result), communication pacing, filler-word frequency, and concrete recommendations backed by candidate quote citations.
+                  </p>
+                </div>
+                <Link
+                  href="/student/behavioral-analysis?source=mock"
+                  className="btn btn-primary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '14px 24px',
+                    borderRadius: '12px',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                    boxShadow: '0 4px 20px rgba(124, 58, 237, 0.35)'
+                  }}
+                >
+                  <Brain size={18} />
+                  <span>Analyze My Answers Now</span>
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+
               <div className={`glass ${styles.panel}`}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
                   <BarChart2 size={18} strokeWidth={2} color="#7c3aed" />
@@ -687,6 +828,8 @@ export default function MockInterviewPage() {
           )}
         </main>
       </div>
+
+      <AmbientBlooms />
 
       <style jsx>{`
         @keyframes pulse {

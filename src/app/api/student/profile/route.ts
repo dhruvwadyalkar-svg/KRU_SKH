@@ -8,12 +8,13 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: NextRequest) {
   try {
     const session = await getSession()
-    let studentId = 1
-    if (session && session.role === 'student' && session.userId) {
-      studentId = session.userId
+    if (!session || session.role !== 'student' || !session.userId) {
+      return NextResponse.json({ error: 'Unauthorized: Student session required' }, { status: 401 })
     }
 
-    let student = await prisma.student.findUnique({
+    const studentId = session.userId
+
+    const student = await prisma.student.findUnique({
       where: { id: studentId },
       include: {
         academicMarksheets: {
@@ -30,25 +31,6 @@ export async function GET(request: NextRequest) {
         }
       }
     })
-
-    if (!student) {
-      student = await prisma.student.findFirst({
-        include: {
-          academicMarksheets: {
-            select: {
-              id: true,
-              educationLevel: true,
-              verificationStatus: true,
-              percentage: true,
-              board: true,
-              passingYear: true,
-              verifiedAt: true,
-              documentId: true
-            }
-          }
-        }
-      })
-    }
 
     if (!student) {
       return NextResponse.json({ error: 'Student profile not found' }, { status: 404 })
@@ -112,10 +94,11 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const session = await getSession()
-    let studentId = 1
-    if (session && session.role === 'student' && session.userId) {
-      studentId = session.userId
+    if (!session || session.role !== 'student' || !session.userId) {
+      return NextResponse.json({ error: 'Unauthorized: Student session required' }, { status: 401 })
     }
+
+    const studentId = session.userId
 
     const currentStudent = await prisma.student.findUnique({
       where: { id: studentId }
