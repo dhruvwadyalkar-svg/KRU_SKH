@@ -42,7 +42,7 @@ export default function CircularGallery({
   borderRadius = 0.05,
   scrollEase = 0.08,
   autoRotate = true,
-  autoRotateSpeed = 0.025,
+  autoRotateSpeed = 0.14,
   fontUrl,
   font,
 }: CircularGalleryProps) {
@@ -52,14 +52,13 @@ export default function CircularGallery({
 
   // Physics & Animation Refs
   const isDragging = useRef(false)
-  const isHovered = useRef(false)
+  const spinDirection = useRef(-1) // -1 for natural counter-clockwise, 1 for clockwise
   const lastX = useRef(0)
   const lastTime = useRef(0)
   const currentRotation = useRef(0)
   const targetRotation = useRef(0)
   const momentumVelocity = useRef(0)
   const dragVelocity = useRef(0)
-  const lastInteractionTime = useRef(0)
 
   // Load custom font if fontUrl is provided
   useEffect(() => {
@@ -78,10 +77,10 @@ export default function CircularGallery({
     }
   }, [fontUrl])
 
-  // Drag sensitivity factor
-  const sensitivity = 0.22 / Math.max(0.5, bend * 0.35)
+  // Responsive drag sensitivity factor (effortless, free drag)
+  const sensitivity = 0.42 / Math.max(0.5, bend * 0.28)
 
-  // Pointer event handlers for hold & move
+  // Pointer event handlers for fluid hold & move
   const handlePointerDown = useCallback((e: React.PointerEvent) => {
     if (e.button !== 0) return // Only primary click/touch
     isDragging.current = true
@@ -90,7 +89,6 @@ export default function CircularGallery({
     lastTime.current = performance.now()
     dragVelocity.current = 0
     momentumVelocity.current = 0
-    lastInteractionTime.current = performance.now()
     
     try {
       containerRef.current?.setPointerCapture(e.pointerId)
@@ -106,18 +104,21 @@ export default function CircularGallery({
     const deltaX = e.clientX - lastX.current
     
     // Direct bidirectional movement:
-    // Dragging right (deltaX > 0) rotates right (positive)
-    // Dragging left (deltaX < 0) rotates left (negative)
+    // Dragging right (deltaX > 0) rotates right
+    // Dragging left (deltaX < 0) rotates left
     const rotDelta = deltaX * sensitivity
     targetRotation.current += rotDelta
     
-    // Smooth velocity tracking
-    const instantVelocity = rotDelta / (dt / 16.67)
-    dragVelocity.current = dragVelocity.current * 0.3 + instantVelocity * 0.7
+    if (Math.abs(rotDelta) > 0.08) {
+      spinDirection.current = rotDelta > 0 ? 1 : -1
+    }
+
+    // Smooth instantaneous velocity tracking for release fling
+    const instantVelocity = rotDelta / Math.max(0.8, dt / 16.67)
+    dragVelocity.current = dragVelocity.current * 0.25 + instantVelocity * 0.75
 
     lastX.current = e.clientX
     lastTime.current = now
-    lastInteractionTime.current = now
   }, [sensitivity])
 
   const handlePointerUp = useCallback((e: React.PointerEvent) => {
@@ -125,11 +126,10 @@ export default function CircularGallery({
     isDragging.current = false
     setIsDraggingState(false)
     
-    // Transfer drag velocity into smooth momentum on release (clamped for stability)
-    const maxVelocity = 6
+    // Transfer drag fling velocity into momentum on release
+    const maxVelocity = 9.0
     const clampedVelocity = Math.max(-maxVelocity, Math.min(maxVelocity, dragVelocity.current))
     momentumVelocity.current = clampedVelocity
-    lastInteractionTime.current = performance.now()
 
     try {
       containerRef.current?.releasePointerCapture(e.pointerId)
@@ -138,36 +138,50 @@ export default function CircularGallery({
     }
   }, [])
 
-  // Physics animation loop (60fps direct DOM style update for rock-solid stability)
+  // Optional trackpad horizontal swipe listener for free gliding
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 2) {
+        e.preventDefault()
+        const rot = -e.deltaX * 0.18
+        targetRotation.current += rot
+        spinDirection.current = rot > 0 ? 1 : -1
+      }
+    }
+
+    container.addEventListener('wheel', handleWheel, { passive: false })
+    return () => container.removeEventListener('wheel', handleWheel)
+  }, [])
+
+  // Continuous physics animation loop (never halted by mere mouse hover)
   useEffect(() => {
     let animId: number
 
     const tick = () => {
-      const now = performance.now()
-      const idleTime = now - lastInteractionTime.current
-
       if (!isDragging.current) {
-        // Friction decay on momentum after release
-        if (Math.abs(momentumVelocity.current) > 0.001) {
+        // Friction decay on momentum after fling release
+        if (Math.abs(momentumVelocity.current) > 0.01) {
           targetRotation.current += momentumVelocity.current
-          momentumVelocity.current *= 0.95 // smooth friction decay
+          momentumVelocity.current *= 0.962 // Buttery smooth decay
         } else {
           momentumVelocity.current = 0
         }
 
-        // Very slow auto-rotation when not hovered and idle
-        if (autoRotate && !isHovered.current && idleTime > 800) {
-          const resumeFactor = Math.min(1, (idleTime - 800) / 1000) // smooth 1s ramp-in
-          targetRotation.current -= autoRotateSpeed * resumeFactor
+        // Keep it moving freely and continuously - NEVER stops on cursor hover!
+        if (autoRotate) {
+          targetRotation.current += spinDirection.current * autoRotateSpeed
         }
       }
 
-      // Smooth interpolation for rotation
-      const ease = isDragging.current ? 0.3 : scrollEase
+      // Fast ease while dragging for instant 1:1 control; smooth glide on release
+      const ease = isDragging.current ? 0.45 : (scrollEase || 0.08)
       const diff = targetRotation.current - currentRotation.current
       currentRotation.current += diff * ease
 
-      // Direct transform update without vibration/tilt or React re-renders
+      // Direct transform update
       if (cylinderRef.current) {
         cylinderRef.current.style.transform = `rotateY(${currentRotation.current}deg)`
       }
@@ -189,8 +203,6 @@ export default function CircularGallery({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      onMouseEnter={() => { isHovered.current = true }}
-      onMouseLeave={() => { isHovered.current = false }}
       style={{
         width: '100%',
         height: '100%',
@@ -229,7 +241,8 @@ export default function CircularGallery({
                 top: 0,
                 left: 0,
                 transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                backfaceVisibility: 'visible',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
                 transformStyle: 'preserve-3d',
               }}
             >
@@ -247,21 +260,21 @@ export default function CircularGallery({
                   background: 'var(--card)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  boxShadow: 'var(--glass-shadow)',
+                  boxShadow: '0 8px 30px -4px rgba(15, 23, 42, 0.08), 0 2px 8px -2px rgba(37, 99, 235, 0.05)',
                   transform: 'translateZ(0px)',
                   transition: 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s, box-shadow 0.3s',
                   color: textColor || 'var(--foreground)',
                   cursor: isDraggingState ? 'grabbing' : 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateZ(20px) scale(1.03)'
+                  e.currentTarget.style.transform = 'translateZ(24px) scale(1.035)'
                   e.currentTarget.style.borderColor = 'var(--border-hover)'
-                  e.currentTarget.style.boxShadow = 'var(--glass-shadow)'
+                  e.currentTarget.style.boxShadow = '0 20px 42px -8px rgba(37, 99, 235, 0.18)'
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateZ(0px) scale(1)'
                   e.currentTarget.style.borderColor = 'var(--glass-border)'
-                  e.currentTarget.style.boxShadow = 'var(--glass-shadow)'
+                  e.currentTarget.style.boxShadow = '0 8px 30px -4px rgba(15, 23, 42, 0.08), 0 2px 8px -2px rgba(37, 99, 235, 0.05)'
                 }}
               >
                 <div

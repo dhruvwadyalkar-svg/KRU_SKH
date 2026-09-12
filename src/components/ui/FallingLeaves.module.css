@@ -1,0 +1,111 @@
+/* ==========================================================================
+   Falling Autumn Leaves & Atmospheric Particles (Light Mode Only)
+   Inspired by Luxury Warm Sunrise / Autumn Air Portfolio Aesthetic
+   ========================================================================== */
+
+.leavesContainer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Specific Blue Bokeh orb at top-left from user reference screenshot */
+.blueBokehOrb {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.32) 0%, rgba(96, 165, 250, 0.12) 50%, transparent 75%);
+  filter: blur(32px);
+  pointer-events: none;
+  animation: floatOrb 20s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, 20px) scale(1.15); }
+  100% { transform: translate(-15px, 10px) scale(0.92); }
+}
+
+/* Individual falling item container (handles vertical fall & 3D rotation) */
+.fallingItem {
+  position: absolute;
+  top: -70px;
+  pointer-events: none;
+  will-change: transform, opacity;
+  animation-name: fallDown;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+/* Inner wrapper (handles horizontal sway) */
+.swayInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation-name: swayMotion;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* Falling Keyframes */
+@keyframes fallDown {
+  0% {
+    transform: translate3d(0, -70px, 0) rotate(0deg) rotateY(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--item-opacity, 0.85);
+  }
+  88% {
+    opacity: var(--item-opacity, 0.85);
+  }
+  100% {
+    transform: translate3d(var(--drift-x, 70px), 108vh, 0) rotate(var(--rot-end, 360deg)) rotateY(var(--flip-end, 180deg));
+    opacity: 0;
+  }
+}
+
+/* Swaying Keyframes */
+@keyframes swayMotion {
+  0% {
+    transform: translateX(0px) rotate(-14deg);
+  }
+  100% {
+    transform: translateX(var(--sway-amt, 36px)) rotate(18deg);
+  }
+}
+
+/* Ambient Geometric Elements */
+.diamondParticle {
+  width: 12px;
+  height: 12px;
+  background: rgba(249, 115, 22, 0.15);
+  border: 1px solid rgba(249, 115, 22, 0.22);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.ringParticle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(249, 115, 22, 0.25);
+  background: transparent;
+}
+
+.crossParticle {
+  color: rgba(249, 115, 22, 0.35);
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1;
+  user-select: none;
+}

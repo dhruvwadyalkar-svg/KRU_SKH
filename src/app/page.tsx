@@ -32,9 +32,7 @@ import {
   Building2,
   Landmark,
   Rocket,
-  Lightbulb,
-  Sun,
-  Moon
+  Lightbulb
 } from 'lucide-react'
 
 const DriftWall = dynamic(() => import('@/components/DriftWall'), { ssr: false })
@@ -64,7 +62,7 @@ export default function LandingPage() {
   // Dynamic text gradient matching the theme specification
   const currentGradient = isDark
     ? 'linear-gradient(to right, #3B82F6, #60A5FA, #06B6D4)'
-    : 'linear-gradient(to right, #1E3A8A, #2563EB, #38BDF8)'
+    : 'linear-gradient(to right, #2563EB, #3B82F6, #F97316)'
 
   return (
     <main className={styles.main}>
@@ -76,16 +74,16 @@ export default function LandingPage() {
         <div style={{ width: '100%', height: '100%', position: 'relative' }}>
           <SideRays
             speed={2.5}
-            rayColor1={isDark ? '#3B82F6' : '#ffffff'}
-            rayColor2={isDark ? '#06B6D4' : '#cbd5e1'}
-            intensity={isDark ? 0.6 : 0.4}
+            rayColor1={isDark ? '#3B82F6' : '#F97316'}
+            rayColor2={isDark ? '#06B6D4' : '#60A5FA'}
+            intensity={isDark ? 0.6 : 0.3}
             spread={2}
             origin="top-right"
             tilt={0}
             saturation={1.5}
             blend={0.75}
             falloff={1.6}
-            opacity={isDark ? 0.08 : 0.06}
+            opacity={isDark ? 0.08 : 0.045}
           />
         </div>
       </div>
@@ -97,7 +95,6 @@ export default function LandingPage() {
           { label: 'Features', href: '#features' },
           { label: 'How It Works', href: '#how-it-works' },
           { label: 'Showcase', href: '#showcase' },
-          { label: 'Theme Studio', href: '#theme-studio' },
         ]}
         rightAction={
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -241,6 +238,7 @@ export default function LandingPage() {
               gradientText={currentGradient}
             />
           </h2>
+          <div className={styles.headingDivider} />
           <p className={styles.sectionSub}>
             <BlurText
               text="20+ AI-powered tools built for students and recruiters"
@@ -268,7 +266,7 @@ export default function LandingPage() {
             lift={64}
             fade={0.6}
             dim={0.55}
-            overlayColor={isDark ? '#0B1120' : '#F8FAFC'}
+            overlayColor={isDark ? '#0B1120' : '#FCFBF7'}
           />
         </div>
       </section>
@@ -295,6 +293,7 @@ export default function LandingPage() {
               gradientText={currentGradient}
             />
           </h2>
+          <div className={styles.headingDivider} />
           <p className={styles.sectionSub}>
             <BlurText
               text="20+ AI-powered tools built for students and recruiters"
@@ -311,7 +310,7 @@ export default function LandingPage() {
             textColor={isDark ? '#F8FAFC' : '#0F172A'}
             borderRadius={0.06}
             scrollEase={0.08}
-            autoRotateSpeed={0.025}
+            autoRotateSpeed={0.14}
             fontUrl="https://fonts.googleapis.com/css2?family=Outfit:wght@700&display=swap"
             font="bold 28px Outfit, sans-serif"
           />
@@ -328,6 +327,7 @@ export default function LandingPage() {
           <h2 className={styles.sectionTitle}>
             4 Steps to Your <MaskedHeading text="Dream Job" style={{ fontSize: 'inherit', fontWeight: 'inherit' }} />
           </h2>
+          <div className={styles.headingDivider} />
         </div>
         <div className={styles.stepsGrid}>
           {STEPS.map((s, i) => (
@@ -390,90 +390,59 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── DUAL-PERSONALITY THEME STUDIO ── */}
-      <section id="theme-studio" className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <div className="badge badge-purple">
-            <Sparkles size={13} strokeWidth={2.2} />
-            <span>Dual-Personality Architecture</span>
+      {/* ── FINAL CALL TO ACTION ── */}
+      <section className={styles.section} style={{ paddingTop: '30px', paddingBottom: '60px' }}>
+        <div className={styles.ctaCard}>
+          <div className={styles.ctaBadge}>
+            <span className="badge badge-blue">
+              <Rocket size={13} strokeWidth={2.2} />
+              <span>Launch Your Career</span>
+            </span>
           </div>
-          <h2 className={styles.sectionTitle}>
-            Handcrafted Light & Dark Experience. <br />
-            <span className={styles.gradientTitle}>700ms Cinematic Transition.</span>
+          <h2 className={styles.ctaTitle}>
+            Ready to Secure Your <MaskedHeading text="Dream Offer?" style={{ fontSize: 'inherit', fontWeight: 'inherit' }} />
           </h2>
-          <p className={styles.sectionSub}>
-            Experience how the colors, typography, ambient radial blooms, and specular highlights adapt between Sunrise Luxury Air and Deep Space Cyber Glass.
+          <p className={styles.ctaSub}>
+            Join over 50,000 ambitious students and 2,000+ top companies leveraging PlaceIQ's AI placement intelligence. Get pre-screened, verified, and placed faster.
           </p>
-        </div>
-
-        <div className={styles.themeStudio}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '24px' }}>
-            <button
-              onClick={() => setTheme('light')}
-              className={`btn cursor-pointer ${!isDark ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '10px 22px', fontSize: '14px', fontWeight: 600 }}
+          <div className={styles.ctaActions}>
+            <Link href="/auth/login?role=student" style={{ textDecoration: 'none' }}>
+              <SpecularButton
+                size="lg"
+                radius={12}
+                tint={isDark ? '#3B82F6' : '#2563EB'}
+                tintOpacity={0.22}
+                blur={0}
+                textColor="#ffffff"
+                lineColor={isDark ? '#60A5FA' : '#93C5FD'}
+                baseColor={isDark ? '#1D4ED8' : '#2563EB'}
+                intensity={0.9}
+                shineSize={8}
+                shineFade={35}
+                thickness={1}
+                speed={0.3}
+                followMouse
+                proximity={220}
+              >
+                <span>Start Free Analysis</span>
+                <ArrowRight size={18} strokeWidth={2.2} />
+              </SpecularButton>
+            </Link>
+            <Link
+              href="/auth/login?role=company"
+              className="btn btn-secondary btn-lg"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
-              <Sun size={17} className={!isDark ? 'text-amber-300' : ''} />
-              <span>Sunrise Luxury Glass (Light)</span>
-            </button>
-            <button
-              onClick={() => setTheme('dark')}
-              className={`btn cursor-pointer ${isDark ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ padding: '10px 22px', fontSize: '14px', fontWeight: 600 }}
-            >
-              <Moon size={17} className={isDark ? 'text-cyan-300' : ''} />
-              <span>Deep Space Cyber Glass (Dark)</span>
-            </button>
+              <Building2 size={18} strokeWidth={2} />
+              <span>Recruiter Solutions</span>
+            </Link>
           </div>
-
-          <div className={styles.studioGrid}>
-            <div
-              className={`${styles.studioCard} ${styles.studioCardLight}`}
-              style={{ outline: !isDark ? '2px solid #2563EB' : 'none' }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                <span className="badge badge-orange">Light Mode Personality</span>
-                <span style={{ fontSize: '12px', color: '#64748B' }}>Sunrise Air & Luxury Glass</span>
-              </div>
-              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginBottom: '10px' }}>
-                Clean Off-White & Soft Sunlight Blooms
-              </h3>
-              <p style={{ fontSize: '14px', color: '#334155', lineHeight: 1.6, marginBottom: '18px' }}>
-                Crisp ice-white background (<code style={{ background: 'rgba(255,209,128,0.3)', padding: '2px 6px', borderRadius: '4px' }}>#F8FAFC</code>) with delicate ambient blooms of soft sunlight (<code style={{ background: 'rgba(255,209,128,0.4)', padding: '2px 6px', borderRadius: '4px' }}>#FFD180</code>) and sky blue (<code style={{ background: 'rgba(219,234,254,0.7)', padding: '2px 6px', borderRadius: '4px' }}>#DBEAFE</code>). Frosted glass surfaces with royal-to-sky gradient accents.
-              </p>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '9999px', background: 'rgba(37,99,235,0.08)', color: '#2563EB', fontWeight: 600 }}>
-                  Royal Blue → Sky Blue
-                </span>
-                <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '9999px', background: 'rgba(255,255,255,0.8)', border: '1px solid #DCE7F8', color: '#0F172A', fontWeight: 600 }}>
-                  Frosted White 60%
-                </span>
-              </div>
-            </div>
-
-            <div
-              className={`${styles.studioCard} ${styles.studioCardDark}`}
-              style={{ outline: isDark ? '2px solid #3B82F6' : 'none' }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                <span className="badge badge-blue">Dark Mode Personality</span>
-                <span style={{ fontSize: '12px', color: '#94A3B8' }}>Deep Space Cyber Glass</span>
-              </div>
-              <h3 style={{ fontSize: '22px', fontWeight: 800, color: '#F8FAFC', marginBottom: '10px' }}>
-                Deep Obsidian & Neon Cyan
-              </h3>
-              <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.6, marginBottom: '18px' }}>
-                Obsidian navy canvas (<code style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px' }}>#0B1120</code>) with luminous dark glass (<code style={{ background: 'rgba(11,17,32,0.8)', padding: '2px 6px', borderRadius: '4px' }}>rgba(11, 17, 32, 0.4)</code>), radiant halos of electric blue, and neon cyan accents with deep 48px ambient shadows.
-              </p>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '9999px', background: 'rgba(59,130,246,0.2)', color: '#60A5FA', fontWeight: 600 }}>
-                  Electric Blue → Neon Cyan
-                </span>
-                <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '9999px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', color: '#F8FAFC', fontWeight: 600 }}>
-                  Obsidian Glass 40%
-                </span>
-              </div>
-            </div>
+          <div className={styles.ctaTrustBadges}>
+            <span>✨ 94% Match Accuracy</span>
+            <span>•</span>
+            <span>🔒 Cryptographic Tamper Seal</span>
+            <span>•</span>
+            <span>⚡ 30s Instant ATS Feedback</span>
           </div>
         </div>
       </section>
@@ -489,7 +458,6 @@ export default function LandingPage() {
             <Link href="#features" style={{ color: 'inherit', textDecoration: 'none' }}>Features</Link>
             <Link href="#how-it-works" style={{ color: 'inherit', textDecoration: 'none' }}>How It Works</Link>
             <Link href="#showcase" style={{ color: 'inherit', textDecoration: 'none' }}>Showcase</Link>
-            <Link href="#theme-studio" style={{ color: 'inherit', textDecoration: 'none' }}>Theme Studio</Link>
             <Link href="/auth/login" style={{ color: 'inherit', textDecoration: 'none' }}>Sign In</Link>
           </div>
           <p className={styles.footerCopy}>© 2026 PLACEIQ. All rights reserved.</p>

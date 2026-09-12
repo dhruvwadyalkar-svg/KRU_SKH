@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useTheme } from '@/contexts/ThemeContext'
+import FallingLeaves from './FallingLeaves'
 
 export const AmbientBlooms: React.FC = () => {
   const { theme } = useTheme()
@@ -11,6 +12,9 @@ export const AmbientBlooms: React.FC = () => {
     <>
       {/* 1.5% Opacity Physical Tactile SVG Noise Grain Overlay behind content */}
       <div className="noise-overlay" aria-hidden="true" style={{ zIndex: -1 }} />
+
+      {/* Falling Autumn Leaves (Active in Light Mode) */}
+      <FallingLeaves />
 
       {/* Atmospheric Radial Blooms Container - Strictly behind all content (-z-10 / zIndex: -1) */}
       <div
@@ -22,42 +26,43 @@ export const AmbientBlooms: React.FC = () => {
           transition: 'background-color 700ms cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
-        {/* LIGHT MODE BLOOMS: Gentle Sunlight + Soft Sky Blue (subtle ambient tints, never blurring foreground) */}
+        {/* LIGHT MODE BLOOMS: Warm Sunrise Sunlight + Soft Morning Sky Blue */}
         <div
           className="absolute inset-0 transition-opacity duration-700 ease-out pointer-events-none"
           style={{
             opacity: isDark ? 0 : 1,
+            background: 'radial-gradient(circle at 88% 16%, rgba(254, 243, 199, 0.55) 0%, rgba(255, 247, 237, 0.3) 45%, transparent 75%), radial-gradient(circle at 10% 12%, rgba(219, 234, 254, 0.45) 0%, transparent 60%)',
           }}
         >
-          {/* Soft Sunlight Radial Bloom (Top-Right) */}
+          {/* Soft Golden Sunlight Radial Bloom (Top-Right) */}
           <div
-            className="absolute -top-[15%] right-[5%] w-[650px] h-[650px] rounded-full pointer-events-none"
+            className="absolute -top-[15%] right-[2%] w-[800px] h-[800px] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(255, 209, 128, 0.25) 0%, rgba(255, 209, 128, 0.1) 60%, transparent 100%)',
-              filter: 'blur(100px)',
-              opacity: 0.18,
+              background: 'radial-gradient(circle, rgba(254, 215, 170, 0.6) 0%, rgba(253, 186, 116, 0.25) 45%, transparent 75%)',
+              filter: 'blur(90px)',
+              opacity: 0.52,
               animation: 'mesh-1 28s ease-in-out infinite alternate',
             }}
           />
 
           {/* Sky Blue Radial Bloom (Top-Left / Center) */}
           <div
-            className="absolute -top-[10%] -left-[10%] w-[650px] h-[650px] rounded-full pointer-events-none"
+            className="absolute -top-[10%] -left-[10%] w-[800px] h-[800px] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(219, 234, 254, 0.35) 0%, rgba(219, 234, 254, 0.12) 55%, transparent 100%)',
-              filter: 'blur(100px)',
-              opacity: 0.15,
+              background: 'radial-gradient(circle, rgba(191, 219, 254, 0.65) 0%, rgba(147, 197, 253, 0.25) 50%, transparent 80%)',
+              filter: 'blur(95px)',
+              opacity: 0.5,
               animation: 'mesh-2 36s ease-in-out infinite alternate',
             }}
           />
 
-          {/* Subtle Ambient Bottom-Center Azure Accent Bloom */}
+          {/* Subtle Ambient Bottom-Center Amber Accent Bloom */}
           <div
-            className="absolute top-[45%] left-[20%] w-[700px] h-[700px] rounded-full pointer-events-none"
+            className="absolute top-[42%] right-[18%] w-[750px] h-[750px] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(191, 219, 254, 0.2) 0%, rgba(224, 242, 254, 0.08) 60%, transparent 100%)',
-              filter: 'blur(120px)',
-              opacity: 0.12,
+              background: 'radial-gradient(circle, rgba(254, 243, 199, 0.45) 0%, rgba(255, 237, 213, 0.18) 55%, transparent 80%)',
+              filter: 'blur(110px)',
+              opacity: 0.4,
               animation: 'mesh-3 40s ease-in-out infinite alternate',
             }}
           />
